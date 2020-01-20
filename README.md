@@ -1,6 +1,6 @@
 ## Getting Started
 in order to setup the dev environment make sure you have installed [DevkitPro](https://devkitpro.org/) specifically the GBA installation.
-Also install [mGBA](https://mgba.io/) a usefull emulator for debugging.
+Also install [mGBA](https://mgba.io/) a usefull emulator for debugging under your C:\ path.
 
 If you want to work in an environment identical to mine then you will need to install visual studio code and the following plugins: 
 [Visual Studio ARM](https://marketplace.visualstudio.com/items?itemName=dan-c-underwood.arm)
