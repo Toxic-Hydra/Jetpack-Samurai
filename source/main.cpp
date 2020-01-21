@@ -3,10 +3,10 @@
 
 int main()
 {
-    std::shared_ptr<GBAEngine> engine(new GBAEngine());
+    std::shared_ptr<GBAEngine> engine = std::make_shared<GBAEngine>();  //(new GBAEngine());
 
-    auto scene = new DemoScene(engine);
-    engine->setScene(scene);
+    auto scene = std::make_shared<DemoScene>(engine); //new DemoScene(engine);
+    engine->setScene(scene.get()); //engine->setScene requires a Raw pointer thus using scene.get() to retrieve that raw pointer
 
     while(true)
     {
