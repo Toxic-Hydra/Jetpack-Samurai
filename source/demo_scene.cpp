@@ -14,7 +14,7 @@ std::vector<Background *> DemoScene::backgrounds()
 
 std::vector<Sprite *> DemoScene::sprites()
 {
-    std::vector<Sprite*> sprites;
+    std::vector<Sprite*> sprites; //we shove all our sprites into this
 
     return sprites;
 }

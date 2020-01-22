@@ -40,7 +40,7 @@ endif
 
 CFLAGS	+=	$(INCLUDE)
 
-CXXFLAGS	:=	$(CFLAGS) -fno-rtti -fno-exceptions -Wno-narrowing -Wreorder
+CXXFLAGS	:=	$(CFLAGS) -fno-rtti -fno-exceptions -Wno-narrowing -Wno-reorder
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-g $(ARCH) -Wl,-Map,$(notdir $*.map)
