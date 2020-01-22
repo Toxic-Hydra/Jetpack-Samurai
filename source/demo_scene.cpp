@@ -26,5 +26,8 @@ void DemoScene::tick(u16 keys)
 
 void DemoScene::load()
 {
-    TextStream::instance().setText(std::string("WOah!"), 10, 1);
+    TextStream::instance() << "woah";
+
+    
+
 }
