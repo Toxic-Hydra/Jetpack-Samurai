@@ -9,7 +9,12 @@
 class TestEntity : public Entity
 {
 public:
+    TestEntity(int x, int y);
+    
+
     void tick() {}
+
+    Sprite* getSprite() { Entity::getSprite(); }
 };
 
 

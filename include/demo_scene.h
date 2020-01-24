@@ -5,11 +5,14 @@
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
 
+#include "test_entity.h"
+
 
 class DemoScene : public Scene
 {
 private:
     std::unique_ptr<Background> background;
+    std::unique_ptr<TestEntity> avatar;
 
 
 public:

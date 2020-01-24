@@ -13,15 +13,20 @@ private:
     int health{ 100 };
     std::unique_ptr<Sprite> sprite;
 
+protected:
+    SpriteBuilder<Sprite> spriteBuilder;
+    int x;
+    int y;
 
 public:
-    Entity(std::unique_ptr<Sprite> sprite) : sprite(std::move(sprite)) {}
+    Entity(int x, int y) : x(x), y(y) {}
 
     virtual void tick() = 0;
 
     void setHealth(int x) { health = x; }
     int getHealth() { return health; }
     Sprite* getSprite() { return sprite.get(); }
+    void setSprite(std::unique_ptr<Sprite> sprite);
 
 
 };
