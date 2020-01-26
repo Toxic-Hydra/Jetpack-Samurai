@@ -6,6 +6,7 @@
 #include <libgba-sprite-engine/background/text_stream.h>
 
 #include "test_entity.h"
+#include "player.h"
 #include "enemy.h"
 
 
@@ -13,7 +14,7 @@ class DemoScene : public Scene
 {
 private:
     std::unique_ptr<Background> background;
-    std::unique_ptr<TestEntity> avatar;
+    std::unique_ptr<Player> player;
     std::unique_ptr<Enemy> enemy;
 
 
