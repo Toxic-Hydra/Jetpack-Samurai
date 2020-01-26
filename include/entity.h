@@ -5,18 +5,20 @@
 #include <libgba-sprite-engine/sprites/sprite.h>
 // instead of using inheritance like in phaser sprites, we use composition and include a Sprite in our enemy class
 //Enemy 'has a' sprite
+#include "combined.h"
 
 class Entity 
 {
 
 private:
-    int health{ 100 };
+    
     std::unique_ptr<Sprite> sprite;
 
 protected:
     SpriteBuilder<Sprite> spriteBuilder;
     int x;
     int y;
+    int health{ 100 };
 
 public:
     Entity(int x, int y) : x(x), y(y) {}

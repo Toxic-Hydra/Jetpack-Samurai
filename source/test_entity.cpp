@@ -3,7 +3,7 @@
 TestEntity::TestEntity(int x, int y) : Entity(x, y)
 {
     this->setSprite((spriteBuilder
-                    .withData(avatar_data, sizeof(avatar_data))
+                    .withData(avatarTiles, sizeof(avatarTiles))
                     .withSize(SIZE_64_64))
                     .withLocation(x,y)
                     .buildPtr());

@@ -17,6 +17,7 @@ std::vector<Sprite *> DemoScene::sprites()
     std::vector<Sprite*> sprites; //we shove all our sprites into this
 
     sprites.push_back(avatar->getSprite());
+    sprites.push_back(enemy->getSprite());
 
     return sprites;
 }
@@ -29,9 +30,10 @@ void DemoScene::tick(u16 keys)
 void DemoScene::load()
 {
     TextStream::instance() << "woah";
-    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(avatar_palette, sizeof(avatar_palette)));
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
 
     avatar = std::unique_ptr<TestEntity>(new TestEntity(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
+    enemy = std::unique_ptr<Enemy>(new Enemy(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32));
     
 
 }
