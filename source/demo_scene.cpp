@@ -24,6 +24,8 @@ std::vector<Sprite *> DemoScene::sprites()
 
 void DemoScene::tick(u16 keys)
 {
+    // player->getSprite()->animateToFrame(1);
+    // player->getSprite()->animate();
     player->moveWithDPad(keys);
 }
 
@@ -33,6 +35,7 @@ void DemoScene::load()
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
 
     player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
+    player->getSprite()->stopAnimating();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
     enemy = std::unique_ptr<Enemy>(new Enemy(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32));
     
