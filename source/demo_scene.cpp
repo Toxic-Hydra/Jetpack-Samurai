@@ -24,9 +24,8 @@ std::vector<Sprite *> DemoScene::sprites()
 
 void DemoScene::tick(u16 keys)
 {
-    // player->getSprite()->animateToFrame(1);
-    // player->getSprite()->animate();
-    player->moveWithDPad(keys);
+    player->readInput(keys);
+    player->tick();
     TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10);
 }
 

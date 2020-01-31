@@ -11,7 +11,23 @@ Player::Player(int x, int y) : Entity(x, y)
                     .buildPtr());
 }
 
-void Player::moveWithDPad(u16 keys)
+void Player::dash(u16 keys)
+{
+    if (keys & KEY_B)
+    {
+        this->dashTimer->start();
+        this->getSprite()->setVelocity(0, 0);
+        this->getSprite()->moveTo(this->getSprite()->getX() + 32, this->getSprite()->getY());
+    }
+
+    if(this->dashTimer->getSecs() >= 1)
+    {
+        this->dashTimer->stop();
+        this->dashTimer->reset();
+    }
+}
+
+void Player::walk(u16 keys)
 {
     if (keys & KEY_LEFT)
     {
@@ -48,4 +64,25 @@ void Player::moveWithDPad(u16 keys)
     }
 
     //if (keys)
+}
+
+// Store the player's input during a single frame
+void Player::readInput(u16 keys)
+{
+    this->key = keys;
+}
+
+void Player::tick()
+{
+    this->canReadInput = this->dashTimer->isActive();
+
+    // If player can read input
+    if(this->canReadInput == true)
+    {
+        // Player can
+        // 1) Walk
+        // 2) Dash
+        this->walk(this->key);
+        this->dash(this->key);
+    }
 }
