@@ -15,8 +15,15 @@ protected :
 
 public:
     Player(int x, int y);
+    std::unique_ptr<Sprite> playerAttackSprite = (spriteBuilder
+                    .withData(playerTiles, sizeof(playerTiles))
+                    .withSize(SIZE_16_32))
+                    //.withAnimated(4, 3)
+                    .withLocation(-100,-100)
+                    .buildPtr();;
     void tick() {}
     void moveWithDPad(u16 keys);
+    void playerAttack(u16 keys);
     Sprite* getSprite() { return Entity::getSprite(); }
     int getFaceDirection() { return faceDirection; }
 };

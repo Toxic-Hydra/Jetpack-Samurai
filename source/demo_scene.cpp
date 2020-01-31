@@ -18,6 +18,7 @@ std::vector<Sprite *> DemoScene::sprites()
 
     sprites.push_back(player->getSprite());
     sprites.push_back(enemy->getSprite());
+    sprites.push_back(player->playerAttackSprite.get());
 
     return sprites;
 }
@@ -27,7 +28,13 @@ void DemoScene::tick(u16 keys)
     // player->getSprite()->animateToFrame(1);
     // player->getSprite()->animate();
     player->moveWithDPad(keys);
+    player->playerAttack(keys);
     TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10);
+
+    if (player->playerAttackSprite->collidesWith(sprites)
+    {
+        TextStream::instance() << "yep";
+    }
 }
 
 void DemoScene::load()
