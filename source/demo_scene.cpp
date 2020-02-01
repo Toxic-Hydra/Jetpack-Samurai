@@ -31,7 +31,7 @@ void DemoScene::tick(u16 keys)
     player->playerAttack(keys);
     TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10);
 
-    if (player->playerAttackSprite->collidesWith(sprites)
+    if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
     {
         TextStream::instance() << "yep";
     }
