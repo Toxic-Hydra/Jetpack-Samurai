@@ -29,6 +29,8 @@ void DemoScene::tick(u16 keys)
     // player->getSprite()->animate();
     player->moveWithDPad(keys);
     player->playerAttack(keys);
+    enemy->setPlayerPos(player->getSprite()->getPos());
+    enemy->tick();
     TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10);
 
     if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
@@ -39,7 +41,7 @@ void DemoScene::tick(u16 keys)
 
 void DemoScene::load()
 {
-    TextStream::instance() << "woah";
+    
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
 
     player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));

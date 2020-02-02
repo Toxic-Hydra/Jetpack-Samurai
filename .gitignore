@@ -1,5 +1,7 @@
 build/**
 spritebuilder/grit/**
+spritebuilder/Sprites/*.c
+spritebuilder/Sprites/*.h
 *.elf
 *.gba
 *.sav

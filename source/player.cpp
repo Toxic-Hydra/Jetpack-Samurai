@@ -9,6 +9,7 @@ Player::Player(int x, int y) : Entity(x, y)
                     .withAnimated(4, 3)
                     .withLocation(x,y)
                     .buildPtr());
+    this->setMovementSpeed(2);
 }
 
 void Player::moveWithDPad(u16 keys)
