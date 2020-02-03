@@ -1,5 +1,9 @@
 #include "player.h"
-// #include "playerTiles.h"
+
+u32 Player::keyHit(u16 keys)
+{
+    return (this->keyPrev &~ this->key) & keys;
+}
 
 Player::Player(int x, int y) : Entity(x, y)
 {
@@ -13,17 +17,27 @@ Player::Player(int x, int y) : Entity(x, y)
 
 void Player::dash(u16 keys)
 {
-    if (keys & KEY_B)
+    if (this->keyHit(KEY_B))
     {
-        this->dashTimer->start();
-        this->getSprite()->setVelocity(0, 0);
-        this->getSprite()->moveTo(this->getSprite()->getX() + 32, this->getSprite()->getY());
-    }
-
-    if(this->dashTimer->getSecs() >= 1)
-    {
-        this->dashTimer->stop();
-        this->dashTimer->reset();
+        int dx = 0;
+        int dy = 0;
+        if (this->faceDirection == fDirection::LEFT)
+        {
+            dx = -10;
+        }
+        else if (this->faceDirection == fDirection::RIGHT)
+        {
+            dx = 10;
+        }
+        else if (this->faceDirection == fDirection::UP)
+        {
+            dy = -10;
+        }
+        else
+        {
+            dy = 10;
+        }
+        this->getSprite()->moveTo(this->getSprite()->getX() + dx, this->getSprite()->getY() + dy);
     }
 }
 
@@ -62,27 +76,20 @@ void Player::walk(u16 keys)
     {
         this->getSprite()->setVelocity(this->getSprite()->getDx(), 0);
     }
-
-    //if (keys)
 }
 
 // Store the player's input during a single frame
 void Player::readInput(u16 keys)
 {
+    this->keyPrev = this->key;
     this->key = keys;
 }
 
 void Player::tick()
 {
-    this->canReadInput = this->dashTimer->isActive();
-
-    // If player can read input
-    if(this->canReadInput == true)
-    {
-        // Player can
-        // 1) Walk
-        // 2) Dash
-        this->walk(this->key);
-        this->dash(this->key);
-    }
+    // Player can
+    // 1) Walk
+    // 2) Dash
+    this->walk(this->key);
+    this->dash(this->key);
 }
