@@ -15,7 +15,7 @@ Player::Player(int x, int y) : Entity(x, y)
                     .buildPtr());
 }
 
-void Player::dash(u16 keys)
+void Player::dash()
 {
     if (this->keyHit(KEY_B))
     {
@@ -41,15 +41,15 @@ void Player::dash(u16 keys)
     }
 }
 
-void Player::walk(u16 keys)
+void Player::walk()
 {
-    if (keys & KEY_LEFT)
+    if (this->key & KEY_LEFT)
     {
         this->getSprite()->animateToFrame(3);
         this->getSprite()->setVelocity(-movementSpeed, this->getSprite()->getDy());
         this->faceDirection = fDirection::LEFT;
     }
-    else if (keys & KEY_RIGHT)
+    else if (this->key & KEY_RIGHT)
     {
         this->getSprite()->animateToFrame(0);
         this->getSprite()->setVelocity(movementSpeed, this->getSprite()->getDy());
@@ -60,13 +60,13 @@ void Player::walk(u16 keys)
         this->getSprite()->setVelocity(0, this->getSprite()->getDy());
     }
     
-    if (keys & KEY_UP)
+    if (this->key & KEY_UP)
     {
         this->getSprite()->animateToFrame(2);
         this->getSprite()->setVelocity(this->getSprite()->getDx(), -movementSpeed);
         this->faceDirection = fDirection::UP;
     }
-    else if (keys & KEY_DOWN)
+    else if (this->key & KEY_DOWN)
     {
         this->getSprite()->animateToFrame(1);
         this->getSprite()->setVelocity(this->getSprite()->getDx(), movementSpeed);
@@ -90,6 +90,6 @@ void Player::tick()
     // Player can
     // 1) Walk
     // 2) Dash
-    this->walk(this->key);
-    this->dash(this->key);
+    this->walk();
+    this->dash();
 }

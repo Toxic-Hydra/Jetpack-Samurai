@@ -24,8 +24,8 @@ public:
     void tick();
     u32 keyHit(u16 keys);
     void readInput(u16 keys);
-    void dash(u16 keys);
-    void walk(u16 keys);
+    void dash();
+    void walk();
     Sprite* getSprite() { return Entity::getSprite(); }
     int getFaceDirection() { return faceDirection; }
 };
