@@ -16,9 +16,21 @@ Player::Player(int x, int y) : Entity(x, y)
     this->setMovementSpeed(2);
 }
 
+void Player::useFuel(int x)
+{
+    if(this->getHealth() - x > 0)
+    {
+        this->setHealth(this->getHealth() - x);
+    }
+    else
+    {
+        this->setHealth(0);
+    }
+}
+
 void Player::dash()
 {
-    if (this->keyHit(KEY_B))
+    if (this->keyHit(KEY_B) && this->getHealth() > 10)
     {
         int dx = 0;
         int dy = 0;
@@ -39,6 +51,10 @@ void Player::dash()
             dy = 10;
         }
         this->getSprite()->moveTo(this->getSprite()->getX() + dx, this->getSprite()->getY() + dy);
+
+        // Use fuel at the end of it all
+        int fuelAmount = 2;
+        this->useFuel(fuelAmount);
     }
 }
 

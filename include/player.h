@@ -28,6 +28,7 @@ public:
                     .withLocation(-100,-100)
                     .buildPtr();;
     void tick();
+    void useFuel(int x);
     void playerAttack();
     u32 keyHit(u16 keys);
     void readInput(u16 keys);

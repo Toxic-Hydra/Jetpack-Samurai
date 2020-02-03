@@ -1,7 +1,8 @@
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
-#include <algorithm>
 #include <libgba-sprite-engine/background/text_stream.h>
+#include <tonc_video.h>
+#include <algorithm>
 #include <sstream>
 #include "demo_scene.h"
 
@@ -45,9 +46,23 @@ void DemoScene::tick(u16 keys)
     bufferFrames++;
     player->tick();
 
+    if(keys & KEY_START) // Reset Health
+    {
+        player->setHealth(100);
+    }
+
 
     // UI
-    TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10);
+    if(player->getHealth() <= 10)
+    {
+        TextStream::instance().setFontColor(CLR_RED);
+    }
+    else
+    {
+        TextStream::instance().setFontColor(CLR_WHITE);
+    }
+    TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 0, 0);
+    // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
 
 
     // Collision Checking
@@ -64,6 +79,7 @@ void DemoScene::load()
 
     player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
     player->getSprite()->stopAnimating();
+    player->setHealth(100);
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
     enemy = std::unique_ptr<Enemy>(new Enemy(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32));
