@@ -22,7 +22,7 @@ protected :
 public:
     Player(int x, int y);
     std::unique_ptr<Sprite> playerAttackSprite = (spriteBuilder
-                    .withData(playerTiles, sizeof(playerTiles))
+                    .withData(samuraiTiles, 2048)
                     .withSize(SIZE_16_32))
                     //.withAnimated(4, 3)
                     .withLocation(-100,-100)

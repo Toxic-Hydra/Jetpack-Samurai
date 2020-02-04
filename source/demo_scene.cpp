@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <sstream>
 #include "demo_scene.h"
+#include "jscomp16.h"
 
 static int bufferFrames = 0;
 
@@ -68,7 +69,8 @@ void DemoScene::tick(u16 keys)
     // Collision Checking
     if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
     {
-        TextStream::instance() << "yep";
+        enemy->getSprite()->moveTo(-100,0);
+        TextStream::instance() << engine->getTimer()->getSecs();
     }
 }
 
@@ -84,5 +86,6 @@ void DemoScene::load()
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
     enemy = std::unique_ptr<Enemy>(new Enemy(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32));
     
-
+    engine->enqueueMusic(jscomp16, jscomp16_bytes);
+    engine->getTimer()->start();
 }

@@ -8,7 +8,7 @@ u32 Player::keyHit(u16 keys)
 Player::Player(int x, int y) : Entity(x, y)
 {
     this->setSprite((spriteBuilder
-                    .withData(playerTiles, sizeof(playerTiles))
+                    .withData(samuraiTiles, 2048)
                     .withSize(SIZE_16_32))
                     .withAnimated(4, 3)
                     .withLocation(x,y)
