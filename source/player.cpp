@@ -1,5 +1,9 @@
 #include "player.h"
-// #include "playerTiles.h"
+
+u32 Player::keyHit(u16 keys)
+{
+    return (this->keyPrev &~ this->key) & keys;
+}
 
 Player::Player(int x, int y) : Entity(x, y)
 {
@@ -12,15 +16,41 @@ Player::Player(int x, int y) : Entity(x, y)
     this->setMovementSpeed(2);
 }
 
-void Player::moveWithDPad(u16 keys)
+void Player::dash()
 {
-    if (keys & KEY_LEFT)
+    if (this->keyHit(KEY_B))
+    {
+        int dx = 0;
+        int dy = 0;
+        if (this->faceDirection == fDirection::LEFT)
+        {
+            dx = -10;
+        }
+        else if (this->faceDirection == fDirection::RIGHT)
+        {
+            dx = 10;
+        }
+        else if (this->faceDirection == fDirection::UP)
+        {
+            dy = -10;
+        }
+        else
+        {
+            dy = 10;
+        }
+        this->getSprite()->moveTo(this->getSprite()->getX() + dx, this->getSprite()->getY() + dy);
+    }
+}
+
+void Player::walk()
+{
+    if (this->key & KEY_LEFT)
     {
         this->getSprite()->animateToFrame(3);
         this->getSprite()->setVelocity(-movementSpeed, this->getSprite()->getDy());
         this->faceDirection = fDirection::LEFT;
     }
-    else if (keys & KEY_RIGHT)
+    else if (this->key & KEY_RIGHT)
     {
         this->getSprite()->animateToFrame(0);
         this->getSprite()->setVelocity(movementSpeed, this->getSprite()->getDy());
@@ -31,13 +61,13 @@ void Player::moveWithDPad(u16 keys)
         this->getSprite()->setVelocity(0, this->getSprite()->getDy());
     }
     
-    if (keys & KEY_UP)
+    if (this->key & KEY_UP)
     {
         this->getSprite()->animateToFrame(2);
         this->getSprite()->setVelocity(this->getSprite()->getDx(), -movementSpeed);
         this->faceDirection = fDirection::UP;
     }
-    else if (keys & KEY_DOWN)
+    else if (this->key & KEY_DOWN)
     {
         this->getSprite()->animateToFrame(1);
         this->getSprite()->setVelocity(this->getSprite()->getDx(), movementSpeed);
@@ -49,9 +79,9 @@ void Player::moveWithDPad(u16 keys)
     }
 }
 
-void Player::playerAttack(u16 keys)
+void Player::playerAttack()
 {
-    if (keys & KEY_A){
+    if (this->key & KEY_A){
         switch (this->faceDirection)
         {
             case LEFT:
@@ -71,5 +101,23 @@ void Player::playerAttack(u16 keys)
     else
     {
         this->playerAttackSprite->moveTo(-100,-100);
-    } 
+    }
+}
+
+// Store the player's input during a single frame
+void Player::readInput(u16 keys)
+{
+    this->keyPrev = this->key;
+    this->key = keys;
+}
+
+void Player::tick()
+{
+    // Player can
+    // 1) Walk
+    // 2) Dash
+    // 3) Attack
+    this->walk();
+    this->dash();
+    this->playerAttack();
 }

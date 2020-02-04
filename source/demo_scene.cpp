@@ -5,6 +5,8 @@
 #include <sstream>
 #include "demo_scene.h"
 
+static int bufferFrames = 0;
+
 DemoScene::DemoScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine) {}
 
 std::vector<Background *> DemoScene::backgrounds()
@@ -25,14 +27,30 @@ std::vector<Sprite *> DemoScene::sprites()
 
 void DemoScene::tick(u16 keys)
 {
-    // player->getSprite()->animateToFrame(1);
-    // player->getSprite()->animate();
-    player->moveWithDPad(keys);
-    player->playerAttack(keys);
+    // Enemy
     enemy->setPlayerPos(player->getSprite()->getPos());
     enemy->tick();
+
+
+    // Player
+
+    // Not sure how to do this, but I wish to implement some sort of input leniency
+    // in case players cannot tap a button for exactly one frame. This was my best
+    // attempt.
+    // - Charles
+    if(bufferFrames % 5 == 0)
+    {
+        player->readInput(keys); // Read input every 5 frames
+    }
+    bufferFrames++;
+    player->tick();
+
+
+    // UI
     TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10);
 
+
+    // Collision Checking
     if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
     {
         TextStream::instance() << "yep";
