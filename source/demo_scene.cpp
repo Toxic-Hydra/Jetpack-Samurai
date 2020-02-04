@@ -53,7 +53,7 @@ void DemoScene::tick(u16 keys)
     // Collision Checking
     if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
     {
-        TextStream::instance() << "yep";
+        enemy->getSprite()->moveTo(-100,0);
     }
 }
 
