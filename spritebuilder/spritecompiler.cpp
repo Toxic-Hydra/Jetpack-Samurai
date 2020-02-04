@@ -17,23 +17,29 @@
 int main()
 {
     auto path = std::filesystem::current_path();
+    auto gritPath = std::filesystem::current_path().append("grit");
     if(std::filesystem::exists(path.append("Sprites")))
     {
+        
+        std::filesystem::current_path(path);
         std::ofstream file("combined.h", std::ios::in |std::ios::out | std::ios::app);
         std::string argument = " ";
         std::string argumentStorage = " ";
+        int files = 0;
         
         //Iterate through images to help construct arguments for grit.
         for (const auto& entry : std::filesystem::directory_iterator{path})
         {
-            if(entry.path().extension().string() == ".png")
+            if(entry.path().extension().string() == ".png"){
+
                 argument += path.string() + "\\" + entry.path().filename().string() + " ";
                 argumentStorage += path.string() + "\\" + entry.path().stem().string() + ".c ";
+            }
         }
 
         
         //System call to cmd so we can use grit. Cool epic.
-        argument = "grit\\grit.exe" + argument + "-ftc -pS -gB8 -O " + path.string() + "\\shared.c" + " -o " + argumentStorage;
+        argument = gritPath.string()+"\\grit.exe" + argument + "-ftc -pS -gB8 -O " + path.string() + "\\shared.c";//+ " -fa -o " + argumentStorage;
         std::cout << argument << std::endl;
         std::system(argument.c_str());
 
