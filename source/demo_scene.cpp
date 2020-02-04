@@ -70,7 +70,7 @@ void DemoScene::tick(u16 keys)
     if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
     {
         enemy->getSprite()->moveTo(-100,0);
-        TextStream::instance() << engine->getTimer()->getSecs();
+        //TextStream::instance() << engine->getTimer()->getSecs();
     }
 }
 
