@@ -21,12 +21,18 @@ protected :
 
 public:
     Player(int x, int y);
-    std::unique_ptr<Sprite> playerAttackSprite = (spriteBuilder
-                    .withData(samuraiTiles, 2048)
+    std::unique_ptr<Sprite> playerAttackSpriteH = (spriteBuilder
+                    .withData(demoAttackHTiles, 2048)
                     .withSize(SIZE_16_32))
-                    //.withAnimated(4, 3)
+                    //.withAnimated(4, 0)
                     .withLocation(-100,-100)
-                    .buildPtr();;
+                    .buildPtr();
+    std::unique_ptr<Sprite> playerAttackSpriteV = (spriteBuilder
+                    .withData(demoAttackVTiles, 2048)
+                    .withSize(SIZE_16_32))
+                    //.withAnimated(4, 0)
+                    .withLocation(-100,-100)
+                    .buildPtr();
     void tick();
     void useFuel(int x);
     void playerAttack();

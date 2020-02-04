@@ -22,7 +22,8 @@ std::vector<Sprite *> DemoScene::sprites()
 
     sprites.push_back(player->getSprite());
     sprites.push_back(enemy->getSprite());
-    sprites.push_back(player->playerAttackSprite.get());
+    sprites.push_back(player->playerAttackSpriteH.get());
+    sprites.push_back(player->playerAttackSpriteV.get());
 
     return sprites;
 }
@@ -67,10 +68,27 @@ void DemoScene::tick(u16 keys)
 
 
     // Collision Checking
-    if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
+    if (player->playerAttackSpriteH->collidesWith(*enemy->getSprite()) || 
+        player->playerAttackSpriteV->collidesWith(*enemy->getSprite()))
     {
-        enemy->getSprite()->moveTo(-100,0);
-        TextStream::instance() << engine->getTimer()->getSecs();
+        srand(player->getSprite()->getX());
+        switch (rand() & 0x3)
+        {
+            case 1:
+                enemy->getSprite()->moveTo(-100, 80);
+                break;
+            case 2:
+                enemy->getSprite()->moveTo( 300, 80);
+                break;
+            case 3:
+                enemy->getSprite()->moveTo(  80,-50); 
+                break;
+            case 4:
+                enemy->getSprite()->moveTo(  80, 200);
+                break;
+        }
+        //enemy->getSprite()->moveTo(-100,0);
+        //TextStream::instance() << engine->getTimer()->getSecs();
     }
 }
 
@@ -81,6 +99,7 @@ void DemoScene::load()
 
     player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
     player->getSprite()->stopAnimating();
+    //player->playerAttackSprite->stopAnimating();
     player->setHealth(100);
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds

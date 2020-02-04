@@ -65,12 +65,15 @@ void Player::walk()
         this->getSprite()->animateToFrame(3);
         this->getSprite()->setVelocity(-movementSpeed, this->getSprite()->getDy());
         this->faceDirection = fDirection::LEFT;
+        this->playerAttackSpriteH->flipHorizontally(true);
     }
     else if (this->key & KEY_RIGHT)
     {
         this->getSprite()->animateToFrame(0);
         this->getSprite()->setVelocity(movementSpeed, this->getSprite()->getDy());
         this->faceDirection = fDirection::RIGHT;
+        this->playerAttackSpriteH->flipHorizontally(false);
+        
     }
     else
     {
@@ -82,12 +85,14 @@ void Player::walk()
         this->getSprite()->animateToFrame(2);
         this->getSprite()->setVelocity(this->getSprite()->getDx(), -movementSpeed);
         this->faceDirection = fDirection::UP;
+        this->playerAttackSpriteV->flipVertically(false);
     }
     else if (this->key & KEY_DOWN)
     {
         this->getSprite()->animateToFrame(1);
         this->getSprite()->setVelocity(this->getSprite()->getDx(), movementSpeed);
         this->faceDirection = fDirection::DOWN;
+        this->playerAttackSpriteV->flipVertically(true);
     }
     else
     {
@@ -101,22 +106,27 @@ void Player::playerAttack()
         switch (this->faceDirection)
         {
             case LEFT:
-                this->playerAttackSprite->moveTo(this->getSprite()->getX()-16,this->getSprite()->getY());
+                this->playerAttackSpriteH->moveTo(this->getSprite()->getX()-16,this->getSprite()->getY());
+                this->playerAttackSpriteV->moveTo(-100,-100);
                 break;
             case RIGHT:
-                this->playerAttackSprite->moveTo(this->getSprite()->getX()+16,this->getSprite()->getY());
+                this->playerAttackSpriteH->moveTo(this->getSprite()->getX()+16,this->getSprite()->getY());
+                this->playerAttackSpriteV->moveTo(-100,-100);
                 break;
             case UP:
-                this->playerAttackSprite->moveTo(this->getSprite()->getX(),this->getSprite()->getY()-32);
+                this->playerAttackSpriteV->moveTo(this->getSprite()->getX(),this->getSprite()->getY()-32);
+                this->playerAttackSpriteH->moveTo(-100,-100);
                 break;
             case DOWN:
-                this->playerAttackSprite->moveTo(this->getSprite()->getX(),this->getSprite()->getY()+32);
+                this->playerAttackSpriteV->moveTo(this->getSprite()->getX(),this->getSprite()->getY()+32);
+                this->playerAttackSpriteH->moveTo(-100,-100);
                 break;
         }
     } 
     else
     {
-        this->playerAttackSprite->moveTo(-100,-100);
+        this->playerAttackSpriteH->moveTo(-100,-100);
+        this->playerAttackSpriteV->moveTo(-100,-100);
     }
 }
 
