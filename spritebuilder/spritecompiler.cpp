@@ -22,6 +22,7 @@ int main()
     {
         
         std::filesystem::current_path(path);
+        std::system("del *.c *.h");
         std::ofstream file("combined.h", std::ios::in |std::ios::out | std::ios::app);
         std::string argument = " ";
         std::string argumentStorage = " ";
