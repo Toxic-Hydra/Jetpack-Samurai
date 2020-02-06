@@ -7,6 +7,8 @@
 #include "demo_scene.h"
 #include "jscomp16.h"
 
+#include <typeinfo>
+
 static int bufferFrames = 0;
 
 DemoScene::DemoScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine) {}
@@ -76,6 +78,10 @@ void DemoScene::tick(u16 keys)
     {
         enemy->getSprite()->moveTo(-100,0);
         //TextStream::instance() << engine->getTimer()->getSecs();
+    }
+    if (player->getSprite()->collidesWith(*enemy->getSprite()))
+    {
+        player->useFuel(1);
     }
 }
 

@@ -8,6 +8,7 @@ void StartScene::tick(u16 keys)
 {
     if(keys == KEY_START)
     {
+        // TextStream::instance().clear(); // This does not seem to clear "Press Start"
         engine->setScene(new DemoScene(std::move(engine)));
     }
 

@@ -74,3 +74,18 @@ void ChaseState::exit(Enemy& enemy)
 {
 
 }
+
+void AttackState::enter(Enemy& enemy)
+{
+
+}
+
+void AttackState::update(Enemy& enemy)
+{
+
+}
+
+void AttackState::exit(Enemy& enemy)
+{
+    
+}

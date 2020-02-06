@@ -34,7 +34,7 @@ public:
 
 class EnemyState
 {
-    public:
+public:
     virtual ~EnemyState() {}
     virtual void enter(Enemy& enemy) {}
     virtual void update(Enemy& enemy) {}
@@ -43,7 +43,7 @@ class EnemyState
 
 class ChaseState : public EnemyState
 {
-    public:
+public:
     ~ChaseState() {}
     void enter(Enemy& enemy);
     void update(Enemy& enemy);
@@ -51,7 +51,14 @@ class ChaseState : public EnemyState
     
 };
 
-
+class AttackState : public EnemyState
+{
+public:
+    ~AttackState() {}
+    void enter(Enemy& enemy);
+    void update(Enemy& enemy);
+    void exit(Enemy& enemy);
+};
 
 
 
