@@ -8,15 +8,22 @@ void StartScene::tick(u16 keys)
 {
     if(keys == KEY_START)
     {
-        
         engine->setScene(new DemoScene(std::move(engine)));
     }
+
+    std::string pressStart = "Press Start";
+    if (engine->getTimer()->getSecs() % 3 == 0)
+    {
+        pressStart = "";
+    }
+    TextStream::instance().setText(pressStart, 10, 9);
 }
 
 void StartScene::load()
 {
     engine->enableText();
-    TextStream::instance() << "Jetpack Samurai";
+    TextStream::instance().setText("Jetpack Samurai", 6, 7);
+    engine->getTimer()->start();
 }
 
 std::vector<Sprite *> StartScene::sprites()
