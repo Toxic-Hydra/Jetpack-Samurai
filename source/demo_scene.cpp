@@ -18,17 +18,22 @@ std::vector<Background *> DemoScene::backgrounds()
 
 std::vector<Sprite *> DemoScene::sprites()
 {
-    std::vector<Sprite*> sprites; //we shove all our sprites into this
+    spriteVector.clear(); //we shove all our sprites into this
 
-    sprites.push_back(player->getSprite());
-    sprites.push_back(enemy->getSprite());
-    sprites.push_back(player->playerAttackSprite.get());
+    spriteVector.push_back(player->getSprite());
+    spriteVector.push_back(enemy->getSprite());
+    spriteVector.push_back(player->playerAttackSprite.get());
 
-    return sprites;
+    return spriteVector;
 }
 
 void DemoScene::tick(u16 keys)
 {
+    //We will eventually need to implement a way to keep track of how many enemies are in the scene for this.
+    if(spriteVector.size() != 3) //If the vector does not contain the proper amount of sprites, rebuild.
+    {
+        engine->updateSpritesInScene();
+    }
     // Enemy
     enemy->setPlayerPos(player->getSprite()->getPos());
     enemy->tick();
@@ -88,4 +93,6 @@ void DemoScene::load()
     
     engine->enqueueMusic(jscomp16, jscomp16_bytes);
     engine->getTimer()->start();
+
+    
 }

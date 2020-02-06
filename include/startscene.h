@@ -1,6 +1,5 @@
-#ifndef __DEMO_SCENE_H__
-#define __DEMO_SCENE_H__
-
+#ifndef __START_SCENE_H__
+#define __START_SCENE_H__
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
@@ -8,28 +7,23 @@
 #include "entity.h"
 #include "player.h"
 #include "enemy.h"
+#include "demo_scene.h"
 
 
-class DemoScene : public Scene
+class StartScene : public Scene
 {
-private:
-    std::unique_ptr<Background> background;
-    std::unique_ptr<Player> player;
-    std::unique_ptr<Enemy> enemy;
-
-    std::vector<Sprite*> spriteVector;
-
-
 public:
-    explicit DemoScene(const std::shared_ptr<GBAEngine> &engine);
-    //DemoScene(DemoScene &other) = delete;
+    StartScene(std::shared_ptr<GBAEngine> engine) : Scene(std::move(engine)) {}
     void tick(u16 keys) override;
     void load() override;
+    
 
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
-
 };
+
+
+
 
 
 #endif
