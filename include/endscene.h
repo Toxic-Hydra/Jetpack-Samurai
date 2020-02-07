@@ -12,6 +12,8 @@
 
 class EndScene : public Scene
 {
+private:
+    std::unique_ptr<Sprite> player;
 public:
     EndScene(std::shared_ptr<GBAEngine> engine) : Scene(std::move(engine)) {}
     void tick(u16 keys) override;

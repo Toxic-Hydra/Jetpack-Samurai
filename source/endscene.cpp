@@ -17,6 +17,11 @@ void EndScene::load()
 
 std::vector<Sprite *> EndScene::sprites()
 {
+    // If player is of type: std::unique_ptr<Player>
+    // return { player->getSprite() }; // Uncommenting this crashes mGBA
+
+    // If player is of type: std::unique_ptr<Sprite>
+    // return { player.get() }; // Uncommenting this sets the scene to StartScene for some reason
     return {};
 }
 

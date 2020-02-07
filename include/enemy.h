@@ -6,7 +6,8 @@
 #include <libgba-sprite-engine/gbavector.h>
 #include <tonc_math.h>
 #include <deque>
-#include "entity.h"
+// #include "entity.h"
+#include "player.h"
 
 class EnemyState;
 
@@ -24,6 +25,8 @@ public:
     Enemy(int x, int y);
     
     EnemyState* state;
+    RECT* playerVicinity;
+    RECT* myBoundingBox;
     void tick();
     void setPlayerPos(VECTOR destination);
     VECTOR getPlayerPos() {return dest; }
@@ -37,7 +40,7 @@ class EnemyState
 public:
     virtual ~EnemyState() {}
     virtual void enter(Enemy& enemy) {}
-    virtual void update(Enemy& enemy) {}
+    virtual EnemyState* update(Enemy& enemy) { return new EnemyState; }
     virtual void exit(Enemy& enemy) {}
 };
 
@@ -46,7 +49,7 @@ class ChaseState : public EnemyState
 public:
     ~ChaseState() {}
     void enter(Enemy& enemy);
-    void update(Enemy& enemy);
+    EnemyState* update(Enemy& enemy);
     void exit(Enemy& enemy);
     
 };
@@ -56,7 +59,7 @@ class AttackState : public EnemyState
 public:
     ~AttackState() {}
     void enter(Enemy& enemy);
-    void update(Enemy& enemy);
+    EnemyState* update(Enemy& enemy);
     void exit(Enemy& enemy);
 };
 
