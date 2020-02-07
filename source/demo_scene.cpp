@@ -5,9 +5,9 @@
 #include <algorithm>
 #include <sstream>
 #include "demo_scene.h"
-#include "jscomp16.h"
+#include "endscene.h"
 
-#include <typeinfo>
+#include "jscomp16.h"
 
 static int bufferFrames = 0;
 
@@ -82,6 +82,12 @@ void DemoScene::tick(u16 keys)
     if (player->getSprite()->collidesWith(*enemy->getSprite()))
     {
         player->useFuel(1);
+    }
+
+    // Change Scenes
+    if (player->getHealth() <= 0)
+    {
+        engine->setScene(new EndScene(std::move(engine)));
     }
 }
 
