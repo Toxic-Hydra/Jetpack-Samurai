@@ -19,7 +19,9 @@ private:
 
     std::vector<Sprite*> spriteVector;
 
-
+    Sprite* playerSprite;
+    // u32 playerLeft, playerRight, playerTop, playerBottom;
+    u32 enemyLeft, enemyRight, enemyTop, enemyBottom;
 public:
     explicit DemoScene(const std::shared_ptr<GBAEngine> &engine);
     //DemoScene(DemoScene &other) = delete;

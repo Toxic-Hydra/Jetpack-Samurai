@@ -1,4 +1,5 @@
 #include "player.h"
+#include <iostream>
 
 u32 Player::keyHit(u16 keys)
 {
@@ -14,6 +15,9 @@ Player::Player(int x, int y) : Entity(x, y)
                     .withLocation(x,y)
                     .buildPtr());
     this->setMovementSpeed(2);
+
+    if(this->state == NULL)
+        state = new player_ns::UnrestrictedState;
 }
 
 void Player::useFuel(int x)
@@ -30,25 +34,26 @@ void Player::useFuel(int x)
 
 void Player::dash()
 {
-    if (this->keyHit(KEY_B) && this->getHealth() > 10)
+    // if (this->keyHit(KEY_B) && this->getHealth() > 10)
+    if (this->getHealth() > 10)
     {
         int dx = 0;
         int dy = 0;
         if (this->faceDirection == fDirection::LEFT)
         {
-            dx = -10;
+            dx = -20;
         }
         else if (this->faceDirection == fDirection::RIGHT)
         {
-            dx = 10;
+            dx = 20;
         }
         else if (this->faceDirection == fDirection::UP)
         {
-            dy = -10;
+            dy = -20;
         }
         else
         {
-            dy = 10;
+            dy = 20;
         }
         this->getSprite()->moveTo(this->getSprite()->getX() + dx, this->getSprite()->getY() + dy);
 
@@ -133,7 +138,120 @@ void Player::tick()
     // 1) Walk
     // 2) Dash
     // 3) Attack
-    this->walk();
-    this->dash();
-    this->playerAttack();
+    // this->walk();
+    // this->dash();
+    // this->playerAttack();
+
+    player_ns::PlayerState* currentState = this->state->update(*this);
+    if (currentState != NULL)
+    {
+        delete this->state;
+        this->state = currentState;
+        // this->state->enter(*this);
+    }
+}
+
+//////////////////////////////////////////////////////////////////
+//
+//
+// Player States Stuff
+//
+//
+//////////////////////////////////////////////////////////////////
+
+void player_ns::UnrestrictedState::enter(Player& player)
+{
+    std::cout << "Inside Unrestricted State: enter()\n";
+}
+
+player_ns::PlayerState* player_ns::UnrestrictedState::update(Player& player)
+{
+    std::cout << "Inside Unrestricted State: update()\n";
+    player.walk();
+    if (player.keyHit(KEY_B))
+        return new player_ns::DashState;
+    else if (player.getKey() & KEY_A)
+        return new player_ns::AttackState;
+    // player.playerAttack();
+    return NULL;
+}
+
+void player_ns::UnrestrictedState::exit(Player& player)
+{
+    std::cout << "Inside Unrestricted State: exit()\n";
+}
+
+player_ns::DamagedState::DamagedState(int dmg, int dx, int dy)
+{
+    damage = dmg;
+    dx_ = dx;
+    dy_ = dy;
+}
+
+void player_ns::DamagedState::enter(Player& player)
+{
+    std::cout << "Inside Damaged State: enter()\n";
+}
+
+player_ns::PlayerState* player_ns::DamagedState::update(Player& player)
+{
+    std::cout << "Inside Damaged State: update()\n";
+    player.useFuel(damage);
+    player.getSprite()->moveTo(player.getSprite()->getX() + dx_, player.getSprite()->getY() + dy_);
+    return new player_ns::UnrestrictedState;
+}
+
+void player_ns::DamagedState::exit(Player& player)
+{
+    std::cout << "Inside Damaged State: exit()\n";
+}
+
+void player_ns::AttackState::enter(Player& player)
+{
+    std::cout << "Inside Attack State: enter()\n";
+}
+
+player_ns::PlayerState* player_ns::AttackState::update(Player& player)
+{
+    std::cout << "Inside Attack State: update()\n";
+    player.playerAttack();
+    return new player_ns::UnrestrictedState;
+}
+
+void player_ns::AttackState::exit(Player& player)
+{
+    std::cout << "Inside Attack State: exit()\n";
+}
+
+void player_ns::DashState::enter(Player& player)
+{
+    std::cout << "Inside Dash State: enter()\n";
+}
+
+player_ns::PlayerState* player_ns::DashState::update(Player& player)
+{
+    std::cout << "Inside Dash State: update()\n";
+    player.dash();
+    return new player_ns::UnrestrictedState;
+}
+
+void player_ns::DashState::exit(Player& player)
+{
+    std::cout << "Inside Dash State: exit()\n";
+}
+
+void player_ns::BlockState::enter(Player& player)
+{
+    std::cout << "Inside Block State: enter()\n";
+}
+
+player_ns::PlayerState* player_ns::BlockState::update(Player& player)
+{
+    std::cout << "Inside Block State: update()\n";
+    return NULL;
+}
+
+void player_ns::BlockState::exit(Player& player)
+{
+    std::cout << "Inside Block State: exit()\n";
 }

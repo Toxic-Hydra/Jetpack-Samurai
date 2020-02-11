@@ -6,6 +6,18 @@
 #include <libgba-sprite-engine/timer.h>
 #include "entity.h"
 
+// Player namespace so that there are no conflicts
+// with states that share the same name as enemy states
+namespace player_ns
+{
+    class PlayerState;
+    class UnrestrictedState;
+    class DamagedState;
+    class AttackState;
+    class DashState;
+    class BlockState;
+}
+
 class Player : public Entity
 {
 private :
@@ -27,6 +39,7 @@ public:
                     //.withAnimated(4, 3)
                     .withLocation(-100,-100)
                     .buildPtr();;
+    player_ns::PlayerState* state = NULL;
     void tick();
     void useFuel(int x);
     void playerAttack();
@@ -35,11 +48,76 @@ public:
     void dash();
     void walk();
     Sprite* getSprite() { return Entity::getSprite(); }
+    u16 getKey() { return key; }
     int getFaceDirection() { return faceDirection; }
 };
 
+class player_ns::PlayerState
+{
+public:
+    int stateID = 0;
+    virtual ~PlayerState() {}
+    virtual void enter(Player& player) {}
+    virtual player_ns::PlayerState* update(Player& player) { return new player_ns::PlayerState; }
+    virtual void exit(Player& player) {}
+    bool operator==(player_ns::PlayerState const &otherState)
+    {
+        return (stateID = otherState.stateID);
+    }
+};
 
+class player_ns::UnrestrictedState : public PlayerState
+{
+public:
+    int stateID = 1;
+    ~UnrestrictedState() {}
+    void enter(Player& player);
+    player_ns::PlayerState* update(Player& player);
+    void exit(Player& player);
+};
 
+class player_ns::DamagedState : public PlayerState
+{
+private:
+    int damage;
+    int dx_, dy_;
+public:
+    int stateID = 2;
+    DamagedState(int dmg, int dx, int dy);
+    ~DamagedState() {}
+    void enter(Player& player);
+    player_ns::PlayerState* update(Player& player);
+    void exit(Player& player);
+};
 
+class player_ns::AttackState : public PlayerState
+{
+public:
+    int stateID = 3;
+    ~AttackState() {}
+    void enter(Player& player);
+    player_ns::PlayerState* update(Player& player);
+    void exit(Player& player);
+};
+
+class player_ns::DashState : public PlayerState
+{
+public:
+    int stateID = 4;
+    ~DashState() {}
+    void enter(Player& player);
+    player_ns::PlayerState* update(Player& player);
+    void exit(Player& player);
+};
+
+class player_ns::BlockState : public PlayerState
+{
+public:
+    int stateID = 5;
+    ~BlockState() {}
+    void enter(Player& player);
+    player_ns::PlayerState* update(Player& player);
+    void exit(Player& player);
+};
 
 #endif  

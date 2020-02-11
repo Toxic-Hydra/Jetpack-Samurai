@@ -31,63 +31,117 @@ std::vector<Sprite *> DemoScene::sprites()
 
 void DemoScene::tick(u16 keys)
 {
-    //We will eventually need to implement a way to keep track of how many enemies are in the scene for this.
-    if(spriteVector.size() != 3) //If the vector does not contain the proper amount of sprites, rebuild.
+    if(keys & KEY_SELECT)
     {
-        engine->updateSpritesInScene();
-    }
-    // Enemy
-    enemy->setPlayerPos(player->getSprite()->getPos());
-    enemy->tick();
-
-
-    // Player
-
-    // Not sure how to do this, but I wish to implement some sort of input leniency
-    // in case players cannot tap a button for exactly one frame. This was my best
-    // attempt.
-    // - Charles
-    if(bufferFrames % 5 == 0)
-    {
-        player->readInput(keys); // Read input every 5 frames
-    }
-    bufferFrames++;
-    player->tick();
-
-    if(keys & KEY_START) // Reset Health
-    {
-        player->setHealth(100);
-    }
-
-
-    // UI
-    if(player->getHealth() <= 10)
-    {
-        TextStream::instance().setFontColor(CLR_RED);
+        // Pause (kinda)
     }
     else
     {
-        TextStream::instance().setFontColor(CLR_WHITE);
-    }
-    TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 0, 0);
-    // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
+        playerSprite = player->getSprite();
+
+        //We will eventually need to implement a way to keep track of how many enemies are in the scene for this.
+        if(spriteVector.size() != 3) //If the vector does not contain the proper amount of sprites, rebuild.
+        {
+            engine->updateSpritesInScene();
+        }
+        // Enemy
+        enemy->setPlayerPos(playerSprite->getPos());
+        enemy->tick();
 
 
-    // Collision Checking
-    if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
-    {
-        enemy->getSprite()->moveTo(-100, 0);
-        //TextStream::instance() << engine->getTimer()->getSecs();
-    }
-    if (player->getSprite()->collidesWith(*enemy->getSprite()))
-    {
-        player->useFuel(1);
-    }
+        // Player
 
-    // Change Scenes
-    if (player->getHealth() <= 0)
-    {
-        engine->setScene(new EndScene(std::move(engine)));
+        // Not sure how to do this, but I wish to implement some sort of input leniency
+        // in case players cannot tap a button for exactly one frame. This was my best
+        // attempt.
+        // - Charles
+        if(bufferFrames % 5 == 0)
+        {
+            player->readInput(keys); // Read input every 5 frames
+        }
+        bufferFrames++;
+        player->tick();
+
+        if(keys & KEY_START) // Reset Health
+        {
+            player->setHealth(100);
+        }
+
+
+        // UI
+        if(player->getHealth() <= 10)
+        {
+            TextStream::instance().setFontColor(CLR_RED);
+        }
+        else
+        {
+            TextStream::instance().setFontColor(CLR_WHITE);
+        }
+        TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 0, 0);
+        // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
+
+
+        // Collision Checking
+        if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
+        {
+            enemy->getSprite()->moveTo(-100, 0);
+            //TextStream::instance() << engine->getTimer()->getSecs();
+        }
+        if (playerSprite->collidesWith(*enemy->getSprite()))
+        {
+            // player->useFuel(10);
+            // // Player Bounding Box
+            // playerLeft = playerSprite->getX();
+            // playerRight = playerSprite->getX() + playerSprite->getWidth();
+            // playerTop = playerSprite->getY();
+            // playerBottom = playerSprite->getY() + playerSprite->getHeight();
+
+            // // Enemy Bounding Box
+            // enemyLeft = enemy->getSprite()->getX();
+            // enemyRight = enemy->getSprite()->getX() + enemy->getSprite()->getWidth();
+            // enemyTop = enemy->getSprite()->getY();
+            // enemyBottom = enemy->getSprite()->getY() + enemy->getSprite()->getHeight();
+
+            // if Enemy is coming in from the player's left-side
+            if (playerSprite->getCenter().x > enemy->getSprite()->getCenter().x)
+            {
+                player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * 2, 0);
+            }
+            // If Enemy is coming in from the player's right-side
+            else if (playerSprite->getCenter().x < enemy->getSprite()->getCenter().x)
+            {
+                player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * -2, 0);
+            }
+            // // Uncomment this if you don't want to really prioritize left-right knockback
+            // else if (playerSprite->getCenter().y > enemyBottom)
+            // {
+            //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 2);
+            // }
+            // else if (playerSprite->getCenter().y < enemyTop)
+            // {
+            //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -2);
+            // }
+            
+            // I want to prioritize left-right knockback due to the screen being wider than it is tall
+            else
+            {
+                if (playerSprite->getCenter().y > enemy->getSprite()->getCenter().y)
+                {
+                    player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 2);
+                }
+                else
+                {
+                    player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -2);
+                }
+                // player->state = new player_ns::DamagedState(10, 32, 0);
+            }
+        }
+
+        // Change Scenes
+        if (player->getHealth() <= 0)
+        {
+            engine->setScene(new EndScene(std::move(engine)));
+        }
     }
 }
 
