@@ -23,12 +23,14 @@ std::vector<Sprite *> DemoScene::sprites()
     sprites.push_back(player->getSprite());
     sprites.push_back(enemy->getSprite());
     sprites.push_back(player->playerAttackSprite.get());
+    sprites.push_back(healthBar.get());
 
     return sprites;
 }
 
 void DemoScene::tick(u16 keys)
 {
+    
     // Enemy
     enemy->setPlayerPos(player->getSprite()->getPos());
     enemy->tick();
@@ -52,6 +54,14 @@ void DemoScene::tick(u16 keys)
         player->setHealth(100);
     }
 
+    
+    if(keys & KEY_SELECT)
+    {
+        scaleX +=1<<8;
+        healthBar.get()->scale(scaleX,1<<8);
+    }
+    TextStream::instance().setText("Scale: " + std::to_string(scaleX), 0, 15);
+
 
     // UI
     if(player->getHealth() <= 10)
@@ -62,9 +72,11 @@ void DemoScene::tick(u16 keys)
     {
         TextStream::instance().setFontColor(CLR_WHITE);
     }
-    TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 0, 0);
+    //TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 0, 0);
     // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
 
+    //healthBar->scale(3, 1);
+    
 
     // Collision Checking
     if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
@@ -85,6 +97,14 @@ void DemoScene::load()
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
     enemy = std::unique_ptr<Enemy>(new Enemy(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32));
+
+    healthBar = affineBuilder.withData(healthbarTiles, sizeof(healthbarTiles))
+                .withSize(SIZE_8_8)
+                .withLocation(1,6)
+                .buildPtr();
+
+    
+    
     
     engine->enqueueMusic(jscomp16, jscomp16_bytes);
     engine->getTimer()->start();

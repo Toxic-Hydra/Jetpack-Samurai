@@ -4,6 +4,7 @@
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
+#include <libgba-sprite-engine/sprites/affine_sprite.h>
 
 #include "test_entity.h"
 #include "player.h"
@@ -16,6 +17,9 @@ private:
     std::unique_ptr<Background> background;
     std::unique_ptr<Player> player;
     std::unique_ptr<Enemy> enemy;
+    std::unique_ptr<AffineSprite> healthBar;
+    SpriteBuilder<AffineSprite> affineBuilder;
+    FIXED scaleX = 16384;
 
 
 public:
