@@ -13,6 +13,7 @@
 class DemoScene : public Scene
 {
 private:
+    std::unique_ptr<SpriteManager> spriteManager;
     std::unique_ptr<Background> background;
     std::unique_ptr<Player> player;
     std::unique_ptr<Enemy> enemy;

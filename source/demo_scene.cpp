@@ -31,9 +31,10 @@ std::vector<Sprite *> DemoScene::sprites()
 
 void DemoScene::tick(u16 keys)
 {
-    if(keys & KEY_SELECT)
+    if(keys & KEY_SELECT) // Hold the select key for now to keep the game paused
     {
         // Pause (kinda)
+        spriteManager->hideAll();
     }
     else
     {
