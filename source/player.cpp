@@ -1,5 +1,6 @@
 #include "player.h"
 #include <iostream>
+#include <libgba-sprite-engine/background/text_stream.h>
 
 u32 Player::keyHit(u16 keys)
 {
@@ -102,7 +103,7 @@ void Player::walk()
 
 void Player::playerAttack()
 {
-    if (this->key & KEY_A){
+    // if (this->key & KEY_A){
         switch (this->faceDirection)
         {
             case LEFT:
@@ -118,11 +119,16 @@ void Player::playerAttack()
                 this->playerAttackSprite->moveTo(this->getSprite()->getX(),this->getSprite()->getY()+32);
                 break;
         }
-    } 
-    else
-    {
-        this->playerAttackSprite->moveTo(-100,-100);
-    }
+    // } 
+    // else
+    // {
+        // this->playerAttackSprite->moveTo(-100,-100);
+    // }
+}
+
+void Player::lockMovement()
+{
+    this->getSprite()->setVelocity(0, 0);
 }
 
 // Store the player's input during a single frame
@@ -145,9 +151,10 @@ void Player::tick()
     player_ns::PlayerState* currentState = this->state->update(*this);
     if (currentState != NULL)
     {
+        this->state->exit(*this);
         delete this->state;
         this->state = currentState;
-        // this->state->enter(*this);
+        this->state->enter(*this);
     }
 }
 
@@ -161,24 +168,26 @@ void Player::tick()
 
 void player_ns::UnrestrictedState::enter(Player& player)
 {
-    std::cout << "Inside Unrestricted State: enter()\n";
+    // TextStream::instance().setText("Inside Unrestricted State: enter\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::UnrestrictedState::update(Player& player)
 {
-    std::cout << "Inside Unrestricted State: update()\n";
+    // TextStream::instance().setText("Inside Unrestricted State: up, 4, 0)date()\n";
     player.walk();
     if (player.keyHit(KEY_B))
         return new player_ns::DashState;
-    else if (player.getKey() & KEY_A)
+    else if (player.keyHit(KEY_A))
         return new player_ns::AttackState;
     // player.playerAttack();
+    else if (player.getKey() & KEY_R)
+        return new player_ns::BlockState;
     return NULL;
 }
 
 void player_ns::UnrestrictedState::exit(Player& player)
 {
-    std::cout << "Inside Unrestricted State: exit()\n";
+    // TextStream::instance().setText("Inside Unrestricted State: exit()\n", 4, 0);
 }
 
 player_ns::DamagedState::DamagedState(int dmg, int dx, int dy)
@@ -190,12 +199,12 @@ player_ns::DamagedState::DamagedState(int dmg, int dx, int dy)
 
 void player_ns::DamagedState::enter(Player& player)
 {
-    std::cout << "Inside Damaged State: enter()\n";
+    TextStream::instance().setText("Inside Damaged State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::DamagedState::update(Player& player)
 {
-    std::cout << "Inside Damaged State: update()\n";
+    // TextStream::instance().setText("Inside Damaged State: update(, 4, 0))\n";
     player.useFuel(damage);
     player.getSprite()->moveTo(player.getSprite()->getX() + dx_, player.getSprite()->getY() + dy_);
     return new player_ns::UnrestrictedState;
@@ -203,55 +212,66 @@ player_ns::PlayerState* player_ns::DamagedState::update(Player& player)
 
 void player_ns::DamagedState::exit(Player& player)
 {
-    std::cout << "Inside Damaged State: exit()\n";
+    TextStream::instance().setText("Inside Damaged State: exit()\n", 4, 0);
 }
 
 void player_ns::AttackState::enter(Player& player)
 {
-    std::cout << "Inside Attack State: enter()\n";
+    TextStream::instance().setText("Inside Attack State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::AttackState::update(Player& player)
 {
-    std::cout << "Inside Attack State: update()\n";
-    player.playerAttack();
+    // TextStream::instance().setText("Inside Attack State: update(), 4, 0)\n";
+    if (player.getKey() & KEY_A)
+    {
+        player.playerAttack();
+        player.lockMovement();
+        return NULL;
+    }
     return new player_ns::UnrestrictedState;
 }
 
 void player_ns::AttackState::exit(Player& player)
 {
-    std::cout << "Inside Attack State: exit()\n";
+    TextStream::instance().setText("Inside Attack State: exit()\n", 4, 0);
+    player.playerAttackSprite->moveTo(-100, -100);
 }
 
 void player_ns::DashState::enter(Player& player)
 {
-    std::cout << "Inside Dash State: enter()\n";
+    TextStream::instance().setText("Inside Dash State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::DashState::update(Player& player)
 {
-    std::cout << "Inside Dash State: update()\n";
+    // TextStream::instance().setText("Inside Dash State: update()\n, 4, 0)";
     player.dash();
     return new player_ns::UnrestrictedState;
 }
 
 void player_ns::DashState::exit(Player& player)
 {
-    std::cout << "Inside Dash State: exit()\n";
+    TextStream::instance().setText("Inside Dash State: exit()\n", 4, 0);
 }
 
 void player_ns::BlockState::enter(Player& player)
 {
-    std::cout << "Inside Block State: enter()\n";
+    TextStream::instance().setText("Inside Block State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::BlockState::update(Player& player)
 {
-    std::cout << "Inside Block State: update()\n";
+    // TextStream::instance().setText("Inside Block State: update()\, 4, 0)n";
+    if (!(player.getKey() & KEY_R))
+    {
+        return new player_ns::UnrestrictedState;
+    }
+    player.lockMovement();
     return NULL;
 }
 
 void player_ns::BlockState::exit(Player& player)
 {
-    std::cout << "Inside Block State: exit()\n";
+    TextStream::instance().setText(std::to_string(player.state->stateID), 4, 0);
 }
