@@ -57,8 +57,8 @@ void DemoScene::tick(u16 keys)
     
     if(keys & KEY_SELECT)
     {
-        scaleX +=1<<8;
-        healthBar.get()->scale(scaleX,1<<8);
+        scaleX +=1;
+        healthBar.get()->scale(int2fx(scaleX),1<<8);
     }
     TextStream::instance().setText("Scale: " + std::to_string(scaleX), 0, 15);
 
@@ -99,7 +99,7 @@ void DemoScene::load()
     enemy = std::unique_ptr<Enemy>(new Enemy(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32));
 
     healthBar = affineBuilder.withData(healthbarTiles, sizeof(healthbarTiles))
-                .withSize(SIZE_8_8)
+                .withSize(SIZE_32_8)
                 .withLocation(1,6)
                 .buildPtr();
 

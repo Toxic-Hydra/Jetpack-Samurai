@@ -19,7 +19,7 @@ private:
     std::unique_ptr<Enemy> enemy;
     std::unique_ptr<AffineSprite> healthBar;
     SpriteBuilder<AffineSprite> affineBuilder;
-    FIXED scaleX = 16384;
+    int scaleX = 0;
 
 
 public:

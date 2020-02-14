@@ -7,7 +7,7 @@
 //	+ 32 tiles not compressed
 //	Total size: 2048 = 2048
 //
-//	Time-stamp: 2020-02-11, 23:01:01
+//	Time-stamp: 2020-02-13, 15:37:55
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -95,18 +95,24 @@ const unsigned int asamuraiTiles[512] __attribute__((aligned(4)))=
 
 //======================================================================
 //
-//	healthbar, 8x8@8, 
-//	+ 1 tiles not compressed
-//	Total size: 64 = 64
+//	healthbar, 32x8@8, 
+//	+ 4 tiles not compressed
+//	Total size: 256 = 256
 //
-//	Time-stamp: 2020-02-11, 23:01:01
+//	Time-stamp: 2020-02-13, 15:37:55
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
 
-const unsigned int healthbarTiles[16] __attribute__((aligned(4)))=
+const unsigned int healthbarTiles[64] __attribute__((aligned(4)))=
 {
+	0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,
+	0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,
+	0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,
+	0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,
+	0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,
+	0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,
 	0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,
 	0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,0x61616161,
 };
@@ -122,7 +128,7 @@ const unsigned int healthbarTiles[16] __attribute__((aligned(4)))=
 //	+ palette 120 entries, not compressed
 //	Total size: 240 = 240
 //
-//	Time-stamp: 2020-02-11, 23:01:01
+//	Time-stamp: 2020-02-13, 15:37:55
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -159,7 +165,7 @@ const unsigned short sharedPal[120] __attribute__((aligned(4)))=
 //	+ 8 tiles not compressed
 //	Total size: 512 = 512
 //
-//	Time-stamp: 2020-02-11, 23:01:01
+//	Time-stamp: 2020-02-13, 15:37:55
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
