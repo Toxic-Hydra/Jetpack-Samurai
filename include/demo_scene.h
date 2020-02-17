@@ -20,6 +20,7 @@ private:
     std::unique_ptr<AffineSprite> healthBar;
     SpriteBuilder<AffineSprite> affineBuilder;
     int scaleX = 0;
+    int tile_collide = 0;
 
 
 public:

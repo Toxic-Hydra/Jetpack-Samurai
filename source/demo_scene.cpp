@@ -4,6 +4,7 @@
 #include <tonc_video.h>
 #include <algorithm>
 #include <sstream>
+#include "map32.h"
 #include "demo_scene.h"
 #include "jscomp16.h"
 
@@ -13,7 +14,9 @@ DemoScene::DemoScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine) {
 
 std::vector<Background *> DemoScene::backgrounds()
 {
-    return {};
+    return {
+        background.get()
+    };
 }
 
 std::vector<Sprite *> DemoScene::sprites()
@@ -57,10 +60,9 @@ void DemoScene::tick(u16 keys)
     
     if(keys & KEY_SELECT)
     {
-        scaleX +=1;
-        healthBar.get()->scale(int2fx(scaleX),1<<8);
+        //player->getSprite()->hide();
     }
-    TextStream::instance().setText("Scale: " + std::to_string(scaleX), 0, 15);
+    //TextStream::instance().setText("Scale: " + std::to_string(scaleX), 0, 15);
 
 
     // UI
@@ -72,12 +74,19 @@ void DemoScene::tick(u16 keys)
     {
         TextStream::instance().setFontColor(CLR_WHITE);
     }
-    //TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 0, 0);
+    int tileid = se_mem[background.get()->getScreenBlock()][background.get()->se_index(player->getSprite()->getX(), player->getSprite()->getY())];
+    TextStream::instance().setText("Tile: " + std::to_string(tileid), 0, 0);
     // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
 
     //healthBar->scale(3, 1);
     
-
+    
+    //Tile 257
+    if(tile_collide == 1)
+    {
+        TextStream::instance().setFontColor(CLR_RED);
+    }
+    
     // Collision Checking
     if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
     {
@@ -88,7 +97,8 @@ void DemoScene::tick(u16 keys)
 
 void DemoScene::load()
 {
-    
+    //engine.get()->disableText(); //Current error with tiles overlapping Text for background 64 x 64
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(map32_palette, sizeof(map32_palette)));
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
 
     player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
@@ -103,7 +113,8 @@ void DemoScene::load()
                 .withLocation(1,6)
                 .buildPtr();
 
-    
+    background = std::unique_ptr<Background>(new Background(1, map32_tiles, sizeof(map32_tiles), map32, sizeof(map32)));
+    background.get()->useMapScreenBlock(16);
     
     
     engine->enqueueMusic(jscomp16, jscomp16_bytes);

@@ -7,7 +7,7 @@
 //
 // === NOTES ===
 // * Basic video-IO, color, background and object functionality
-
+#pragma once
 #ifndef TONC_OAM
 #define TONC_OAM
 

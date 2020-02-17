@@ -23,7 +23,10 @@ protected:
     const void *map;
     int size, bgIndex;
     int mapSize, mapLayout;
+    int MAP_WIDTH, MAP_HEIGHT;
     int screenBlockIndex, charBlockIndex;
+    const int COLLISION_X = 1;
+    const int COLLISION_Y = 2;
 
 public:
     const int getScreenBlock() { return screenBlockIndex; }
@@ -31,6 +34,12 @@ public:
     void useMapScreenBlock(int block) { screenBlockIndex = block; }
     void scroll(int x, int y);
     void scrollSpeed(int dx, int dy);
+
+    int se_index(int x, int y);
+    int point_collision(int x, int y);
+    int collision_test(int x1, int y1, int bX, int bY, int xofs, int yofs);
+    void updateCollisions();
+    
 
     Background(int bgIndex, const void *data, int size, const void* map, int mapSize, int screenBlockIndex, int charBlockIndex, int mapLayout)
             : Background(bgIndex, data, size, map, mapSize) {

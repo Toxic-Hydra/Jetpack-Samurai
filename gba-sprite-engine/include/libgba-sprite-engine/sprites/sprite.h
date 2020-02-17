@@ -5,6 +5,7 @@
 #ifndef GBA_SPRITE_ENGINE_SPRITE_H
 #define GBA_SPRITE_ENGINE_SPRITE_H
 
+
 #include <libgba-sprite-engine/gba/tonc_types.h>
 #include <memory>
 #ifdef CODE_COMPILED_AS_PART_OF_TEST
@@ -13,6 +14,7 @@
 #include <libgba-sprite-engine/gba/tonc_math.h>
 #endif
 #include <libgba-sprite-engine/gbavector.h>
+
 
 #define COLOR_MODE_16 0
 #define COLOR_MODE_256 1
@@ -90,6 +92,13 @@ public:
 
     void flipVertically(bool flip);
     void flipHorizontally(bool flip);
+
+    // Uh hide doesn't work,
+    //including tonc_oam absolutely
+    //destroys everything. Multiple includes despite guards. It has to do with 
+    //Tonc_oam not using inlines for several functions.
+    //void hide();
+    //void unhide();
 
     u32 getTileIndex() { return tileIndex; }
     VECTOR getPos() { return {x, y}; }
