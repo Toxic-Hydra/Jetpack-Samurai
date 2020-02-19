@@ -10,9 +10,9 @@ u32 Player::keyHit(u16 keys)
 Player::Player(int x, int y) : Entity(x, y)
 {
     this->setSprite(spriteBuilder
-                    .withData(samuraiTiles, 2048)
+                    .withData(playerSheetTiles, sizeof(playerSheetTiles))
                     .withSize(SIZE_16_32)
-                    .withAnimated(4, 3)
+                    .withAnimated(40, 3)
                     .withLocation(x,y)
                     .buildPtr());
     this->setMovementSpeed(2);
@@ -68,13 +68,21 @@ void Player::walk()
 {
     if (this->key & KEY_LEFT)
     {
-        this->getSprite()->animateToFrame(3);
+        // this->getSprite()->animateToFrame(3);
+        if (!this->getSprite()->isAnimating() || (this->getSprite()->getCurrentFrame() < 13 || this->getSprite()->getCurrentFrame() > 22))
+        {
+            this->getSprite()->makeAnimated(13, 8, 3);
+        }
         this->getSprite()->setVelocity(-movementSpeed, this->getSprite()->getDy());
         this->faceDirection = fDirection::LEFT;
     }
     else if (this->key & KEY_RIGHT)
     {
-        this->getSprite()->animateToFrame(0);
+        // this->getSprite()->animateToFrame(0);
+        if (!this->getSprite()->isAnimating() || (this->getSprite()->getCurrentFrame() < 3 || this->getSprite()->getCurrentFrame() > 12))
+        {
+            this->getSprite()->makeAnimated(4, 8, 3);
+        }
         this->getSprite()->setVelocity(movementSpeed, this->getSprite()->getDy());
         this->faceDirection = fDirection::RIGHT;
     }
@@ -119,6 +127,8 @@ void Player::playerAttack()
                 this->playerAttackSprite->moveTo(this->getSprite()->getX(),this->getSprite()->getY()+32);
                 break;
         }
+        // this->getSprite()->makeAnimated(25, 8, 3);
+        // this->playerAttackSprite->makeAnimated(33, 8, 3);
     // } 
     // else
     // {
@@ -168,7 +178,7 @@ void Player::tick()
 
 void player_ns::UnrestrictedState::enter(Player& player)
 {
-    // TextStream::instance().setText("Inside Unrestricted State: enter\n", 4, 0);
+    TextStream::instance().setText("Inside Unrestricted State: enter\n", 4, 0);
     // spriteBuilder = std::unique_ptr<SpriteBuilder<Sprite>>(new SpriteBuilder<Sprite>);
     // player.setSprite(spriteBuilder->withData(samuraiTiles, 512)
     //                 .withSize(SIZE_16_32)
@@ -180,7 +190,32 @@ void player_ns::UnrestrictedState::enter(Player& player)
 player_ns::PlayerState* player_ns::UnrestrictedState::update(Player& player)
 {
     // TextStream::instance().setText("Inside Unrestricted State: up, 4, 0)date()\n";
-    player.walk();
+    if ((player.getKey() & KEY_LEFT) ||
+        (player.getKey() & KEY_RIGHT) ||
+        (player.getKey() & KEY_UP) ||
+        (player.getKey() & KEY_DOWN))
+    {
+        player.walk();
+    }
+    else
+    {
+        switch (player.faceDirection)
+        {
+            case 0:
+                player.getSprite()->animateToFrame(3);
+                break;
+            case 1:
+                player.getSprite()->animateToFrame(0);
+                break;
+            case 2:
+                player.getSprite()->animateToFrame(2);
+                break;
+            case 3:
+                player.getSprite()->animateToFrame(1);
+                break;
+        }
+        player.getSprite()->setVelocity(0, 0);
+    }
     if (player.keyHit(KEY_B))
         return new player_ns::DashState;
     else if (player.keyHit(KEY_A))
@@ -193,7 +228,7 @@ player_ns::PlayerState* player_ns::UnrestrictedState::update(Player& player)
 
 void player_ns::UnrestrictedState::exit(Player& player)
 {
-    // TextStream::instance().setText("Inside Unrestricted State: exit()\n", 4, 0);
+    TextStream::instance().setText("Inside Unrestricted State: exit()\n", 4, 0);
 }
 
 player_ns::DamagedState::DamagedState(int dmg, int dx, int dy)
@@ -205,12 +240,12 @@ player_ns::DamagedState::DamagedState(int dmg, int dx, int dy)
 
 void player_ns::DamagedState::enter(Player& player)
 {
-    // TextStream::instance().setText("Inside Damaged State: enter()\n", 4, 0);
+    TextStream::instance().setText("Inside Damaged State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::DamagedState::update(Player& player)
 {
-    // TextStream::instance().setText("Inside Damaged State: update(, 4, 0))\n";
+    TextStream::instance().setText("Inside Damaged State: update()\n", 4, 0);
     player.useFuel(damage);
     player.getSprite()->moveTo(player.getSprite()->getX() + dx_, player.getSprite()->getY() + dy_);
     return new player_ns::UnrestrictedState;
@@ -218,24 +253,26 @@ player_ns::PlayerState* player_ns::DamagedState::update(Player& player)
 
 void player_ns::DamagedState::exit(Player& player)
 {
-    // TextStream::instance().setText("Inside Damaged State: exit()\n", 4, 0);
+    TextStream::instance().setText("Inside Damaged State: exit()\n", 4, 0);
 }
 
 void player_ns::AttackState::enter(Player& player)
 {
-    // TextStream::instance().setText("Inside Attack State: enter()\n", 4, 0);
+    TextStream::instance().setText("Inside Attack State: enter()\n", 4, 0);
     // player.setSprite((spriteBuilder
     //                 .withData(Attack_Right_p1Tiles, 2048)
     //                 .withSize(SIZE_16_32))
     //                 .withAnimated(4, 3)
     //                 .withLocation(player.getSprite()->getX(), player.getSprite()->getY())
     //                 .buildPtr());
+    player.getSprite()->makeAnimated(24, 8, 3);
+    player.playerAttackSprite->makeAnimated(32, 8, 3);
 }
 
 player_ns::PlayerState* player_ns::AttackState::update(Player& player)
 {
-    // TextStream::instance().setText("Inside Attack State: update(), 4, 0)\n";
-    if (player.getKey() & KEY_A)
+    TextStream::instance().setText("Inside Attack State: update()\n", 4, 0);
+    if (player.getSprite()->getCurrentFrame() != 31)// (player.getKey() & KEY_A)
     {
         player.playerAttack();
         player.lockMovement();
@@ -246,7 +283,9 @@ player_ns::PlayerState* player_ns::AttackState::update(Player& player)
 
 void player_ns::AttackState::exit(Player& player)
 {
-    // TextStream::instance().setText("Inside Attack State: exit()\n", 4, 0);
+    TextStream::instance().setText("Inside Attack State: exit()\n", 4, 0);
+    player.getSprite()->animateToFrame(0);
+    player.playerAttackSprite->animateToFrame(36);
     player.playerAttackSprite->moveTo(-100, -100);
 }
 

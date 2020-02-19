@@ -29,16 +29,17 @@ private :
     std::unique_ptr<Timer> dashTimer;
 
 protected :
-    int faceDirection = fDirection::RIGHT;
+    
 
 public:
     Player(int x, int y);
     std::unique_ptr<Sprite> playerAttackSprite = (spriteBuilder
-                    .withData(samuraiTiles, 2048)
+                    .withData(playerSheetTiles, sizeof(playerSheetTiles))
                     .withSize(SIZE_16_32))
-                    //.withAnimated(4, 3)
+                    .withAnimated(40, 3)
                     .withLocation(-100,-100)
                     .buildPtr();;
+    int faceDirection = fDirection::RIGHT;
     player_ns::PlayerState* state = NULL;
     void tick();
     void useFuel(int x);
