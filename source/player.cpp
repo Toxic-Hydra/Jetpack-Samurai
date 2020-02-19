@@ -9,9 +9,9 @@ u32 Player::keyHit(u16 keys)
 
 Player::Player(int x, int y) : Entity(x, y)
 {
-    this->setSprite((spriteBuilder
+    this->setSprite(spriteBuilder
                     .withData(samuraiTiles, 2048)
-                    .withSize(SIZE_16_32))
+                    .withSize(SIZE_16_32)
                     .withAnimated(4, 3)
                     .withLocation(x,y)
                     .buildPtr());
@@ -169,13 +169,12 @@ void Player::tick()
 void player_ns::UnrestrictedState::enter(Player& player)
 {
     // TextStream::instance().setText("Inside Unrestricted State: enter\n", 4, 0);
-    player.setSprite((spriteBuilder
-                    .withData(samuraiTiles, 2048)
-                    .withSize(SIZE_16_32))
-                    .withAnimated(4, 3)
-                    .withLocation(x,y)
-                    .buildPtr());
-    
+    // spriteBuilder = std::unique_ptr<SpriteBuilder<Sprite>>(new SpriteBuilder<Sprite>);
+    // player.setSprite(spriteBuilder->withData(samuraiTiles, 512)
+    //                 .withSize(SIZE_16_32)
+    //                 .withAnimated(4, 3)
+    //                 .withLocation(player.getSprite()->getX(), player.getSprite()->getY())
+    //                 .buildPtr());
 }
 
 player_ns::PlayerState* player_ns::UnrestrictedState::update(Player& player)
@@ -225,12 +224,12 @@ void player_ns::DamagedState::exit(Player& player)
 void player_ns::AttackState::enter(Player& player)
 {
     // TextStream::instance().setText("Inside Attack State: enter()\n", 4, 0);
-    player.setSprite((spriteBuilder
-                    .withData(Attack_Right_p1Tiles, 2048)
-                    .withSize(SIZE_16_32))
-                    .withAnimated(4, 3)
-                    .withLocation(x,y)
-                    .buildPtr());
+    // player.setSprite((spriteBuilder
+    //                 .withData(Attack_Right_p1Tiles, 2048)
+    //                 .withSize(SIZE_16_32))
+    //                 .withAnimated(4, 3)
+    //                 .withLocation(player.getSprite()->getX(), player.getSprite()->getY())
+    //                 .buildPtr());
 }
 
 player_ns::PlayerState* player_ns::AttackState::update(Player& player)

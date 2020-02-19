@@ -57,6 +57,7 @@ class player_ns::PlayerState
 {
 public:
     int stateID = 0;
+    std::unique_ptr<SpriteBuilder<Sprite>> spriteBuilder;
     virtual ~PlayerState() {}
     virtual void enter(Player& player) {}
     virtual player_ns::PlayerState* update(Player& player) { return new player_ns::PlayerState; }
