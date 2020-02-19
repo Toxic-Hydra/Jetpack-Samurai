@@ -169,6 +169,13 @@ void Player::tick()
 void player_ns::UnrestrictedState::enter(Player& player)
 {
     // TextStream::instance().setText("Inside Unrestricted State: enter\n", 4, 0);
+    player.setSprite((spriteBuilder
+                    .withData(samuraiTiles, 2048)
+                    .withSize(SIZE_16_32))
+                    .withAnimated(4, 3)
+                    .withLocation(x,y)
+                    .buildPtr());
+    
 }
 
 player_ns::PlayerState* player_ns::UnrestrictedState::update(Player& player)
@@ -199,7 +206,7 @@ player_ns::DamagedState::DamagedState(int dmg, int dx, int dy)
 
 void player_ns::DamagedState::enter(Player& player)
 {
-    TextStream::instance().setText("Inside Damaged State: enter()\n", 4, 0);
+    // TextStream::instance().setText("Inside Damaged State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::DamagedState::update(Player& player)
@@ -212,12 +219,18 @@ player_ns::PlayerState* player_ns::DamagedState::update(Player& player)
 
 void player_ns::DamagedState::exit(Player& player)
 {
-    TextStream::instance().setText("Inside Damaged State: exit()\n", 4, 0);
+    // TextStream::instance().setText("Inside Damaged State: exit()\n", 4, 0);
 }
 
 void player_ns::AttackState::enter(Player& player)
 {
-    TextStream::instance().setText("Inside Attack State: enter()\n", 4, 0);
+    // TextStream::instance().setText("Inside Attack State: enter()\n", 4, 0);
+    player.setSprite((spriteBuilder
+                    .withData(Attack_Right_p1Tiles, 2048)
+                    .withSize(SIZE_16_32))
+                    .withAnimated(4, 3)
+                    .withLocation(x,y)
+                    .buildPtr());
 }
 
 player_ns::PlayerState* player_ns::AttackState::update(Player& player)
@@ -234,13 +247,13 @@ player_ns::PlayerState* player_ns::AttackState::update(Player& player)
 
 void player_ns::AttackState::exit(Player& player)
 {
-    TextStream::instance().setText("Inside Attack State: exit()\n", 4, 0);
+    // TextStream::instance().setText("Inside Attack State: exit()\n", 4, 0);
     player.playerAttackSprite->moveTo(-100, -100);
 }
 
 void player_ns::DashState::enter(Player& player)
 {
-    TextStream::instance().setText("Inside Dash State: enter()\n", 4, 0);
+    // TextStream::instance().setText("Inside Dash State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::DashState::update(Player& player)
@@ -252,12 +265,12 @@ player_ns::PlayerState* player_ns::DashState::update(Player& player)
 
 void player_ns::DashState::exit(Player& player)
 {
-    TextStream::instance().setText("Inside Dash State: exit()\n", 4, 0);
+    // TextStream::instance().setText("Inside Dash State: exit()\n", 4, 0);
 }
 
 void player_ns::BlockState::enter(Player& player)
 {
-    TextStream::instance().setText("Inside Block State: enter()\n", 4, 0);
+    // TextStream::instance().setText("Inside Block State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::BlockState::update(Player& player)
@@ -273,5 +286,5 @@ player_ns::PlayerState* player_ns::BlockState::update(Player& player)
 
 void player_ns::BlockState::exit(Player& player)
 {
-    TextStream::instance().setText(std::to_string(player.state->stateID), 4, 0);
+    // TextStream::instance().setText(std::to_string(player.state->stateID), 4, 0);
 }
