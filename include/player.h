@@ -34,9 +34,9 @@ protected :
 public:
     Player(int x, int y);
     std::unique_ptr<Sprite> playerAttackSprite = (spriteBuilder
-                    .withData(playerSheetTiles, sizeof(playerSheetTiles))
+                    .withData(Attack_Right_p2Tiles, sizeof(Attack_Right_p2Tiles))
                     .withSize(SIZE_16_32))
-                    .withAnimated(40, 3)
+                    .withAnimated(8, 3)
                     .withLocation(-100,-100)
                     .buildPtr();;
     int faceDirection = fDirection::RIGHT;

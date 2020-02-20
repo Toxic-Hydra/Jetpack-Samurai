@@ -12,7 +12,7 @@ Player::Player(int x, int y) : Entity(x, y)
     this->setSprite(spriteBuilder
                     .withData(playerSheetTiles, sizeof(playerSheetTiles))
                     .withSize(SIZE_16_32)
-                    .withAnimated(40, 3)
+                    .withAnimated(30, 3)
                     .withLocation(x,y)
                     .buildPtr());
     this->setMovementSpeed(2);
@@ -66,23 +66,24 @@ void Player::dash()
 
 void Player::walk()
 {
+    // If holding a horizontal direction, use the right-facing running animaiton
+    if ((this->key & KEY_LEFT) || (this->key & KEY_RIGHT))
+    {
+        if (!this->getSprite()->isAnimating() || (this->getSprite()->getCurrentFrame() < 3 || this->getSprite()->getCurrentFrame() > 14))
+        {
+            this->getSprite()->makeAnimated(4, 10, 3);
+        }
+    }
+    
     if (this->key & KEY_LEFT)
     {
-        // this->getSprite()->animateToFrame(3);
-        if (!this->getSprite()->isAnimating() || (this->getSprite()->getCurrentFrame() < 13 || this->getSprite()->getCurrentFrame() > 22))
-        {
-            this->getSprite()->makeAnimated(13, 8, 3);
-        }
+        this->getSprite()->flipHorizontally(true);
         this->getSprite()->setVelocity(-movementSpeed, this->getSprite()->getDy());
         this->faceDirection = fDirection::LEFT;
     }
     else if (this->key & KEY_RIGHT)
     {
-        // this->getSprite()->animateToFrame(0);
-        if (!this->getSprite()->isAnimating() || (this->getSprite()->getCurrentFrame() < 3 || this->getSprite()->getCurrentFrame() > 12))
-        {
-            this->getSprite()->makeAnimated(4, 8, 3);
-        }
+        this->getSprite()->flipHorizontally(false);
         this->getSprite()->setVelocity(movementSpeed, this->getSprite()->getDy());
         this->faceDirection = fDirection::RIGHT;
     }
@@ -115,10 +116,14 @@ void Player::playerAttack()
         switch (this->faceDirection)
         {
             case LEFT:
+                this->getSprite()->flipHorizontally(true);
                 this->playerAttackSprite->moveTo(this->getSprite()->getX()-16,this->getSprite()->getY());
+                this->playerAttackSprite->flipHorizontally(true);
                 break;
             case RIGHT:
+                this->getSprite()->flipHorizontally(false);
                 this->playerAttackSprite->moveTo(this->getSprite()->getX()+16,this->getSprite()->getY());
+                this->playerAttackSprite->flipHorizontally(false);
                 break;
             case UP:
                 this->playerAttackSprite->moveTo(this->getSprite()->getX(),this->getSprite()->getY()-32);
@@ -199,12 +204,11 @@ player_ns::PlayerState* player_ns::UnrestrictedState::update(Player& player)
     }
     else
     {
+        player.getSprite()->stopAnimating();
         switch (player.faceDirection)
         {
             case 0:
-                player.getSprite()->animateToFrame(3);
-                break;
-            case 1:
+            case 1: // If faceDirection == LEFT || RIGHT
                 player.getSprite()->animateToFrame(0);
                 break;
             case 2:
@@ -259,20 +263,14 @@ void player_ns::DamagedState::exit(Player& player)
 void player_ns::AttackState::enter(Player& player)
 {
     TextStream::instance().setText("Inside Attack State: enter()\n", 4, 0);
-    // player.setSprite((spriteBuilder
-    //                 .withData(Attack_Right_p1Tiles, 2048)
-    //                 .withSize(SIZE_16_32))
-    //                 .withAnimated(4, 3)
-    //                 .withLocation(player.getSprite()->getX(), player.getSprite()->getY())
-    //                 .buildPtr());
-    player.getSprite()->makeAnimated(24, 8, 3);
-    player.playerAttackSprite->makeAnimated(32, 8, 3);
+    player.getSprite()->makeAnimated(13, 8, 3);
+    player.playerAttackSprite->makeAnimated(0, 8, 3);
 }
 
 player_ns::PlayerState* player_ns::AttackState::update(Player& player)
 {
     TextStream::instance().setText("Inside Attack State: update()\n", 4, 0);
-    if (player.getSprite()->getCurrentFrame() != 31)// (player.getKey() & KEY_A)
+    if (player.getSprite()->getCurrentFrame() != 13 + 7)// (player.getKey() & KEY_A)
     {
         player.playerAttack();
         player.lockMovement();
@@ -284,8 +282,8 @@ player_ns::PlayerState* player_ns::AttackState::update(Player& player)
 void player_ns::AttackState::exit(Player& player)
 {
     TextStream::instance().setText("Inside Attack State: exit()\n", 4, 0);
-    player.getSprite()->animateToFrame(0);
-    player.playerAttackSprite->animateToFrame(36);
+    // player.getSprite()->animateToFrame(0);
+    player.playerAttackSprite->animateToFrame(0);
     player.playerAttackSprite->moveTo(-100, -100);
 }
 
