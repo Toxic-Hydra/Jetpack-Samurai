@@ -4,7 +4,7 @@
 #include <tonc_video.h>
 #include <algorithm>
 #include <sstream>
-#include "map32.h"
+#include "map.h"
 #include "demo_scene.h"
 #include "jscomp16.h"
 
@@ -60,7 +60,10 @@ void DemoScene::tick(u16 keys)
     
     if(keys & KEY_SELECT)
     {
-        //player->getSprite()->hide();
+        if(!player->getSprite()->isHidden())
+            player->getSprite()->hide();
+        else
+            player->getSprite()->unhide();
     }
     //TextStream::instance().setText("Scale: " + std::to_string(scaleX), 0, 15);
 
@@ -98,7 +101,7 @@ void DemoScene::tick(u16 keys)
 void DemoScene::load()
 {
     //engine.get()->disableText(); //Current error with tiles overlapping Text for background 64 x 64
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(map32_palette, sizeof(map32_palette)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(map_palette, sizeof(map_palette)));
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
 
     player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
@@ -113,8 +116,8 @@ void DemoScene::load()
                 .withLocation(1,6)
                 .buildPtr();
 
-    background = std::unique_ptr<Background>(new Background(1, map32_tiles, sizeof(map32_tiles), map32, sizeof(map32)));
-    background.get()->useMapScreenBlock(16);
+    background = std::unique_ptr<Background>(new Background(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64));
+    background.get()->useMapScreenBlock(26);
     
     
     engine->enqueueMusic(jscomp16, jscomp16_bytes);

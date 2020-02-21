@@ -58,6 +58,7 @@ protected:
     u8 animation_offset;
     u32 priority, w, h, size_bits, shape_bits;
     bool stayWithinBounds;
+    bool hidden{false};
     u32 imageSize, tileIndex;
     SpriteSize spriteSize;
     u8 animationDelay, numberOfFrames, beginFrame, currentFrame, previousFrame, animationCounter;
@@ -93,12 +94,9 @@ public:
     void flipVertically(bool flip);
     void flipHorizontally(bool flip);
 
-    // Uh hide doesn't work,
-    //including tonc_oam absolutely
-    //destroys everything. Multiple includes despite guards. It has to do with 
-    //Tonc_oam not using inlines for several functions.
-    //void hide();
-    //void unhide();
+
+    void hide();
+    void unhide();
 
     u32 getTileIndex() { return tileIndex; }
     VECTOR getPos() { return {x, y}; }
@@ -115,6 +113,7 @@ public:
     u32 getNumberOfFrames() { return numberOfFrames; }
     u32 getCurrentFrame() { return currentFrame; }
     bool isAnimating() { return animating; };
+    bool isHidden() {return hidden; };
     bool isOffScreen();
 
     friend class SpriteManager;

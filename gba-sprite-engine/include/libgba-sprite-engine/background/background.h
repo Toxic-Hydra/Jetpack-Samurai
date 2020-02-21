@@ -46,10 +46,52 @@ public:
         this->screenBlockIndex = screenBlockIndex;
         this->charBlockIndex = charBlockIndex;
         this->mapLayout = mapLayout;
+
+        switch(this->mapLayout)
+        {
+            //32*8 = 256 & 512*8 = 512
+            case MAPLAYOUT_32X32:
+                this->MAP_WIDTH   = 256;
+                this->MAP_HEIGHT  = 256;
+                break;
+            case MAPLAYOUT_32X64:
+                this->MAP_WIDTH   = 256;
+                this->MAP_HEIGHT  = 512;
+                break;
+            case MAPLAYOUT_64X32:
+                this->MAP_WIDTH   = 512;
+                this->MAP_HEIGHT  = 256;
+                break;
+            case MAPLAYOUT_64X64:
+                this->MAP_WIDTH   = 512;
+                this->MAP_HEIGHT  = 512;
+                break;
+        }
     }
 
     Background(int bgIndex, const void *data, int size, const void* map, int mapSize) : data(data), bgIndex(bgIndex), size(size), map(map), mapLayout(MAPLAYOUT_32X32),
-                                                                                        screenBlockIndex(0), charBlockIndex(bgIndex), mapSize(mapSize) {}
+                                                                                        screenBlockIndex(0), charBlockIndex(bgIndex), mapSize(mapSize) {
+        switch(this->mapLayout)
+        {
+            //32*8 = 256 & 512*8 = 512
+            case MAPLAYOUT_32X32:
+                this->MAP_WIDTH   = 256;
+                this->MAP_HEIGHT  = 256;
+                break;
+            case MAPLAYOUT_32X64:
+                this->MAP_WIDTH   = 256;
+                this->MAP_HEIGHT  = 512;
+                break;
+            case MAPLAYOUT_64X32:
+                this->MAP_WIDTH   = 512;
+                this->MAP_HEIGHT  = 256;
+                break;
+            case MAPLAYOUT_64X64:
+                this->MAP_WIDTH   = 512;
+                this->MAP_HEIGHT  = 512;
+                break;
+        }
+                                                                                        }
     virtual void persist();
     void updateMap(const void* map);
     void clearMap();
