@@ -289,7 +289,7 @@ void player_ns::AttackState::exit(Player& player)
 
 void player_ns::DashState::enter(Player& player)
 {
-    // TextStream::instance().setText("Inside Dash State: enter()\n", 4, 0);
+    TextStream::instance().setText("Inside Dash State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::DashState::update(Player& player)
@@ -301,12 +301,12 @@ player_ns::PlayerState* player_ns::DashState::update(Player& player)
 
 void player_ns::DashState::exit(Player& player)
 {
-    // TextStream::instance().setText("Inside Dash State: exit()\n", 4, 0);
+    TextStream::instance().setText("Inside Dash State: exit()\n", 4, 0);
 }
 
 void player_ns::BlockState::enter(Player& player)
 {
-    // TextStream::instance().setText("Inside Block State: enter()\n", 4, 0);
+    TextStream::instance().setText("Inside Block State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::BlockState::update(Player& player)
@@ -322,5 +322,5 @@ player_ns::PlayerState* player_ns::BlockState::update(Player& player)
 
 void player_ns::BlockState::exit(Player& player)
 {
-    // TextStream::instance().setText(std::to_string(player.state->stateID), 4, 0);
+    TextStream::instance().setText("Inside Block State: exit()\n", 4, 0);
 }
