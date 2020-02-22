@@ -52,6 +52,25 @@ void DemoScene::tick(u16 keys)
     bufferFrames++;
     player->tick();
 
+    
+
+    //tile_collide = background->point_collision(player->getSprite()->getX(), player->getSprite()->getY());
+    //for(int i = 0; i < 2; i++){
+        tile_collide = background->collision_test(player->getSprite()->getX(), player->getSprite()->getY(),
+                                                player->getSprite()->getX() + 15, player->getSprite()->getY() + 31,
+                                                player->getSprite()->getDx(), player->getSprite()->getDy());
+
+        if((tile_collide & background->COLLISION_X)) {
+            player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+        }
+
+        if((tile_collide & background->COLLISION_Y)) {
+            player->getSprite()->setVelocity(player->getSprite()->getDx(), 0);
+        }
+    //}
+
+    TextStream::instance().setText("Collision: " + std::to_string(tile_collide), 0, 0);
+
     if(keys & KEY_START) // Reset Health
     {
         player->setHealth(100);
@@ -77,15 +96,15 @@ void DemoScene::tick(u16 keys)
     {
         TextStream::instance().setFontColor(CLR_WHITE);
     }
-    int tileid = se_mem[background.get()->getScreenBlock()][background.get()->se_index(player->getSprite()->getX(), player->getSprite()->getY())];
-    TextStream::instance().setText("Tile: " + std::to_string(tileid), 0, 0);
+    
+    //TextStream::instance().setText("Tile: " + std::to_string(tileid), 0, 0);
     // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
 
     //healthBar->scale(3, 1);
     
     
     //Tile 257
-    if(tile_collide == 1)
+    if(tile_collide >= 1)
     {
         TextStream::instance().setFontColor(CLR_RED);
     }

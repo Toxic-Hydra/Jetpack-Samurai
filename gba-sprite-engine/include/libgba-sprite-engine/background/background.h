@@ -25,10 +25,11 @@ protected:
     int mapSize, mapLayout;
     int MAP_WIDTH, MAP_HEIGHT;
     int screenBlockIndex, charBlockIndex;
-    const int COLLISION_X = 1;
-    const int COLLISION_Y = 2;
+    
 
 public:
+    const int COLLISION_X = 1;
+    const int COLLISION_Y = 2;
     const int getScreenBlock() { return screenBlockIndex; }
     const int getCharBlock() { return charBlockIndex; }
     void useMapScreenBlock(int block) { screenBlockIndex = block; }
@@ -38,7 +39,7 @@ public:
     int se_index(int x, int y);
     int point_collision(int x, int y);
     int collision_test(int x1, int y1, int bX, int bY, int xofs, int yofs);
-    void updateCollisions();
+    //void updateCollisions(int x1, int y1, int bX, int bY, int xofs, int yofs);
     
 
     Background(int bgIndex, const void *data, int size, const void* map, int mapSize, int screenBlockIndex, int charBlockIndex, int mapLayout)
