@@ -55,7 +55,7 @@ void DemoScene::tick(u16 keys)
     
 
     //tile_collide = background->point_collision(player->getSprite()->getX(), player->getSprite()->getY());
-    //for(int i = 0; i < 2; i++){
+    //for(int i = 0; i < 2; i++){ //Higher accuracy if we go pixel by pixel, truth is we don't really need it.
         tile_collide = background->collision_test(player->getSprite()->getX(), player->getSprite()->getY(),
                                                 player->getSprite()->getX() + 15, player->getSprite()->getY() + 31,
                                                 player->getSprite()->getDx(), player->getSprite()->getDy());
@@ -114,6 +114,62 @@ void DemoScene::tick(u16 keys)
     {
         enemy->getSprite()->moveTo(-100,0);
         TextStream::instance() << engine->getTimer()->getSecs();
+    }
+
+    if(player->getSprite()->collidesWith(*enemy->getSprite()))
+    {
+        //Enemy collision
+        if (enemy->getSprite()->getDx() > 0 || enemy->getSprite()->getDx() < 0)
+        {
+            enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
+        }
+
+        if (enemy->getSprite()->getDy() > 0 || enemy->getSprite()->getDy() < 0)
+        {
+            enemy->getSprite()->setVelocity(enemy->getSprite()->getDx(), 0);
+        }
+        //PLAYER collisions
+        if ( player->getSprite()->getX() < enemy->getSprite()->getX())
+        {
+
+            if ( player->getKey() & KEY_LEFT)
+            {
+                player->getSprite()->setVelocity(-player->getMovementSpeed(), player->getSprite()->getDy());
+            }
+            else
+                player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+            
+        }
+        else if (player->getSprite()->getX() > enemy->getSprite()->getX())
+        {
+            if ( player->getKey() & KEY_RIGHT)
+            {
+                player->getSprite()->setVelocity(player->getMovementSpeed(), player->getSprite()->getDy());
+            }
+            else
+                player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+        }
+        //Y
+        if ( player->getSprite()->getY() < enemy->getSprite()->getY())
+        {
+
+            if ( player->getKey() & KEY_UP)
+            {
+                player->getSprite()->setVelocity(player->getSprite()->getDx(),-player->getMovementSpeed());
+            }
+            else
+                player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
+            
+        }
+        else if (player->getSprite()->getY() > enemy->getSprite()->getY())
+        {
+            if ( player->getKey() & KEY_DOWN)
+            {
+                player->getSprite()->setVelocity(player->getSprite()->getDx(), player->getMovementSpeed());
+            }
+            else
+                player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
+        }
     }
 }
 

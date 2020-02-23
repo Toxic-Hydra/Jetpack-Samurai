@@ -36,6 +36,7 @@ public:
     void walk();
     Sprite* getSprite() { return Entity::getSprite(); }
     int getFaceDirection() { return faceDirection; }
+    u16 getKey() { return key; };
 };
 
 
