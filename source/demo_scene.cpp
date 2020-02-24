@@ -160,17 +160,23 @@ void DemoScene::tick(u16 keys)
     //
     /////////////////////////
     // Change text color
-    if (innerPlayerBox.left < innerEnemyBox.right &&
-        innerPlayerBox.right > innerEnemyBox.left &&
-        innerPlayerBox.top < innerEnemyBox.bottom &&
-        innerPlayerBox.bottom > innerEnemyBox.top)
+    // if (innerPlayerBox->getDx < innerEnemyBox->right &&
+    //     innerPlayerBox->right > innerEnemyBox->getDx &&
+    //     innerPlayerBox->top < innerEnemyBox->bottom &&
+    //     innerPlayerBox->bottom > innerEnemyBox->top)
+    if (innerPlayerBox->collidesWith(*innerEnemyBox))
     {
         TextStream::instance().setFontColor(CLR_RED);
+        // delete innerPlayerBox;
+        // delete innerEnemyBox;
+        innerPlayerBox.reset();
+        innerEnemyBox.reset();
     }
-    else if(playerBox.left < enemyBox.right &&
-            playerBox.right > enemyBox.left &&
-            playerBox.top < enemyBox.bottom &&
-            playerBox.bottom > enemyBox.top)
+    // else if(playerBox->getDx < enemyBox->right &&
+    //         playerBox->right > enemyBox->getDx &&
+    //         playerBox->top < enemyBox->bottom &&
+    //         playerBox->bottom > enemyBox->top)
+    else if (playerBox->collidesWith(*enemyBox))
     {
         TextStream::instance().setFontColor(CLR_ORANGE);
     }
@@ -179,10 +185,10 @@ void DemoScene::tick(u16 keys)
         TextStream::instance().setFontColor(CLR_WHITE);
     }
     // Print Coordinates
-    TextStream::instance().setText("(" + std::to_string(playerBox.left) + ", " + std::to_string(playerBox.top) + ")", 0, 0);
-    TextStream::instance().setText("(" + std::to_string(innerPlayerBox.left) + ", " + std::to_string(innerPlayerBox.top) + ")", 1, 0);
-    TextStream::instance().setText("(" + std::to_string(enemyBox.left) + ", " + std::to_string(enemyBox.top) + ")", 18, 18);
-    TextStream::instance().setText("(" + std::to_string(innerEnemyBox.left) + ", " + std::to_string(innerEnemyBox.top) + ")", 19, 18);
+    TextStream::instance().setText("(" + std::to_string(playerBox->getX()) + ", " + std::to_string(playerBox->getY()) + ")", 0, 0);
+    TextStream::instance().setText("(" + std::to_string(innerPlayerBox->getX()) + ", " + std::to_string(innerPlayerBox->getY()) + ")", 1, 0);
+    TextStream::instance().setText("(" + std::to_string(enemyBox->getX()) + ", " + std::to_string(enemyBox->getY()) + ")", 18, 18);
+    TextStream::instance().setText("(" + std::to_string(innerEnemyBox->getX()) + ", " + std::to_string(innerEnemyBox->getY()) + ")", 19, 18);
 
     // Move Player Box
     if((keys & KEY_LEFT) && (keys & KEY_RIGHT))
@@ -191,13 +197,17 @@ void DemoScene::tick(u16 keys)
     }
     else if (keys & KEY_LEFT)
     {
-        rc_move(&playerBox, -1, 0);
-        rc_move(&innerPlayerBox, -1, 0);
+        // rc_move(playerBox, -1, 0);
+        // rc_move(innerPlayerBox, -1, 0);
+        playerBox->move(-1, 0);
+        innerPlayerBox->move(-1, 0);
     }
     else if (keys & KEY_RIGHT)
     {
-        rc_move(&playerBox, 1, 0);
-        rc_move(&innerPlayerBox, 1, 0);
+        // rc_move(playerBox, 1, 0);
+        // rc_move(innerPlayerBox, 1, 0);
+        playerBox->move(1, 0);
+        innerPlayerBox->move(1, 0);
     }
 
     if((keys & KEY_UP) && (keys & KEY_DOWN))
@@ -206,13 +216,26 @@ void DemoScene::tick(u16 keys)
     }
     else if (keys & KEY_UP)
     {
-        rc_move(&playerBox, 0, -1);
-        rc_move(&innerPlayerBox, 0, -1);
+        // rc_move(playerBox, 0, -1);
+        // rc_move(innerPlayerBox, 0, -1);
+        playerBox->move(0, -1);
+        innerPlayerBox->move(0, -1);
     }
     else if (keys & KEY_DOWN)
     {
-        rc_move(&playerBox, 0, 1);
-        rc_move(&innerPlayerBox, 0, 1);
+        // rc_move(playerBox, 0, 1);
+        // rc_move(innerPlayerBox, 0, 1);
+        playerBox->move(0, 1);
+        innerPlayerBox->move(0, 1);
+    }
+
+    if (keys & KEY_SELECT)
+    {
+        // delete playerBox;
+        // delete enemyBox;
+        // delete innerPlayerBox;
+        // delete innerEnemyBox;
+        engine->setScene(new EndScene(engine));
     }
 }
 
@@ -220,6 +243,7 @@ void DemoScene::load()
 {
     
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
+    TextStream::instance().clear();
 
     // player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
     // player->getSprite()->stopAnimating();
@@ -233,10 +257,14 @@ void DemoScene::load()
     // Bounding Box Test
     //
     /////////////////////////
-    rc_set2(&playerBox, 10, 10, 50, 50);
-    rc_set2(&innerPlayerBox, playerBox.left + 10, playerBox.top + 10, 30, 30);
-    rc_set2(&enemyBox, GBA_SCREEN_WIDTH - 60, GBA_SCREEN_HEIGHT - 60, 50, 50);
-    rc_set2(&innerEnemyBox, enemyBox.left + 10, enemyBox.top + 10, 30, 30);
+    playerBox = std::make_unique<CollisionBox>(10, 10, 50, 50);
+    innerPlayerBox = std::make_unique<CollisionBox>(playerBox->getX() + 10, playerBox->getY() + 10, 30, 30);
+    enemyBox = std::make_unique<CollisionBox>(GBA_SCREEN_WIDTH - 60, GBA_SCREEN_HEIGHT - 60, 50, 50);
+    innerEnemyBox = std::make_unique<CollisionBox>(enemyBox->getX() + 10, enemyBox->getY() + 10, 30, 30);
+    // rc_set2(playerBox, 10, 10, 50, 50);
+    // rc_set2(innerPlayerBox, playerBox->left + 10, playerBox->top + 10, 30, 30);
+    // rc_set2(enemyBox, GBA_SCREEN_WIDTH - 60, GBA_SCREEN_HEIGHT - 60, 50, 50);
+    // rc_set2(innerEnemyBox, enemyBox->left + 10, enemyBox->top + 10, 30, 30);
     
     engine->enqueueMusic(jscomp16, jscomp16_bytes);
     engine->getTimer()->start();

@@ -27,10 +27,10 @@ private:
     // u32 enemyLeft, enemyRight, enemyTop, enemyBottom;
 
     // Bounding Box Test
-    RECT playerBox;
-    RECT innerPlayerBox;
-    RECT enemyBox;
-    RECT innerEnemyBox;
+    std::unique_ptr<CollisionBox> playerBox;
+    std::unique_ptr<CollisionBox> innerPlayerBox;
+    std::unique_ptr<CollisionBox> enemyBox;
+    std::unique_ptr<CollisionBox> innerEnemyBox;
 public:
     explicit DemoScene(const std::shared_ptr<GBAEngine> &engine);
     //DemoScene(DemoScene &other) = delete;
