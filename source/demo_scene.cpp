@@ -4,6 +4,7 @@
 #include <tonc_video.h>
 #include <algorithm>
 #include <sstream>
+#include "map.h"
 #include "demo_scene.h"
 #include "endscene.h"
 
@@ -15,7 +16,9 @@ DemoScene::DemoScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine) {
 
 std::vector<Background *> DemoScene::backgrounds()
 {
-    return {};
+    return {
+        background.get()
+    };
 }
 
 std::vector<Sprite *> DemoScene::sprites()
@@ -63,6 +66,19 @@ void DemoScene::tick(u16 keys)
         bufferFrames++;
         player->tick();
 
+        tile_collide = background->collision_test(player->getSprite()->getX(), player->getSprite()->getY(),
+                                                player->getSprite()->getX() + 15, player->getSprite()->getY() + 31,
+                                                player->getSprite()->getDx(), player->getSprite()->getDy());
+
+        if((tile_collide & background->COLLISION_X)) {
+            player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+        }
+
+        if((tile_collide & background->COLLISION_Y)) {
+            player->getSprite()->setVelocity(player->getSprite()->getDx(), 0);
+        }
+
+
         if(keys & KEY_START) // Reset Health
         {
             player->setHealth(100);
@@ -88,7 +104,7 @@ void DemoScene::tick(u16 keys)
             enemy->getSprite()->moveTo(-100, 0);
             //TextStream::instance() << engine->getTimer()->getSecs();
         }
-        if (playerSprite->collidesWith(*enemy->getSprite()))
+        /*if (playerSprite->collidesWith(*enemy->getSprite()))
         {
             if (player->state->stateID != 5)
             {
@@ -144,6 +160,60 @@ void DemoScene::tick(u16 keys)
                 player->useFuel(5);
                 enemy->getSprite()->moveTo(enemy->getSprite()->getX() - 2 * enemy->getSprite()->getWidth() * enemy->getSprite()->getDx(),
                                            enemy->getSprite()->getY() - 2 * enemy->getSprite()->getHeight() * enemy->getSprite()->getDy());
+            }*/
+        if(player->getSprite()->collidesWith(*enemy->getSprite()))
+        {
+            //Enemy collision
+            if (enemy->getSprite()->getDx() > 0 || enemy->getSprite()->getDx() < 0)
+            {
+                enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
+            }
+
+            if (enemy->getSprite()->getDy() > 0 || enemy->getSprite()->getDy() < 0)
+            {
+                enemy->getSprite()->setVelocity(enemy->getSprite()->getDx(), 0);
+            }
+            //PLAYER collisions
+            if ( player->getSprite()->getX() < enemy->getSprite()->getX())
+            {
+
+                if ( player->getKey() & KEY_LEFT)
+                {
+                    player->getSprite()->setVelocity(-player->getMovementSpeed(), player->getSprite()->getDy());
+                }
+                else
+                    player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+                
+            }
+            else if (player->getSprite()->getX() > enemy->getSprite()->getX())
+            {
+                if ( player->getKey() & KEY_RIGHT)
+                {
+                    player->getSprite()->setVelocity(player->getMovementSpeed(), player->getSprite()->getDy());
+                }
+                else
+                    player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+            }
+            //Y
+            if ( player->getSprite()->getY() < enemy->getSprite()->getY())
+            {
+
+                if ( player->getKey() & KEY_UP)
+                {
+                    player->getSprite()->setVelocity(player->getSprite()->getDx(),-player->getMovementSpeed());
+                }
+                else
+                    player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
+                
+            }
+            else if (player->getSprite()->getY() > enemy->getSprite()->getY())
+            {
+                if ( player->getKey() & KEY_DOWN)
+                {
+                    player->getSprite()->setVelocity(player->getSprite()->getDx(), player->getMovementSpeed());
+                }
+                else
+                    player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
             }
         }
 
@@ -157,7 +227,7 @@ void DemoScene::tick(u16 keys)
 
 void DemoScene::load()
 {
-    
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(map_palette, sizeof(map_palette)));
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
 
     player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
@@ -166,6 +236,9 @@ void DemoScene::load()
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
     enemy = std::unique_ptr<Enemy>(new Enemy(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32));
+
+    background = std::unique_ptr<Background>(new Background(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64));
+    background.get()->useMapScreenBlock(26);
     
     engine->enqueueMusic(jscomp16, jscomp16_bytes);
     engine->getTimer()->start();

@@ -23,24 +23,76 @@ protected:
     const void *map;
     int size, bgIndex;
     int mapSize, mapLayout;
+    int MAP_WIDTH, MAP_HEIGHT;
     int screenBlockIndex, charBlockIndex;
+    
 
 public:
+    const int COLLISION_X = 1;
+    const int COLLISION_Y = 2;
     const int getScreenBlock() { return screenBlockIndex; }
     const int getCharBlock() { return charBlockIndex; }
     void useMapScreenBlock(int block) { screenBlockIndex = block; }
     void scroll(int x, int y);
     void scrollSpeed(int dx, int dy);
 
+    int se_index(int x, int y);
+    int point_collision(int x, int y);
+    int collision_test(int x1, int y1, int bX, int bY, int xofs, int yofs);
+    //void updateCollisions(int x1, int y1, int bX, int bY, int xofs, int yofs);
+    
+
     Background(int bgIndex, const void *data, int size, const void* map, int mapSize, int screenBlockIndex, int charBlockIndex, int mapLayout)
             : Background(bgIndex, data, size, map, mapSize) {
         this->screenBlockIndex = screenBlockIndex;
         this->charBlockIndex = charBlockIndex;
         this->mapLayout = mapLayout;
+
+        switch(this->mapLayout)
+        {
+            //32*8 = 256 & 512*8 = 512
+            case MAPLAYOUT_32X32:
+                this->MAP_WIDTH   = 256;
+                this->MAP_HEIGHT  = 256;
+                break;
+            case MAPLAYOUT_32X64:
+                this->MAP_WIDTH   = 256;
+                this->MAP_HEIGHT  = 512;
+                break;
+            case MAPLAYOUT_64X32:
+                this->MAP_WIDTH   = 512;
+                this->MAP_HEIGHT  = 256;
+                break;
+            case MAPLAYOUT_64X64:
+                this->MAP_WIDTH   = 512;
+                this->MAP_HEIGHT  = 512;
+                break;
+        }
     }
 
     Background(int bgIndex, const void *data, int size, const void* map, int mapSize) : data(data), bgIndex(bgIndex), size(size), map(map), mapLayout(MAPLAYOUT_32X32),
-                                                                                        screenBlockIndex(0), charBlockIndex(bgIndex), mapSize(mapSize) {}
+                                                                                        screenBlockIndex(0), charBlockIndex(bgIndex), mapSize(mapSize) {
+        switch(this->mapLayout)
+        {
+            //32*8 = 256 & 512*8 = 512
+            case MAPLAYOUT_32X32:
+                this->MAP_WIDTH   = 256;
+                this->MAP_HEIGHT  = 256;
+                break;
+            case MAPLAYOUT_32X64:
+                this->MAP_WIDTH   = 256;
+                this->MAP_HEIGHT  = 512;
+                break;
+            case MAPLAYOUT_64X32:
+                this->MAP_WIDTH   = 512;
+                this->MAP_HEIGHT  = 256;
+                break;
+            case MAPLAYOUT_64X64:
+                this->MAP_WIDTH   = 512;
+                this->MAP_HEIGHT  = 512;
+                break;
+        }
+                                                                                        }
     virtual void persist();
     void updateMap(const void* map);
     void clearMap();
