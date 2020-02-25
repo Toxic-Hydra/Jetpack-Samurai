@@ -5,6 +5,7 @@
 #ifndef GBA_SPRITE_ENGINE_SPRITE_H
 #define GBA_SPRITE_ENGINE_SPRITE_H
 
+
 #include <libgba-sprite-engine/gba/tonc_types.h>
 #include <memory>
 #ifdef CODE_COMPILED_AS_PART_OF_TEST
@@ -13,6 +14,7 @@
 #include <libgba-sprite-engine/gba/tonc_math.h>
 #endif
 #include <libgba-sprite-engine/gbavector.h>
+
 
 #define COLOR_MODE_16 0
 #define COLOR_MODE_256 1
@@ -56,6 +58,7 @@ protected:
     u8 animation_offset;
     u32 priority, w, h, size_bits, shape_bits;
     bool stayWithinBounds;
+    bool hidden{false};
     u32 imageSize, tileIndex;
     SpriteSize spriteSize;
     u8 animationDelay, numberOfFrames, beginFrame, currentFrame, previousFrame, animationCounter;
@@ -91,6 +94,10 @@ public:
     void flipVertically(bool flip);
     void flipHorizontally(bool flip);
 
+
+    void hide();
+    void unhide();
+
     u32 getTileIndex() { return tileIndex; }
     VECTOR getPos() { return {x, y}; }
     GBAVector getPosAsVector() { return GBAVector(getPos()); }
@@ -106,6 +113,7 @@ public:
     u32 getNumberOfFrames() { return numberOfFrames; }
     u32 getCurrentFrame() { return currentFrame; }
     bool isAnimating() { return animating; };
+    bool isHidden() {return hidden; };
     bool isOffScreen();
 
     friend class SpriteManager;

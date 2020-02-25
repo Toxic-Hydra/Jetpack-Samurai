@@ -24,7 +24,8 @@ private:
 
     Sprite* playerSprite;
     // u32 playerLeft, playerRight, playerTop, playerBottom;
-    // u32 enemyLeft, enemyRight, enemyTop, enemyBottom;
+    u32 enemyLeft, enemyRight, enemyTop, enemyBottom;
+    int tile_collide;
 public:
     explicit DemoScene(const std::shared_ptr<GBAEngine> &engine);
     //DemoScene(DemoScene &other) = delete;

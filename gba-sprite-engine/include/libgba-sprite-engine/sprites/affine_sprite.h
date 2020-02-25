@@ -25,6 +25,8 @@ public:
     void setAffineIndex(int index) { this->affIndex = index; }
     void identity();
     void rotate(u16 alpha);
+    void scale(FIXED sx, FIXED sy);
+    void invscale(FIXED sx, FIXED sy);
     explicit AffineSprite(const AffineSprite& other);
     explicit AffineSprite(const void* imgData, int imgSize, int xC, int yC, SpriteSize spriteSize);
     OBJ_AFFINE* getMatrix() { return affine.get(); }
