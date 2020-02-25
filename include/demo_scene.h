@@ -9,7 +9,7 @@
 #include "entity.h"
 #include "player.h"
 #include "enemy.h"
-#include "collisionBox.h"
+// #include "collisionBox.h"
 
 
 class DemoScene : public Scene
@@ -25,12 +25,6 @@ private:
     Sprite* playerSprite;
     // u32 playerLeft, playerRight, playerTop, playerBottom;
     // u32 enemyLeft, enemyRight, enemyTop, enemyBottom;
-
-    // Bounding Box Test
-    std::unique_ptr<CollisionBox> playerBox;
-    std::unique_ptr<CollisionBox> innerPlayerBox;
-    std::unique_ptr<CollisionBox> enemyBox;
-    std::unique_ptr<CollisionBox> innerEnemyBox;
 public:
     explicit DemoScene(const std::shared_ptr<GBAEngine> &engine);
     //DemoScene(DemoScene &other) = delete;
