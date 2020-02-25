@@ -8,7 +8,7 @@
 #include <deque>
 // #include "entity.h"
 #include "player.h"
-// #include "collisionBox.h"
+#include "collisionBox.h"
 
 class EnemyState;
 
@@ -28,7 +28,7 @@ public:
     EnemyState* state;
     RECT* playerVicinity;
     RECT* myBoundingBox; 
-    // std::unique_ptr<CollisionBox> innerBox;
+    std::unique_ptr<CollisionBox> innerBox;
     void tick();
     void setPlayerPos(VECTOR destination);
     VECTOR getPlayerPos() {return dest; }

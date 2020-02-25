@@ -14,7 +14,8 @@ Enemy::Enemy(int x, int y) : Entity(x, y)
 
     playerVicinity = rc_set2(playerVicinity, this->dest.x, this->dest.y, 16, 32);
     myBoundingBox = rc_set2(myBoundingBox, this->x, this->y, 16, 32);
-    // innerBox = std::make_unique<CollisionBox>(this->x + 6, this->y + 12, 4, 8); // 4 x 8
+    innerBox = std::make_unique<CollisionBox>(this->x + 6, this->y + 12, 4, 8); // 4 x 8
+    // innerBox = std::make_unique<CollisionBox>(this->x, this->y, 16, 32); // 16 x 32
     this->setMovementSpeed(1);
 }
 
@@ -23,6 +24,7 @@ void Enemy::tick()
     // Update Player "bounding box"
     playerVicinity = rc_set_pos(playerVicinity, this->dest.x, this->dest.y);
     myBoundingBox = rc_set_pos(myBoundingBox, this->x, this->y);
+    innerBox->setPos(this->getSprite()->getX(), this->getSprite()->getY());
 
     EnemyState* currentState = state->update(*this);
     if (currentState != NULL)
@@ -56,13 +58,13 @@ EnemyState* ChaseState::update(Enemy& enemy)
     //Simple player follow
     if (enemy.getPlayerPos().x < enemy.getSprite()->getPos().x)
     {
-        
+        enemy.getSprite()->flipHorizontally(true);
         enemy.getSprite()->setVelocity(-enemy.getMovementSpeed(), enemy.getSprite()->getDy());
         // enemy.innerBox->setVelocity(-enemy.getMovementSpeed(), enemy.getSprite()->getDy());
     }
     else if (enemy.getPlayerPos().x > enemy.getSprite()->getPos().x)
     {
-        
+        enemy.getSprite()->flipHorizontally(false);
         enemy.getSprite()->setVelocity(enemy.getMovementSpeed(), enemy.getSprite()->getDy());
         // enemy.innerBox->setVelocity(enemy.getMovementSpeed(), enemy.getSprite()->getDy());
     }
