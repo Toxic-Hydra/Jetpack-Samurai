@@ -242,61 +242,6 @@ void DemoScene::tick(u16 keys)
                     player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
             }
         }
-        // if(player->getSprite()->collidesWith(*enemy->getSprite()))
-        // {
-            // //Enemy collision
-            // if (enemy->getSprite()->getDx() > 0 || enemy->getSprite()->getDx() < 0)
-            // {
-            //     enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
-            // }
-
-            // if (enemy->getSprite()->getDy() > 0 || enemy->getSprite()->getDy() < 0)
-            // {
-            //     enemy->getSprite()->setVelocity(enemy->getSprite()->getDx(), 0);
-            // }
-            // //PLAYER collisions
-            // if ( player->getSprite()->getX() < enemy->getSprite()->getX())
-            // {
-
-            //     if ( player->getKey() & KEY_LEFT)
-            //     {
-            //         player->getSprite()->setVelocity(-player->getMovementSpeed(), player->getSprite()->getDy());
-            //     }
-            //     else
-            //         player->getSprite()->setVelocity(0, player->getSprite()->getDy());
-                
-            // }
-            // else if (player->getSprite()->getX() > enemy->getSprite()->getX())
-            // {
-            //     if ( player->getKey() & KEY_RIGHT)
-            //     {
-            //         player->getSprite()->setVelocity(player->getMovementSpeed(), player->getSprite()->getDy());
-            //     }
-            //     else
-            //         player->getSprite()->setVelocity(0, player->getSprite()->getDy());
-            // }
-            // //Y
-            // if ( player->getSprite()->getY() < enemy->getSprite()->getY())
-            // {
-
-            //     if ( player->getKey() & KEY_UP)
-            //     {
-            //         player->getSprite()->setVelocity(player->getSprite()->getDx(),-player->getMovementSpeed());
-            //     }
-            //     else
-            //         player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
-                
-            // }
-            // else if (player->getSprite()->getY() > enemy->getSprite()->getY())
-            // {
-            //     if ( player->getKey() & KEY_DOWN)
-            //     {
-            //         player->getSprite()->setVelocity(player->getSprite()->getDx(), player->getMovementSpeed());
-            //     }
-            //     else
-            //         player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
-            // }
-        // }
 
         // Change Scenes
         if (player->getHealth() <= 0)
