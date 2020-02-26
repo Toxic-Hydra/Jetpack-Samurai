@@ -37,7 +37,8 @@ void DemoScene::tick(u16 keys)
     if(keys & KEY_SELECT) // Hold the select key for now to keep the game paused
     {
         // Pause (kinda)
-        spriteManager->hideAll();
+        // spriteManager->hideAll();
+        engine->setScene(new EndScene(engine));
     }
     else
     {
@@ -100,10 +101,12 @@ void DemoScene::tick(u16 keys)
         TextStream::instance().setText("(" + std::to_string(enemy->innerBox->getX()) + ", " + std::to_string(enemy->innerBox->getY()) + ")", 14, 18);
 
         // Collision Checking
+        // Enemy Inner Box vs. Player Attack
         if (enemy->innerBox->collidesWith(*player->playerAttackSprite))
         {
             enemy->getSprite()->moveTo(-100, 0);
         }
+        // Enemy vs. Player Attack
         else if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
         {
             if (enemy->getSprite()->getCenter().x > playerSprite->getCenter().x)
@@ -127,6 +130,7 @@ void DemoScene::tick(u16 keys)
             }
             //TextStream::instance() << engine->getTimer()->getSecs();
         }
+        // Player vs. Enemy
         if (playerSprite->collidesWith(*enemy->getSprite()))
         {
             // if (player->state->stateID != 5)
@@ -308,14 +312,14 @@ void DemoScene::load()
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     TextStream::instance().clear();
 
-    player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
+    player = std::make_unique<Player>(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32);
     player->getSprite()->stopAnimating();
     player->setHealth(100);
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
-    enemy = std::unique_ptr<Enemy>(new Enemy(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32));
+    enemy = std::make_unique<Enemy>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
 
-    background = std::unique_ptr<Background>(new Background(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64));
+    background = std::make_unique<Background>(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64);
     background.get()->useMapScreenBlock(26);
     
     engine->enqueueMusic(jscomp16, jscomp16_bytes);

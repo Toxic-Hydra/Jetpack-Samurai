@@ -24,7 +24,7 @@ void Enemy::tick()
     // Update Player "bounding box"
     playerVicinity = rc_set_pos(playerVicinity, this->dest.x, this->dest.y);
     myBoundingBox = rc_set_pos(myBoundingBox, this->x, this->y);
-    innerBox->setPos(this->getSprite()->getX(), this->getSprite()->getY());
+    innerBox->setPos(this->getSprite()->getX() + 6, this->getSprite()->getY() + 12);
 
     EnemyState* currentState = state->update(*this);
     if (currentState != NULL)

@@ -2,11 +2,16 @@
 #include "entity.h"
 #include "player.h"
 #include "enemy.h"
-#include "demo_scene.h"
+// #include "demo_scene.h"
+#include "startscene.h"
 
 void EndScene::tick(u16 keys)
 {
-
+    
+    if (keys & KEY_L)
+    {
+        engine->setScene(new StartScene(engine));
+    }
 }
 
 void EndScene::load()
