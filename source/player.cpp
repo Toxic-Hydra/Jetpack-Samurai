@@ -42,21 +42,22 @@ void Player::dash()
         int dy = 0;
         if (this->faceDirection == fDirection::LEFT)
         {
-            dx = -20;
+            dx = -16;
         }
         else if (this->faceDirection == fDirection::RIGHT)
         {
-            dx = 20;
+            dx = 16;
         }
         else if (this->faceDirection == fDirection::UP)
         {
-            dy = -20;
+            dy = -16;
         }
         else
         {
-            dy = 20;
+            dy = 16;
         }
-        this->getSprite()->moveTo(this->getSprite()->getX() + dx, this->getSprite()->getY() + dy);
+        // this->getSprite()->moveTo(this->getSprite()->getX() + dx, this->getSprite()->getY() + dy);
+        this->getSprite()->setVelocity(dx, dy);
 
         // Use fuel at the end of it all
         int fuelAmount = 2;

@@ -12,6 +12,8 @@
 
 class StartScene : public Scene
 {
+private:
+    std::string pressStart;
 public:
     StartScene(std::shared_ptr<GBAEngine> engine) : Scene(std::move(engine)) {}
     void tick(u16 keys) override;

@@ -21,8 +21,8 @@ namespace player_ns
 class Player : public Entity
 {
 private :
-    static int frames;
-    int bufferWindow = 3; // Number of frames elapsed until checking the next input, key, states
+    // static int frames;
+    // int bufferWindow = 3; // Number of frames elapsed until checking the next input, key, states
     u16 keyPrev;
     u16 key; // the current key
     enum fDirection {LEFT, RIGHT, UP, DOWN};
