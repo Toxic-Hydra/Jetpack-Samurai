@@ -8,6 +8,10 @@
 #include "demo_scene.h"
 #include "endscene.h"
 
+#include "BoyScout.h"
+
+
+#include "Aegis.h"
 #include "jscomp16.h"
 
 static int bufferFrames = 0;
@@ -34,6 +38,7 @@ std::vector<Sprite *> DemoScene::sprites()
 
 void DemoScene::tick(u16 keys)
 {
+    BoyScoutUpdateSong(); //Don't forget to free memory upon leaving this state.
     if(keys & KEY_SELECT) // Hold the select key for now to keep the game paused
     {
         // Pause (kinda)
@@ -267,7 +272,12 @@ void DemoScene::load()
     background = std::make_unique<Background>(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64);
     background.get()->useMapScreenBlock(26);
     
-    engine->enqueueMusic(jscomp16, jscomp16_bytes);
+    //engine->enqueueMusic(jscomp16, jscomp16_bytes);
+    BoyScoutInitialize();
+    nBSSongSize = BoyScoutGetNeededSongMemory((unsigned char*)Aegis_bgf);
+    BoyScoutSetMemoryArea((unsigned int)malloc(nBSSongSize));
+    BoyScoutOpenSong((unsigned char*)Aegis_bgf);
+    BoyScoutPlaySong(0);
     engine->getTimer()->start();
 
     
