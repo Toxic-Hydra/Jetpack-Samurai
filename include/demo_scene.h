@@ -4,10 +4,12 @@
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
+#include <tonc_math.h>
 
 #include "entity.h"
 #include "player.h"
 #include "enemy.h"
+// #include "collisionBox.h"
 
 
 class DemoScene : public Scene

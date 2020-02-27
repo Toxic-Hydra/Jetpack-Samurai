@@ -2,6 +2,8 @@
 #include <iostream>
 #include <libgba-sprite-engine/background/text_stream.h>
 
+std::unique_ptr<Timer> Player::dashTimer;
+
 u32 Player::keyHit(u16 keys)
 {
     return (this->keyPrev &~ this->key) & keys;
@@ -16,7 +18,8 @@ Player::Player(int x, int y) : Entity(x, y)
                     .withLocation(x,y)
                     .withinBounds()
                     .buildPtr());
-    this->setMovementSpeed(1);
+    this->setMovementSpeed(2);
+    Player::dashTimer = std::make_unique<Timer>();
 
     if(this->state == NULL)
         state = new player_ns::UnrestrictedState;
@@ -36,33 +39,26 @@ void Player::useFuel(int x)
 
 void Player::dash()
 {
-    // if (this->keyHit(KEY_B) && this->getHealth() > 10)
-    if (this->getHealth() > 10)
+    int dx = 0;
+    int dy = 0;
+    if (this->faceDirection == fDirection::LEFT)
     {
-        int dx = 0;
-        int dy = 0;
-        if (this->faceDirection == fDirection::LEFT)
-        {
-            dx = -20;
-        }
-        else if (this->faceDirection == fDirection::RIGHT)
-        {
-            dx = 20;
-        }
-        else if (this->faceDirection == fDirection::UP)
-        {
-            dy = -20;
-        }
-        else
-        {
-            dy = 20;
-        }
-        this->getSprite()->moveTo(this->getSprite()->getX() + dx, this->getSprite()->getY() + dy);
-
-        // Use fuel at the end of it all
-        int fuelAmount = 2;
-        this->useFuel(fuelAmount);
+        dx = -8;
     }
+    else if (this->faceDirection == fDirection::RIGHT)
+    {
+        dx = 8;
+    }
+    else if (this->faceDirection == fDirection::UP)
+    {
+        dy = -8;
+    }
+    else
+    {
+        dy = 8;
+    }
+    // this->getSprite()->moveTo(this->getSprite()->getX() + dx, this->getSprite()->getY() + dy);
+    this->getSprite()->setVelocity(dx, dy);
 }
 
 void Player::walk()
@@ -291,18 +287,39 @@ void player_ns::AttackState::exit(Player& player)
 void player_ns::DashState::enter(Player& player)
 {
     TextStream::instance().setText("Inside Dash State: enter()\n", 4, 0);
+    player.getDashTimer()->reset();
+    player.getDashTimer()->start();
 }
 
 player_ns::PlayerState* player_ns::DashState::update(Player& player)
 {
     // TextStream::instance().setText("Inside Dash State: update()\n, 4, 0)";
-    player.dash();
+    player.getDashTimer()->onvblank();
+    if (player.getDashTimer()->getMsecs() < 150)
+    {
+        if (player.getHealth() > 10)
+        {
+            player.dash();
+        }
+        else
+        {
+            player.lockMovement(); // Jetpack failure without enough fuel maybe?
+        }
+        return NULL;
+    }
     return new player_ns::UnrestrictedState;
 }
 
 void player_ns::DashState::exit(Player& player)
 {
     TextStream::instance().setText("Inside Dash State: exit()\n", 4, 0);
+    player.getDashTimer()->stop();
+
+    // Use fuel at the end of it all
+    if (player.getHealth() > 10)
+    {
+        player.useFuel(10);
+    }
 }
 
 void player_ns::BlockState::enter(Player& player)

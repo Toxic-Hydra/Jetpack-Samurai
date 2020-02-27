@@ -42,7 +42,8 @@ void DemoScene::tick(u16 keys)
     if(keys & KEY_SELECT) // Hold the select key for now to keep the game paused
     {
         // Pause (kinda)
-        spriteManager->hideAll();
+        // spriteManager->hideAll();
+        engine->setScene(new EndScene(engine));
     }
     else
     {
@@ -107,74 +108,97 @@ void DemoScene::tick(u16 keys)
         TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 0, 0);
         // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
 
+        TextStream::instance().setText("(" + std::to_string(enemy->innerBox->getX()) + ", " + std::to_string(enemy->innerBox->getY()) + ")", 14, 18);
 
         // Collision Checking
-        if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
+        // Enemy Inner Box vs. Player Attack
+        if (enemy->innerBox->collidesWith(*player->playerAttackSprite))
         {
             enemy->getSprite()->moveTo(-100, 0);
-            //TextStream::instance() << engine->getTimer()->getSecs();
         }
-        /*if (playerSprite->collidesWith(*enemy->getSprite()))
+        // Enemy vs. Player Attack
+        else if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
         {
-            if (player->state->stateID != 5)
+            if (enemy->getSprite()->getCenter().x > playerSprite->getCenter().x)
             {
-                // player->useFuel(10);
-                // // Player Bounding Box
-                // playerLeft = playerSprite->getX();
-                // playerRight = playerSprite->getX() + playerSprite->getWidth();
-                // playerTop = playerSprite->getY();
-                // playerBottom = playerSprite->getY() + playerSprite->getHeight();
-
-                // // Enemy Bounding Box
-                // enemyLeft = enemy->getSprite()->getX();
-                // enemyRight = enemy->getSprite()->getX() + enemy->getSprite()->getWidth();
-                // enemyTop = enemy->getSprite()->getY();
-                // enemyBottom = enemy->getSprite()->getY() + enemy->getSprite()->getHeight();
-
-                // if Enemy is coming in from the player's left-side
-                if (playerSprite->getCenter().x > enemy->getSprite()->getCenter().x)
-                {
-                    player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * 2, 0);
-                }
-                // If Enemy is coming in from the player's right-side
-                else if (playerSprite->getCenter().x < enemy->getSprite()->getCenter().x)
-                {
-                    player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * -2, 0);
-                }
-                // // Uncomment this if you don't want to really prioritize left-right knockback
-                // else if (playerSprite->getCenter().y > enemyBottom)
-                // {
-                //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 2);
-                // }
-                // else if (playerSprite->getCenter().y < enemyTop)
-                // {
-                //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -2);
-                // }
-                
-                // I want to prioritize left-right knockback due to the screen being wider than it is tall
-                else
-                {
-                    if (playerSprite->getCenter().y > enemy->getSprite()->getCenter().y)
-                    {
-                        player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 3);
-                    }
-                    else
-                    {
-                        player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -3);
-                    }
-                    // player->state = new player_ns::DamagedState(10, 32, 0);
-                }
+                enemy->getSprite()->moveTo(enemy->getSprite()->getX() + 32, enemy->getSprite()->getY());
+            }
+            else if (enemy->getSprite()->getCenter().x < playerSprite->getCenter().x)
+            {
+                enemy->getSprite()->moveTo(enemy->getSprite()->getX() - 32, enemy->getSprite()->getY());
             }
             else
             {
-                player->useFuel(5);
-                enemy->getSprite()->moveTo(enemy->getSprite()->getX() - 2 * enemy->getSprite()->getWidth() * enemy->getSprite()->getDx(),
-                                           enemy->getSprite()->getY() - 2 * enemy->getSprite()->getHeight() * enemy->getSprite()->getDy());
-            }*/
-
-        //COLLISIONS: PLAYER/ENEMY
-        if(player->getSprite()->collidesWith(*enemy->getSprite()))
+                if (enemy->getSprite()->getCenter().y > playerSprite->getCenter().y)
+                {
+                    enemy->getSprite()->moveTo(enemy->getSprite()->getX(), enemy->getSprite()->getY() + enemy->getSprite()->getHeight());
+                }
+                else
+                {
+                    enemy->getSprite()->moveTo(enemy->getSprite()->getX(), enemy->getSprite()->getY() - enemy->getSprite()->getHeight());
+                }
+            }
+            //TextStream::instance() << engine->getTimer()->getSecs();
+        }
+        // Player vs. Enemy
+        if (playerSprite->collidesWith(*enemy->getSprite()))
         {
+            // if (player->state->stateID != 5)
+            // {
+            //     // player->useFuel(10);
+            //     // // Player Bounding Box
+            //     // playerLeft = playerSprite->getX();
+            //     // playerRight = playerSprite->getX() + playerSprite->getWidth();
+            //     // playerTop = playerSprite->getY();
+            //     // playerBottom = playerSprite->getY() + playerSprite->getHeight();
+
+            //     // // Enemy Bounding Box
+            //     // enemyLeft = enemy->getSprite()->getX();
+            //     // enemyRight = enemy->getSprite()->getX() + enemy->getSprite()->getWidth();
+            //     // enemyTop = enemy->getSprite()->getY();
+            //     // enemyBottom = enemy->getSprite()->getY() + enemy->getSprite()->getHeight();
+
+            //     // if Enemy is coming in from the player's left-side
+            //     if (playerSprite->getCenter().x > enemy->getSprite()->getCenter().x)
+            //     {
+            //         player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * 2, 0);
+            //     }
+            //     // If Enemy is coming in from the player's right-side
+            //     else if (playerSprite->getCenter().x < enemy->getSprite()->getCenter().x)
+            //     {
+            //         player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * -2, 0);
+            //     }
+            //     // // Uncomment this if you don't want to really prioritize left-right knockback
+            //     // else if (playerSprite->getCenter().y > enemyBottom)
+            //     // {
+            //     //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 2);
+            //     // }
+            //     // else if (playerSprite->getCenter().y < enemyTop)
+            //     // {
+            //     //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -2);
+            //     // }
+                
+            //     // I want to prioritize left-right knockback due to the screen being wider than it is tall
+            //     else
+            //     {
+            //         if (playerSprite->getCenter().y > enemy->getSprite()->getCenter().y)
+            //         {
+            //             player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 3);
+            //         }
+            //         else
+            //         {
+            //             player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -3);
+            //         }
+            //         // player->state = new player_ns::DamagedState(10, 32, 0);
+            //     }
+            // }
+            // else
+            // {
+            //     player->useFuel(5);
+            //     enemy->getSprite()->moveTo(enemy->getSprite()->getX() - 2 * enemy->getSprite()->getWidth() * enemy->getSprite()->getDx(),
+            //                                enemy->getSprite()->getY() - 2 * enemy->getSprite()->getHeight() * enemy->getSprite()->getDy());
+            // }
+
             //Enemy collision
             if (enemy->getSprite()->getDx() > 0 || enemy->getSprite()->getDx() < 0)
             {
@@ -246,15 +270,16 @@ void DemoScene::load()
 {
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(map_palette, sizeof(map_palette)));
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
+    TextStream::instance().clear();
 
-    player = std::unique_ptr<Player>(new Player(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32));
+    player = std::make_unique<Player>(GBA_SCREEN_WIDTH/2 -32, GBA_SCREEN_HEIGHT/2 -32);
     player->getSprite()->stopAnimating();
     player->setHealth(100);
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
-    enemy = std::unique_ptr<Enemy>(new Enemy(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32));
+    enemy = std::make_unique<Enemy>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
 
-    background = std::unique_ptr<Background>(new Background(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64));
+    background = std::make_unique<Background>(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64);
     background.get()->useMapScreenBlock(26);
     
     engine->enqueueMusic(jscomp16, jscomp16_bytes);

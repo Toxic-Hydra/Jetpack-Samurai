@@ -21,12 +21,12 @@ namespace player_ns
 class Player : public Entity
 {
 private :
-    static int frames;
-    int bufferWindow = 3; // Number of frames elapsed until checking the next input, key, states
+    // static int frames;
+    // int bufferWindow = 3; // Number of frames elapsed until checking the next input, key, states
     u16 keyPrev;
     u16 key; // the current key
     enum fDirection {LEFT, RIGHT, UP, DOWN};
-    std::unique_ptr<Timer> dashTimer;
+    static std::unique_ptr<Timer> dashTimer;
 
 protected :
     
@@ -50,6 +50,7 @@ public:
     void walk();
     void lockMovement();
     Sprite* getSprite() { return Entity::getSprite(); }
+    Timer* getDashTimer() { return dashTimer.get(); }
     u16 getKey() { return key; }
     int getFaceDirection() { return faceDirection; }
 };
