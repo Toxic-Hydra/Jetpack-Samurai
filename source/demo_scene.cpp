@@ -38,7 +38,7 @@ std::vector<Sprite *> DemoScene::sprites()
 
 void DemoScene::tick(u16 keys)
 {
-    BoyScoutUpdateSong(); //Don't forget to free memory upon leaving this state.
+    //BoyScoutUpdateSong(); //Don't forget to free memory upon leaving this state.
     if(keys & KEY_SELECT) // Hold the select key for now to keep the game paused
     {
         // Pause (kinda)
@@ -71,17 +71,22 @@ void DemoScene::tick(u16 keys)
         bufferFrames++;
         player->tick();
 
+        //CAMERA
+
+        //COLLISIONS: TILE
         tile_collide = background->collision_test(player->getSprite()->getX(), player->getSprite()->getY(),
                                                 player->getSprite()->getX() + 15, player->getSprite()->getY() + 31,
-                                                player->getSprite()->getDx(), player->getSprite()->getDy());
+                                                player->getSprite()->getDx(), player->getSprite()->getDy(), scrollx, scrolly);
 
         if((tile_collide & background->COLLISION_X)) {
             player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+            
         }
 
         if((tile_collide & background->COLLISION_Y)) {
             player->getSprite()->setVelocity(player->getSprite()->getDx(), 0);
         }
+        
 
 
         if(keys & KEY_START) // Reset Health
@@ -166,6 +171,8 @@ void DemoScene::tick(u16 keys)
                 enemy->getSprite()->moveTo(enemy->getSprite()->getX() - 2 * enemy->getSprite()->getWidth() * enemy->getSprite()->getDx(),
                                            enemy->getSprite()->getY() - 2 * enemy->getSprite()->getHeight() * enemy->getSprite()->getDy());
             }*/
+
+        //COLLISIONS: PLAYER/ENEMY
         if(player->getSprite()->collidesWith(*enemy->getSprite()))
         {
             //Enemy collision
@@ -178,11 +185,12 @@ void DemoScene::tick(u16 keys)
             {
                 enemy->getSprite()->setVelocity(enemy->getSprite()->getDx(), 0);
             }
+
             //PLAYER collisions
             if ( player->getSprite()->getX() < enemy->getSprite()->getX())
             {
 
-                if ( player->getKey() & KEY_LEFT)
+                if ( !(tile_collide & background->COLLISION_X) && player->getKey() & KEY_LEFT)
                 {
                     player->getSprite()->setVelocity(-player->getMovementSpeed(), player->getSprite()->getDy());
                 }
@@ -192,7 +200,7 @@ void DemoScene::tick(u16 keys)
             }
             else if (player->getSprite()->getX() > enemy->getSprite()->getX())
             {
-                if ( player->getKey() & KEY_RIGHT)
+                if ( !(tile_collide & background->COLLISION_X) && player->getKey() & KEY_RIGHT)
                 {
                     player->getSprite()->setVelocity(player->getMovementSpeed(), player->getSprite()->getDy());
                 }
@@ -203,7 +211,7 @@ void DemoScene::tick(u16 keys)
             if ( player->getSprite()->getY() < enemy->getSprite()->getY())
             {
 
-                if ( player->getKey() & KEY_UP)
+                if ( !(tile_collide & background->COLLISION_Y) && player->getKey() & KEY_UP)
                 {
                     player->getSprite()->setVelocity(player->getSprite()->getDx(),-player->getMovementSpeed());
                 }
@@ -213,7 +221,7 @@ void DemoScene::tick(u16 keys)
             }
             else if (player->getSprite()->getY() > enemy->getSprite()->getY())
             {
-                if ( player->getKey() & KEY_DOWN)
+                if ( !(tile_collide & background->COLLISION_Y) && player->getKey() & KEY_DOWN)
                 {
                     player->getSprite()->setVelocity(player->getSprite()->getDx(), player->getMovementSpeed());
                 }
@@ -225,8 +233,12 @@ void DemoScene::tick(u16 keys)
         // Change Scenes
         if (player->getHealth() <= 0)
         {
+            free((void *)BoyScoutGetMemoryArea());
             engine->setScene(new EndScene(std::move(engine)));
         }
+
+        background->scroll(scrollx, scrolly);
+
     }
 }
 
@@ -245,7 +257,7 @@ void DemoScene::load()
     background = std::unique_ptr<Background>(new Background(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64));
     background.get()->useMapScreenBlock(26);
     
-    //engine->enqueueMusic(jscomp16, jscomp16_bytes);
+    engine->enqueueMusic(jscomp16, jscomp16_bytes);
     BoyScoutInitialize();
     nBSSongSize = BoyScoutGetNeededSongMemory((unsigned char*)Aegis_bgf);
     BoyScoutSetMemoryArea((unsigned int)malloc(nBSSongSize));

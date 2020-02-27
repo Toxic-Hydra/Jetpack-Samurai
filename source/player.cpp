@@ -14,8 +14,9 @@ Player::Player(int x, int y) : Entity(x, y)
                     .withSize(SIZE_16_32)
                     .withAnimated(30, 3)
                     .withLocation(x,y)
+                    .withinBounds()
                     .buildPtr());
-    this->setMovementSpeed(2);
+    this->setMovementSpeed(1);
 
     if(this->state == NULL)
         state = new player_ns::UnrestrictedState;

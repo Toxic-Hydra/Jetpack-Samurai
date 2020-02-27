@@ -25,6 +25,7 @@ private:
     u32 enemyLeft, enemyRight, enemyTop, enemyBottom;
     int tile_collide;
     unsigned int nBSSongSize;
+    int scrollx{0}, scrolly{0};
 public:
     explicit DemoScene(const std::shared_ptr<GBAEngine> &engine);
     //DemoScene(DemoScene &other) = delete;

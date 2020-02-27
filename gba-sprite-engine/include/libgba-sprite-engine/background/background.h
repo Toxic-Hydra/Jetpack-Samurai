@@ -36,9 +36,9 @@ public:
     void scroll(int x, int y);
     void scrollSpeed(int dx, int dy);
 
-    int se_index(int x, int y);
-    int point_collision(int x, int y);
-    int collision_test(int x1, int y1, int bX, int bY, int xofs, int yofs);
+    int se_index(int x, int y, int backx, int backy);
+    int point_collision(int x, int y, int backx, int backy);
+    int collision_test(int x1, int y1, int bX, int bY, int xofs, int yofs, int backx, int backy);
     //void updateCollisions(int x1, int y1, int bX, int bY, int xofs, int yofs);
     
 
@@ -52,20 +52,20 @@ public:
         {
             //32*8 = 256 & 512*8 = 512
             case MAPLAYOUT_32X32:
-                this->MAP_WIDTH   = 256;
-                this->MAP_HEIGHT  = 256;
+                this->MAP_WIDTH   = 32;
+                this->MAP_HEIGHT  = 32;
                 break;
             case MAPLAYOUT_32X64:
-                this->MAP_WIDTH   = 256;
-                this->MAP_HEIGHT  = 512;
+                this->MAP_WIDTH   = 32;
+                this->MAP_HEIGHT  = 64;
                 break;
             case MAPLAYOUT_64X32:
-                this->MAP_WIDTH   = 512;
-                this->MAP_HEIGHT  = 256;
+                this->MAP_WIDTH   = 64;
+                this->MAP_HEIGHT  = 32;
                 break;
             case MAPLAYOUT_64X64:
-                this->MAP_WIDTH   = 512;
-                this->MAP_HEIGHT  = 512;
+                this->MAP_WIDTH   = 64;
+                this->MAP_HEIGHT  = 64;
                 break;
         }
     }
@@ -76,20 +76,20 @@ public:
         {
             //32*8 = 256 & 512*8 = 512
             case MAPLAYOUT_32X32:
-                this->MAP_WIDTH   = 256;
-                this->MAP_HEIGHT  = 256;
+                this->MAP_WIDTH   = 32;
+                this->MAP_HEIGHT  = 32;
                 break;
             case MAPLAYOUT_32X64:
-                this->MAP_WIDTH   = 256;
-                this->MAP_HEIGHT  = 512;
+                this->MAP_WIDTH   = 32;
+                this->MAP_HEIGHT  = 64;
                 break;
             case MAPLAYOUT_64X32:
-                this->MAP_WIDTH   = 512;
-                this->MAP_HEIGHT  = 256;
+                this->MAP_WIDTH   = 64;
+                this->MAP_HEIGHT  = 32;
                 break;
             case MAPLAYOUT_64X64:
-                this->MAP_WIDTH   = 512;
-                this->MAP_HEIGHT  = 512;
+                this->MAP_WIDTH   = 64;
+                this->MAP_HEIGHT  = 64;
                 break;
         }
                                                                                         }
