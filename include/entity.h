@@ -14,6 +14,7 @@ class Entity
 private:
     
     std::unique_ptr<Sprite> sprite;
+    enum fDirection {LEFT, RIGHT, UP, DOWN};
 
 protected:
     SpriteBuilder<Sprite> spriteBuilder;
@@ -25,6 +26,7 @@ protected:
 public:
     Entity(int x, int y) : x(x), y(y) {}
 
+    int faceDirection;
     virtual void tick() = 0;
 
     void setMovementSpeed(int s) { movementSpeed = s; }
