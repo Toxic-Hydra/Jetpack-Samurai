@@ -107,7 +107,8 @@ void DemoScene::tick(u16 keys)
 
         // Collision Checking
         // Enemy Inner Box vs. Player Attack
-        if (enemy->innerBox->collidesWith(*player->playerAttackSprite))
+        if (((player->faceDirection == 0 && enemy->faceDirection == 0) || (player->faceDirection == 1 && enemy->faceDirection == 1)) &&
+              enemy->innerBox->collidesWith(*player->playerAttackSprite))
         {
             enemy->getSprite()->moveTo(-100, 0);
         }

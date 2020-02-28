@@ -19,6 +19,7 @@ Player::Player(int x, int y) : Entity(x, y)
                     .buildPtr());
     this->setMovementSpeed(2);
     Player::dashTimer = std::make_unique<Timer>();
+    this->faceDirection = 1;
 
     if(this->state == NULL)
         state = new player_ns::UnrestrictedState;
@@ -40,15 +41,15 @@ void Player::dash()
 {
     int dx = 0;
     int dy = 0;
-    if (this->faceDirection == fDirection::LEFT)
+    if (this->faceDirection == 0)
     {
         dx = -8;
     }
-    else if (this->faceDirection == fDirection::RIGHT)
+    else if (this->faceDirection == 1)
     {
         dx = 8;
     }
-    else if (this->faceDirection == fDirection::UP)
+    else if (this->faceDirection == 2)
     {
         dy = -8;
     }
@@ -75,13 +76,13 @@ void Player::walk()
     {
         this->getSprite()->flipHorizontally(true);
         this->getSprite()->setVelocity(-movementSpeed, this->getSprite()->getDy());
-        this->faceDirection = fDirection::LEFT;
+        this->faceDirection = 0;
     }
     else if (this->key & KEY_RIGHT)
     {
         this->getSprite()->flipHorizontally(false);
         this->getSprite()->setVelocity(movementSpeed, this->getSprite()->getDy());
-        this->faceDirection = fDirection::RIGHT;
+        this->faceDirection = 1;
     }
     else
     {
@@ -92,13 +93,13 @@ void Player::walk()
     {
         this->getSprite()->animateToFrame(2);
         this->getSprite()->setVelocity(this->getSprite()->getDx(), -movementSpeed);
-        this->faceDirection = fDirection::UP;
+        this->faceDirection = 2;
     }
     else if (this->key & KEY_DOWN)
     {
         this->getSprite()->animateToFrame(1);
         this->getSprite()->setVelocity(this->getSprite()->getDx(), movementSpeed);
-        this->faceDirection = fDirection::DOWN;
+        this->faceDirection = 3;
     }
     else
     {
@@ -111,20 +112,20 @@ void Player::playerAttack()
     // if (this->key & KEY_A){
         switch (this->faceDirection)
         {
-            case LEFT:
+            case 0:
                 this->getSprite()->flipHorizontally(true);
                 this->playerAttackSprite->moveTo(this->getSprite()->getX()-16,this->getSprite()->getY());
                 this->playerAttackSprite->flipHorizontally(true);
                 break;
-            case RIGHT:
+            case 1:
                 this->getSprite()->flipHorizontally(false);
                 this->playerAttackSprite->moveTo(this->getSprite()->getX()+16,this->getSprite()->getY());
                 this->playerAttackSprite->flipHorizontally(false);
                 break;
-            case UP:
+            case 2:
                 this->playerAttackSprite->moveTo(this->getSprite()->getX(),this->getSprite()->getY()-32);
                 break;
-            case DOWN:
+            case 3:
                 this->playerAttackSprite->moveTo(this->getSprite()->getX(),this->getSprite()->getY()+32);
                 break;
         }

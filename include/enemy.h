@@ -17,7 +17,6 @@ class Enemy : public Entity
 private:
     VECTOR dest;
     std::deque<VECTOR> destCoords;
-    
 protected:
     
     
