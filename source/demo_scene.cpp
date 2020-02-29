@@ -100,7 +100,8 @@ void DemoScene::tick(u16 keys)
                     player->getSprite()->moveTo(border, player->getSprite()->getY());
                 player->getSprite()->setVelocity(0, player->getSprite()->getDy());
                 //Account for all enemies
-                enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
+                if(!enemy->getSprite()->isOffScreen())
+                    enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
                 
             }
         }       
@@ -115,7 +116,8 @@ void DemoScene::tick(u16 keys)
                 scrollx += player->getMovementSpeed();
                 player->getSprite()->setVelocity(0, player->getSprite()->getDy());
                 //Account for all enemies
-                enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
+                if(!enemy->getSprite()->isOffScreen())
+                    enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
                 
             }
         }
@@ -129,7 +131,8 @@ void DemoScene::tick(u16 keys)
                 scrolly -= player->getMovementSpeed();
                 player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
                 //Account for all enemies
-                enemy->getSprite()->setVelocity(enemy->getSprite()->getDx() , 0);
+                if(!enemy->getSprite()->isOffScreen())
+                    enemy->getSprite()->setVelocity(enemy->getSprite()->getDx() , 0);
             }
         }
         else if( !(tile_collide & background->COLLISION_Y) && keys & KEY_DOWN && scrolly < 352) { //map_height - screen_height = 352
@@ -142,7 +145,8 @@ void DemoScene::tick(u16 keys)
                 scrolly += player->getMovementSpeed();
                 player->getSprite()->setVelocity( player->getSprite()->getDx(), 0);
                 //Account for all enemies
-                enemy->getSprite()->setVelocity( enemy->getSprite()->getDx() , 0);
+                if(!enemy->getSprite()->isOffScreen())
+                    enemy->getSprite()->setVelocity( enemy->getSprite()->getDx() , 0);
             }
         }
         //End Camera block.

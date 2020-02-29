@@ -18,7 +18,9 @@ private:
     VECTOR dest;
     std::deque<VECTOR> destCoords;
 protected:
-    
+    int fuel{5};
+    int actionDistancex{10};
+    int actionDistancey{42};
     
 
 public:
@@ -31,6 +33,9 @@ public:
     void tick();
     void setPlayerPos(VECTOR destination);
     VECTOR getPlayerPos() {return dest; }
+    int getFuel() { return fuel; }
+    int getActionDistanceX() { return actionDistancex; }
+    int getActionDistanceY() { return actionDistancey; }
 
     Sprite* getSprite() { return Entity::getSprite(); }
     std::deque<VECTOR>& getDestCoords() { return destCoords; }
@@ -43,6 +48,15 @@ public:
     virtual void enter(Enemy& enemy) {}
     virtual EnemyState* update(Enemy& enemy) { return new EnemyState; }
     virtual void exit(Enemy& enemy) {}
+};
+
+class IdleStateShield : public EnemyState
+{
+public:
+    ~IdleStateShield() {}
+    void enter(Enemy& enemy);
+    EnemyState* update(Enemy& enemy);
+    void exit(Enemy& enemy);
 };
 
 class ChaseState : public EnemyState
