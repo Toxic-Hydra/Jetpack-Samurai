@@ -26,6 +26,7 @@ private:
     // u32 playerLeft, playerRight, playerTop, playerBottom;
     u32 enemyLeft, enemyRight, enemyTop, enemyBottom;
     int tile_collide;
+    int border = 40;
     unsigned int nBSSongSize;
     int scrollx{0}, scrolly{0};
 public:
