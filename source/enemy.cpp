@@ -92,15 +92,15 @@ EnemyState* ChaseState::update(Enemy& enemy)
     //Simple player follow
     if (enemy.getPlayerPos().x < enemy.getSprite()->getPos().x)
     {
-        enemy.faceDirection = 1;
-        enemy.getSprite()->flipHorizontally(false);
+        enemy.faceDirection = 0;
+        enemy.getSprite()->flipHorizontally(true);
         enemy.getSprite()->setVelocity(-enemy.getMovementSpeed(), enemy.getSprite()->getDy());
         // enemy.innerBox->setVelocity(-enemy.getMovementSpeed(), enemy.getSprite()->getDy());
     }
     else if (enemy.getPlayerPos().x > enemy.getSprite()->getPos().x)
     {
-        // enemy.faceDirection = 0;
-        // enemy.getSprite()->flipHorizontally(true);
+        enemy.faceDirection = 1;
+        enemy.getSprite()->flipHorizontally(false);
         enemy.getSprite()->setVelocity(enemy.getMovementSpeed(), enemy.getSprite()->getDy());
         // enemy.innerBox->setVelocity(enemy.getMovementSpeed(), enemy.getSprite()->getDy());
     }
