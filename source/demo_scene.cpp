@@ -7,11 +7,7 @@
 #include "map.h"
 #include "demo_scene.h"
 #include "endscene.h"
-
 #include "BoyScout.h"
-
-
-#include "Aegis.h"
 #include "jscomp16.h"
 
 static int bufferFrames = 0;
@@ -88,8 +84,10 @@ void DemoScene::tick(u16 keys)
         }
 
         //CAMERA
+        //TODO:
         //High possibility most of this should be in player class, refactor.
         //could be functions that take in player, enemies, current screenx and return a new screenx.
+        //Also needs to account for the possibility of multiple enemies
         //X AXIS CAMERA MOVEMENT
         
         if ( !(tile_collide & background->COLLISION_X) && keys & KEY_LEFT && scrollx > 0) {
@@ -330,6 +328,7 @@ void DemoScene::tick(u16 keys)
 
 void DemoScene::load()
 {
+    
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(map_palette, sizeof(map_palette)));
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     TextStream::instance().clear();
@@ -341,15 +340,18 @@ void DemoScene::load()
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
     enemy = std::make_unique<Enemy>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
 
+    //Village bg requires text to be disabled, its simply too big.
     background = std::make_unique<Background>(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64);
     background.get()->useMapScreenBlock(26);
     
     engine->enqueueMusic(jscomp16, jscomp16_bytes);
+    /*
     BoyScoutInitialize();
     nBSSongSize = BoyScoutGetNeededSongMemory((unsigned char*)Aegis_bgf);
     BoyScoutSetMemoryArea((unsigned int)malloc(nBSSongSize));
     BoyScoutOpenSong((unsigned char*)Aegis_bgf);
     BoyScoutPlaySong(0);
+    */
     engine->getTimer()->start();
 
     
