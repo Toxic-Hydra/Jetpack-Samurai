@@ -1,6 +1,7 @@
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include <libgba-sprite-engine/background/text_stream.h>
+#include <libgba-sprite-engine/gbavector.h>
 #include <tonc_video.h>
 #include <algorithm>
 #include <sstream>
@@ -31,6 +32,7 @@ std::vector<Sprite *> DemoScene::sprites()
 
     spriteVector.push_back(player->getSprite());
     spriteVector.push_back(enemy->getSprite());
+    spriteVector.push_back(enemySword->getSprite());
     spriteVector.push_back(player->playerAttackSprite.get());
 
     return spriteVector;
@@ -55,9 +57,20 @@ void DemoScene::tick(u16 keys)
             engine->updateSpritesInScene();
         }
         // Enemy
-        enemy->setPlayerPos(playerSprite->getPos());
+        // enemy->setPlayerPos(playerSprite->getPos());
+        // enemy->tick();
+
+        // enemySword->setPlayerPos(playerSprite->getPos());
+        // enemySword->tick();
+
+        VECTOR playerPos;
+        playerPos = playerSprite->getPos();
+
+        enemy->setPlayerPos(playerPos);
         enemy->tick();
 
+        enemySword->setPlayerPos(playerPos);
+        enemySword->tick();
 
         // Player
 
@@ -254,6 +267,152 @@ void DemoScene::tick(u16 keys)
             }
         }
 
+
+
+        // // Sword enemy
+        // // enemySword Inner Box vs. Player Attack
+        // if (enemySword->innerBox->collidesWith(*player->playerAttackSprite))
+        // {
+        //     enemySword->getSprite()->moveTo(300, 200);
+        // }
+        // // enemySword vs. Player Attack
+        // else if (player->playerAttackSprite->collidesWith(*enemySword->getSprite()))
+        // {
+        //     if (enemySword->getSprite()->getCenter().x > playerSprite->getCenter().x)
+        //     {
+        //         enemySword->getSprite()->moveTo(enemySword->getSprite()->getX() + 32, enemySword->getSprite()->getY());
+        //     }
+        //     else if (enemySword->getSprite()->getCenter().x < playerSprite->getCenter().x)
+        //     {
+        //         enemySword->getSprite()->moveTo(enemySword->getSprite()->getX() - 32, enemySword->getSprite()->getY());
+        //     }
+        //     else
+        //     {
+        //         if (enemySword->getSprite()->getCenter().y > playerSprite->getCenter().y)
+        //         {
+        //             enemySword->getSprite()->moveTo(enemySword->getSprite()->getX(), enemySword->getSprite()->getY() + enemySword->getSprite()->getHeight());
+        //         }
+        //         else
+        //         {
+        //             enemySword->getSprite()->moveTo(enemySword->getSprite()->getX(), enemySword->getSprite()->getY() - enemySword->getSprite()->getHeight());
+        //         }
+        //     }
+        //     //TextStream::instance() << engine->getTimer()->getSecs();
+        // }
+        // // Player vs. enemySword
+        // if (playerSprite->collidesWith(*enemySword->getSprite()))
+        // {
+        //     // if (player->state->stateID != 5)
+        //     // {
+        //     //     // player->useFuel(10);
+        //     //     // // Player Bounding Box
+        //     //     // playerLeft = playerSprite->getX();
+        //     //     // playerRight = playerSprite->getX() + playerSprite->getWidth();
+        //     //     // playerTop = playerSprite->getY();
+        //     //     // playerBottom = playerSprite->getY() + playerSprite->getHeight();
+
+        //     //     // // enemySword Bounding Box
+        //     //     // enemySwordLeft = enemySword->getSprite()->getX();
+        //     //     // enemySwordRight = enemySword->getSprite()->getX() + enemySword->getSprite()->getWidth();
+        //     //     // enemySwordTop = enemySword->getSprite()->getY();
+        //     //     // enemySwordBottom = enemySword->getSprite()->getY() + enemySword->getSprite()->getHeight();
+
+        //     //     // if enemySword is coming in from the player's left-side
+        //     //     if (playerSprite->getCenter().x > enemySword->getSprite()->getCenter().x)
+        //     //     {
+        //     //         player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * 2, 0);
+        //     //     }
+        //     //     // If enemySword is coming in from the player's right-side
+        //     //     else if (playerSprite->getCenter().x < enemySword->getSprite()->getCenter().x)
+        //     //     {
+        //     //         player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * -2, 0);
+        //     //     }
+        //     //     // // Uncomment this if you don't want to really prioritize left-right knockback
+        //     //     // else if (playerSprite->getCenter().y > enemySwordBottom)
+        //     //     // {
+        //     //     //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 2);
+        //     //     // }
+        //     //     // else if (playerSprite->getCenter().y < enemySwordTop)
+        //     //     // {
+        //     //     //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -2);
+        //     //     // }
+                
+        //     //     // I want to prioritize left-right knockback due to the screen being wider than it is tall
+        //     //     else
+        //     //     {
+        //     //         if (playerSprite->getCenter().y > enemySword->getSprite()->getCenter().y)
+        //     //         {
+        //     //             player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 3);
+        //     //         }
+        //     //         else
+        //     //         {
+        //     //             player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -3);
+        //     //         }
+        //     //         // player->state = new player_ns::DamagedState(10, 32, 0);
+        //     //     }
+        //     // }
+        //     // else
+        //     // {
+        //     //     player->useFuel(5);
+        //     //     enemySword->getSprite()->moveTo(enemySword->getSprite()->getX() - 2 * enemySword->getSprite()->getWidth() * enemySword->getSprite()->getDx(),
+        //     //                                enemySword->getSprite()->getY() - 2 * enemySword->getSprite()->getHeight() * enemySword->getSprite()->getDy());
+        //     // }
+
+        //     //enemySword collision
+        //     if (enemySword->getSprite()->getDx() > 0 || enemySword->getSprite()->getDx() < 0)
+        //     {
+        //         enemySword->getSprite()->setVelocity(0, enemySword->getSprite()->getDy());
+        //     }
+
+        //     if (enemySword->getSprite()->getDy() > 0 || enemySword->getSprite()->getDy() < 0)
+        //     {
+        //         enemySword->getSprite()->setVelocity(enemySword->getSprite()->getDx(), 0);
+        //     }
+
+        //     // //PLAYER collisions
+        //     // if ( player->getSprite()->getX() < enemySword->getSprite()->getX())
+        //     // {
+
+        //     //     if ( !(tile_collide & background->COLLISION_X) && player->getKey() & KEY_LEFT)
+        //     //     {
+        //     //         player->getSprite()->setVelocity(-player->getMovementSpeed(), player->getSprite()->getDy());
+        //     //     }
+        //     //     else
+        //     //         player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+                
+        //     // }
+        //     // else if (player->getSprite()->getX() > enemySword->getSprite()->getX())
+        //     // {
+        //     //     if ( !(tile_collide & background->COLLISION_X) && player->getKey() & KEY_RIGHT)
+        //     //     {
+        //     //         player->getSprite()->setVelocity(player->getMovementSpeed(), player->getSprite()->getDy());
+        //     //     }
+        //     //     else
+        //     //         player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+        //     // }
+        //     // //Y
+        //     // if ( player->getSprite()->getY() < enemySword->getSprite()->getY())
+        //     // {
+
+        //     //     if ( !(tile_collide & background->COLLISION_Y) && player->getKey() & KEY_UP)
+        //     //     {
+        //     //         player->getSprite()->setVelocity(player->getSprite()->getDx(),-player->getMovementSpeed());
+        //     //     }
+        //     //     else
+        //     //         player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
+                
+        //     // }
+        //     // else if (player->getSprite()->getY() > enemySword->getSprite()->getY())
+        //     // {
+        //     //     if ( !(tile_collide & background->COLLISION_Y) && player->getKey() & KEY_DOWN)
+        //     //     {
+        //     //         player->getSprite()->setVelocity(player->getSprite()->getDx(), player->getMovementSpeed());
+        //     //     }
+        //     //     else
+        //     //         player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
+        //     // }
+        // }
+
         // Change Scenes
         if (player->getHealth() <= 0)
         {
@@ -278,6 +437,7 @@ void DemoScene::load()
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
     enemy = std::make_unique<Enemy>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
+    enemySword = std::make_unique<EnemySword>(GBA_SCREEN_WIDTH/2 - 32, GBA_SCREEN_HEIGHT/2 + 32);
 
     background = std::make_unique<Background>(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64);
     background.get()->useMapScreenBlock(26);

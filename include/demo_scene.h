@@ -9,6 +9,7 @@
 #include "entity.h"
 #include "player.h"
 #include "enemy.h"
+#include "enemySword.h"
 // #include "collisionBox.h"
 
 
@@ -19,6 +20,7 @@ private:
     std::unique_ptr<Background> background;
     std::unique_ptr<Player> player;
     std::unique_ptr<Enemy> enemy;
+    std::unique_ptr<EnemySword> enemySword;
 
     std::vector<Sprite*> spriteVector;
 
