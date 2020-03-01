@@ -8,8 +8,8 @@
 
 #include "entity.h"
 #include "player.h"
-#include "enemy.h"
-#include "enemySword.h"
+#include "archerEnemy.h"
+
 // #include "collisionBox.h"
 
 
@@ -19,8 +19,8 @@ private:
     std::unique_ptr<SpriteManager> spriteManager;
     std::unique_ptr<Background> background;
     std::unique_ptr<Player> player;
-    std::unique_ptr<Enemy> enemy;
-    std::unique_ptr<EnemySword> enemySword;
+    std::unique_ptr<ArcherEnemy> enemy;
+
 
     std::vector<Sprite*> spriteVector;
 
@@ -28,6 +28,7 @@ private:
     // u32 playerLeft, playerRight, playerTop, playerBottom;
     u32 enemyLeft, enemyRight, enemyTop, enemyBottom;
     int tile_collide;
+    int border = 40;
     unsigned int nBSSongSize;
     int scrollx{0}, scrolly{0};
 public:

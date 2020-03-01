@@ -25,7 +25,7 @@ private :
     // int bufferWindow = 3; // Number of frames elapsed until checking the next input, key, states
     u16 keyPrev;
     u16 key; // the current key
-    enum fDirection {LEFT, RIGHT, UP, DOWN};
+    // enum fDirection {LEFT, RIGHT, UP, DOWN};
     static std::unique_ptr<Timer> dashTimer;
 
 protected :
@@ -39,7 +39,7 @@ public:
                     .withAnimated(8, 3)
                     .withLocation(-100,-100)
                     .buildPtr();;
-    int faceDirection = fDirection::RIGHT;
+    // int faceDirection = fDirection::RIGHT;
     player_ns::PlayerState* state = NULL;
     void tick();
     void useFuel(int x);
