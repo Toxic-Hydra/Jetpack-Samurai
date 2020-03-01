@@ -150,14 +150,11 @@ void DemoScene::tick(u16 keys)
             }
         }
         //End Camera block.
-        
-
 
         if(keys & KEY_START) // Reset Health
         {
             player->setHealth(100);
         }
-
 
         // UI
         if(player->getHealth() <= 10)

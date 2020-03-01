@@ -11,7 +11,7 @@ Enemy::Enemy(int x, int y) : Entity(x, y)
                     .buildPtr());
 
     if(this->state == NULL)
-        state = new IdleStateShield;//new ChaseState;
+        state = new ChaseState;
 
     faceDirection = 0;
     playerVicinity = rc_set2(playerVicinity, this->dest.x, this->dest.y, 16, 32);
@@ -55,7 +55,11 @@ EnemyState* IdleStateShield::update(Enemy& enemy)
     int distancex = ABS(enemy.getPlayerPos().x+8 - (int)enemyCenter.x);
     int distancey = ABS(enemy.getPlayerPos().y+16 - (int)enemyCenter.y);
     //Account for player direction, if on right you need to offset the distance a little 
-    if( distancex < enemy.getActionDistanceX() && distancey < enemy.getActionDistanceY())
+    if( distancex >= enemy.getActionDistanceX() && distancey >= enemy.getActionDistanceY())
+    {
+        return new ChaseState;
+    }
+    if( distancex < GBA_SCREEN_WIDTH && distancey < GBA_SCREEN_HEIGHT)
     {
         return new ChaseState;
     }
@@ -64,7 +68,7 @@ EnemyState* IdleStateShield::update(Enemy& enemy)
 
 void IdleStateShield::exit(Enemy& enemy)
 {
-    
+
 }
 
 void ChaseState::enter(Enemy& enemy)
@@ -84,7 +88,7 @@ EnemyState* ChaseState::update(Enemy& enemy)
 
     int distancex = ABS(enemy.getPlayerPos().x - (int)enemy.getSprite()->getX());
     int distancey = ABS(enemy.getPlayerPos().y - (int)enemy.getSprite()->getY()); 
-    if( distancex > enemy.getActionDistanceX()+40 || distancey > enemy.getActionDistanceY()+40)
+    if( distancex < enemy.getActionDistanceX() + 40 || distancey < enemy.getActionDistanceY() + 40)
     {
         return new IdleStateShield;
     }
