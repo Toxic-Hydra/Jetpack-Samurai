@@ -7,7 +7,7 @@
 //	+ 64 tiles not compressed
 //	Total size: 4096 = 4096
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -171,7 +171,7 @@ const unsigned int Attack_Right_p1Tiles[1024] __attribute__((aligned(4)))=
 //	+ 64 tiles not compressed
 //	Total size: 4096 = 4096
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -335,7 +335,7 @@ const unsigned int Attack_Right_p2Tiles[1024] __attribute__((aligned(4)))=
 //	+ 8 tiles not compressed
 //	Total size: 512 = 512
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -373,7 +373,7 @@ const unsigned int demoAttackHTiles[128] __attribute__((aligned(4)))=
 //	+ 8 tiles not compressed
 //	Total size: 512 = 512
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -411,7 +411,7 @@ const unsigned int demoAttackVTiles[128] __attribute__((aligned(4)))=
 //	+ 232 tiles not compressed
 //	Total size: 14848 = 14848
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -953,7 +953,7 @@ const unsigned int playerSheetTiles[3712] __attribute__((aligned(4)))=
 //	+ 80 tiles not compressed
 //	Total size: 5120 = 5120
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -1153,7 +1153,7 @@ const unsigned int Run_LeftTiles[1280] __attribute__((aligned(4)))=
 //	+ 80 tiles not compressed
 //	Total size: 5120 = 5120
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -1353,7 +1353,7 @@ const unsigned int Run_RightTiles[1280] __attribute__((aligned(4)))=
 //	+ 32 tiles not compressed
 //	Total size: 2048 = 2048
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -1442,10 +1442,10 @@ const unsigned int samuraiTiles[512] __attribute__((aligned(4)))=
 //======================================================================
 //
 //	shared, 16x16@8, 
-//	+ palette 181 entries, not compressed
-//	Total size: 362 = 362
+//	+ palette 182 entries, not compressed
+//	Total size: 364 = 364
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -1477,7 +1477,7 @@ const unsigned short sharedPal[182] __attribute__((aligned(4)))=
 	0x66F1,0x6B13,0x7333,0x6F7B,0x631D,0x6B5F,0x739C,0x042E,
 	0x20C6,0x0437,0x0003,0x2D08,0x001D,0x0433,0x000A,0x394A,
 	0x28E7,0x0430,0x7BF9,0x0851,0x0C79,0x24C6,0x0438,0x3D6B,
-	0x0434,0x001E,0x20C7,0x000B,0x3108,
+	0x0434,0x001E,0x20C7,0x000B,0x3108,0x28E7,
 };
 
 //}}BLOCK(shared)
@@ -1491,7 +1491,7 @@ const unsigned short sharedPal[182] __attribute__((aligned(4)))=
 //	+ 8 tiles not compressed
 //	Total size: 512 = 512
 //
-//	Time-stamp: 2020-02-19, 17:12:49
+//	Time-stamp: 2020-02-27, 17:45:08
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -1519,4 +1519,42 @@ const unsigned int shieldTiles[128] __attribute__((aligned(4)))=
 };
 
 //}}BLOCK(shield)
+
+
+//{{BLOCK(sword)
+
+//======================================================================
+//
+//	sword, 16x32@8, 
+//	+ 8 tiles not compressed
+//	Total size: 512 = 512
+//
+//	Time-stamp: 2020-02-27, 17:45:08
+//	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
+//	( http://www.coranac.com/projects/#grit )
+//
+//======================================================================
+
+const unsigned int swordTiles[128] __attribute__((aligned(4)))=
+{
+	0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x11000000,
+	0x00000000,0x96960000,0x00000000,0xA2A20000,0x00000000,0x9F9FA200,0xA2000000,0x9F9F9FA2,
+	0x11111100,0x00000000,0x96969696,0xADADB196,0xB1B19696,0xADADA4B1,0x58581111,0xADADADAD,
+	0xAA0E5896,0xB40EADB5,0x0EAAA2A2,0xA70EADB5,0x0EA2A2A2,0xAA0EADB5,0x0EA2A29F,0xAF0EADB5,
+	0xA2000000,0x9F9F9FA2,0xA2000000,0x9F9F9FA2,0xA2A20000,0x9F9F9FA2,0xA2A20000,0xB09FA2A2,
+	0xA2A20000,0xB0A2A2A2,0xA2A20000,0xA5A2A2A2,0xA2A20000,0xA2A2A2A2,0xA2AE0000,0xA2A2A2A2,
+	0x0EA2A29F,0xA70EADB5,0x00A2A29F,0xA70EADB5,0x00A6A2B0,0xA70EADB5,0xA6A6B0B0,0xAD0EADA0,
+	0xA6B0B0B0,0xB40EADA6,0xA6B0B0B0,0x0E0E0EA6,0xB0B0B0B0,0xB40EB0B0,0xB0B0B000,0xB40EB0B0,
+
+	0xAEAE0000,0xA2A2A2A1,0xAEAE0000,0xA2A2AEAE,0xAEAC0000,0xA2A2AEAE,0xAE000000,0xAEAEAEAE,
+	0x00000000,0xAEAEAE00,0xA9000000,0xAEAEA9A9,0xA9000000,0xAEA9A9A9,0xA9AB0000,0xAEA2A9A9,
+	0xB0B00000,0xA70EADB2,0x000000A2,0xA7B5ADB5,0x000000A2,0xA7B5ADB5,0x000000AE,0xA7ADADB5,
+	0x0000A2A2,0xADB5ADB5,0x0000A2A2,0xA7A3ADB5,0x00A2A2A2,0xB4ADADB5,0x00A2A2A1,0xADADADB5,
+	0xA9A90000,0xAEA2A9A9,0xA9A90000,0x00A2A2A9,0xA9A9A900,0x0000A2A9,0xA9A9A900,0x000000AB,
+	0x00A9A9A9,0x00000000,0x00A9A9A9,0x00000000,0x00A9A9A9,0x00000000,0x00A9A9A9,0x00000000,
+	0x00A2A2AE,0xADADADB5,0x00A2AEAE,0xADADADB5,0x00A2AEAE,0xADADADB5,0x00AEAEAE,0xADADADB5,
+	0x00AEAEAE,0xADAD0000,0x00AEAEAE,0xADB50000,0x00AEAEAE,0xAD000000,0x00AEAEAE,0x00000000,
+};
+
+//}}BLOCK(sword)
 

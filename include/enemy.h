@@ -19,16 +19,15 @@ private:
     std::deque<VECTOR> destCoords;
 protected:
     int fuel{5};
-    int actionDistancex{10};
-    int actionDistancey{42};
-    
+    int actionDistancex{1};
+    int actionDistancey{4};
 
 public:
     Enemy(int x, int y);
     
     EnemyState* state;
     RECT* playerVicinity;
-    RECT* myBoundingBox; 
+    RECT* myBoundingBox;
     std::unique_ptr<CollisionBox> innerBox;
     void tick();
     void setPlayerPos(VECTOR destination);
@@ -78,10 +77,6 @@ public:
     EnemyState* update(Enemy& enemy);
     void exit(Enemy& enemy);
 };
-
-
-
-
 
 
 #endif
