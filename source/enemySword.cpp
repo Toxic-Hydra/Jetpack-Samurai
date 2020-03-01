@@ -29,8 +29,10 @@ void EnemySword::tick()
     EnemySwordState* currentState = state->update(*this);
     if (currentState != NULL)
     {
-        delete state;
-        state = currentState;
+        this->state->exit(*this);
+        delete this->state;
+        this->state = currentState;
+        this->state->enter(*this);
     }
 }
 
