@@ -64,7 +64,7 @@ EnemyState* IdleStateShield::update(Enemy& enemy)
 
 void IdleStateShield::exit(Enemy& enemy)
 {
-
+    
 }
 
 void ChaseState::enter(Enemy& enemy)

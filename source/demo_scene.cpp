@@ -207,62 +207,6 @@ void DemoScene::tick(u16 keys)
         // Player vs. Enemy
         if (playerSprite->collidesWith(*enemy->getSprite()))
         {
-            // if (player->state->stateID != 5)
-            // {
-            //     // player->useFuel(10);
-            //     // // Player Bounding Box
-            //     // playerLeft = playerSprite->getX();
-            //     // playerRight = playerSprite->getX() + playerSprite->getWidth();
-            //     // playerTop = playerSprite->getY();
-            //     // playerBottom = playerSprite->getY() + playerSprite->getHeight();
-
-            //     // // Enemy Bounding Box
-            //     // enemyLeft = enemy->getSprite()->getX();
-            //     // enemyRight = enemy->getSprite()->getX() + enemy->getSprite()->getWidth();
-            //     // enemyTop = enemy->getSprite()->getY();
-            //     // enemyBottom = enemy->getSprite()->getY() + enemy->getSprite()->getHeight();
-
-            //     // if Enemy is coming in from the player's left-side
-            //     if (playerSprite->getCenter().x > enemy->getSprite()->getCenter().x)
-            //     {
-            //         player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * 2, 0);
-            //     }
-            //     // If Enemy is coming in from the player's right-side
-            //     else if (playerSprite->getCenter().x < enemy->getSprite()->getCenter().x)
-            //     {
-            //         player->state = new player_ns::DamagedState(10, playerSprite->getWidth() * -2, 0);
-            //     }
-            //     // // Uncomment this if you don't want to really prioritize left-right knockback
-            //     // else if (playerSprite->getCenter().y > enemyBottom)
-            //     // {
-            //     //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 2);
-            //     // }
-            //     // else if (playerSprite->getCenter().y < enemyTop)
-            //     // {
-            //     //     player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -2);
-            //     // }
-                
-            //     // I want to prioritize left-right knockback due to the screen being wider than it is tall
-            //     else
-            //     {
-            //         if (playerSprite->getCenter().y > enemy->getSprite()->getCenter().y)
-            //         {
-            //             player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * 3);
-            //         }
-            //         else
-            //         {
-            //             player->state = new player_ns::DamagedState(10, 0, playerSprite->getHeight() * -3);
-            //         }
-            //         // player->state = new player_ns::DamagedState(10, 32, 0);
-            //     }
-            // }
-            // else
-            // {
-            //     player->useFuel(5);
-            //     enemy->getSprite()->moveTo(enemy->getSprite()->getX() - 2 * enemy->getSprite()->getWidth() * enemy->getSprite()->getDx(),
-            //                                enemy->getSprite()->getY() - 2 * enemy->getSprite()->getHeight() * enemy->getSprite()->getDy());
-            // }
-
             //Enemy collision
             if (enemy->getSprite()->getDx() > 0 || enemy->getSprite()->getDx() < 0)
             {
