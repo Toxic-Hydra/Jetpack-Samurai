@@ -58,15 +58,15 @@ archer_nme_ns::ArcherEnemyState* archer_nme_ns::ChaseState::update(ArcherEnemy& 
     //Simple player follow
     if (archerEnemy.getPlayerPos().x < archerEnemy.getSprite()->getPos().x)
     {
-        archerEnemy.faceDirection = 1;
-        archerEnemy.getSprite()->flipHorizontally(false);
+        archerEnemy.faceDirection = 0;
+        archerEnemy.getSprite()->flipHorizontally(true);
         archerEnemy.getSprite()->setVelocity(-archerEnemy.getMovementSpeed(), archerEnemy.getSprite()->getDy());
         // archerEnemy.innerBox->setVelocity(-archerEnemy.getMovementSpeed(), archerEnemy.getSprite()->getDy());
     }
     else if (archerEnemy.getPlayerPos().x > archerEnemy.getSprite()->getPos().x)
     {
-        // archerEnemy.faceDirection = 0;
-        // archerEnemy.getSprite()->flipHorizontally(true);
+        archerEnemy.faceDirection = 1;
+        archerEnemy.getSprite()->flipHorizontally(false);
         archerEnemy.getSprite()->setVelocity(archerEnemy.getMovementSpeed(), archerEnemy.getSprite()->getDy());
         // archerEnemy.innerBox->setVelocity(archerEnemy.getMovementSpeed(), archerEnemy.getSprite()->getDy());
     }
