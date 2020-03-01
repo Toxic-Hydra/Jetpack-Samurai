@@ -10,7 +10,12 @@
 #include "player.h"
 #include "collisionBox.h"
 
-class ArcherEnemyState;
+namespace archer_nme_ns
+{
+    class ArcherEnemyState;
+    class ChaseState;
+    class AttackState;
+}
 
 class ArcherEnemy : public Entity
 {
@@ -24,7 +29,7 @@ protected:
 public:
     ArcherEnemy(int x, int y);
     
-    ArcherEnemyState* state;
+    archer_nme_ns::ArcherEnemyState* state;
     RECT* playerVicinity;
     RECT* myBoundingBox; 
     std::unique_ptr<CollisionBox> innerBox;
@@ -36,31 +41,31 @@ public:
     std::deque<VECTOR>& getDestCoords() { return destCoords; }
 };
 
-class ArcherEnemyState
+class archer_nme_ns::ArcherEnemyState
 {
 public:
     virtual ~ArcherEnemyState() {}
     virtual void enter(ArcherEnemy& archerEnemy) {}
-    virtual ArcherEnemyState* update(ArcherEnemy& archerEnemy) { return new ArcherEnemyState; }
+    virtual archer_nme_ns::ArcherEnemyState* update(ArcherEnemy& archerEnemy) { return new archer_nme_ns::ArcherEnemyState; }
     virtual void exit(ArcherEnemy& archerEnemy) {}
 };
 
-class ChaseState : public ArcherEnemyState
+class archer_nme_ns::ChaseState : public ArcherEnemyState
 {
 public:
     ~ChaseState() {}
     void enter(ArcherEnemy& archerEnemy);
-    ArcherEnemyState* update(ArcherEnemy& archerEnemy);
+    archer_nme_ns::ArcherEnemyState* update(ArcherEnemy& archerEnemy);
     void exit(ArcherEnemy& archerEnemy);
     
 };
 
-class AttackState : public ArcherEnemyState
+class archer_nme_ns::AttackState : public ArcherEnemyState
 {
 public:
     ~AttackState() {}
     void enter(ArcherEnemy& archerEnemy);
-    ArcherEnemyState* update(ArcherEnemy& archerEnemy);
+    archer_nme_ns::ArcherEnemyState* update(ArcherEnemy& archerEnemy);
     void exit(ArcherEnemy& archerEnemy);
 };
 

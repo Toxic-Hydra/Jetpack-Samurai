@@ -4,13 +4,13 @@
 ArcherEnemy::ArcherEnemy(int x, int y) : Entity(x, y)
 {
     this->setSprite((spriteBuilder
-                    .withData(shieldTiles, 512)
+                    .withData(shieldTiles, sizeof(shieldTiles))
                     .withSize(SIZE_16_32))
                     .withLocation(x,y)
                     .buildPtr());
 
     if(this->state == NULL)
-        state = new ChaseState;
+        state = new archer_nme_ns::ChaseState;
 
     faceDirection = 0;
     playerVicinity = rc_set2(playerVicinity, this->dest.x, this->dest.y, 16, 32);
@@ -26,7 +26,7 @@ void ArcherEnemy::tick()
     myBoundingBox = rc_set_pos(myBoundingBox, this->x, this->y);
     innerBox->setPos(this->getSprite()->getX() + 6, this->getSprite()->getY() + 12);
 
-    EnemyState* currentState = state->update(*this);
+    archer_nme_ns::ArcherEnemyState* currentState = state->update(*this);
     if (currentState != NULL)
     {
         delete state;
@@ -41,19 +41,19 @@ void ArcherEnemy::setPlayerPos(VECTOR destination)
     //this->destCoords = enemyPos.bresenhamLineTo(destination);
 }
 
-void ChaseState::enter(ArcherEnemy& archerEnemy)
+void archer_nme_ns::ChaseState::enter(ArcherEnemy& archerEnemy)
 {
 
 }
 
-EnemyState* ChaseState::update(ArcherEnemy& archerEnemy)
+archer_nme_ns::ArcherEnemyState* archer_nme_ns::ChaseState::update(ArcherEnemy& archerEnemy)
 {
     if(archerEnemy.myBoundingBox->left < archerEnemy.playerVicinity->left + archerEnemy.playerVicinity->right &&
             archerEnemy.myBoundingBox->left + archerEnemy.myBoundingBox->right > archerEnemy.playerVicinity->left &&
             archerEnemy.myBoundingBox->top < archerEnemy.playerVicinity->top + archerEnemy.playerVicinity->bottom &&
             archerEnemy.myBoundingBox->bottom + archerEnemy.myBoundingBox->top > archerEnemy.playerVicinity->top)
     {
-        return new AttackState;
+        return new archer_nme_ns::AttackState;
     }
     //Simple player follow
     if (archerEnemy.getPlayerPos().x < archerEnemy.getSprite()->getPos().x)
@@ -96,24 +96,24 @@ EnemyState* ChaseState::update(ArcherEnemy& archerEnemy)
     return NULL;
 }
 
-void ChaseState::exit(ArcherEnemy& archerEnemy)
+void archer_nme_ns::ChaseState::exit(ArcherEnemy& archerEnemy)
 {
 
 }
 
-void AttackState::enter(ArcherEnemy& archerEnemy)
+void archer_nme_ns::AttackState::enter(ArcherEnemy& archerEnemy)
 {
 
 }
 
-EnemyState* AttackState::update(ArcherEnemy& archerEnemy)
+archer_nme_ns::ArcherEnemyState* archer_nme_ns::AttackState::update(ArcherEnemy& archerEnemy)
 {
     archerEnemy.getSprite()->setVelocity(0, 0);
     // archerEnemy.innerBox->setVelocity(0, 0);
     return NULL;
 }
 
-void AttackState::exit(ArcherEnemy& archerEnemy)
+void archer_nme_ns::AttackState::exit(ArcherEnemy& archerEnemy)
 {
     
 }
