@@ -23,9 +23,11 @@ class ArcherEnemy : public Entity
 private:
     VECTOR dest;
     std::deque<VECTOR> destCoords;
+
 protected:
-    
-    
+    int fuel{10};
+    int actionDistx{1};
+    int actionDisty{4};
 
 public:
     ArcherEnemy(int x, int y);
@@ -37,6 +39,10 @@ public:
     void tick();
     void setPlayerPos(VECTOR destination);
     VECTOR getPlayerPos() {return dest; }
+    
+    int getFuel(return fuel;)
+    int getActionDistx(return actionDistx;)
+    int getActionDisty(return actionDisty;)
 
     Sprite* getSprite() { return Entity::getSprite(); }
     std::deque<VECTOR>& getDestCoords() { return destCoords; }
