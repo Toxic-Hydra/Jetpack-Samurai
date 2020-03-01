@@ -1,6 +1,7 @@
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include <libgba-sprite-engine/background/text_stream.h>
+#include <libgba-sprite-engine/gbavector.h>
 #include <tonc_video.h>
 #include <algorithm>
 #include <sstream>
@@ -28,6 +29,7 @@ std::vector<Sprite *> DemoScene::sprites()
     spriteVector.push_back(player->getSprite());
     spriteVector.push_back(enemy->getSprite());
     spriteVector.push_back(player->playerAttackSprite.get());
+    spriteVector.push_back(enemySword->getSprite());
 
     return spriteVector;
 }
@@ -50,10 +52,12 @@ void DemoScene::tick(u16 keys)
         {
             engine->updateSpritesInScene();
         }
-        // ArcherEnemy
+      
         enemy->setPlayerPos(playerSprite->getPos());
         enemy->tick();
 
+        enemySword->setPlayerPos(playerPos);
+        enemySword->tick();
 
         // Player
 
@@ -259,6 +263,7 @@ void DemoScene::tick(u16 keys)
             }
         }
 
+
         // Change Scenes
         if (player->getHealth() <= 0)
         {
@@ -284,6 +289,7 @@ void DemoScene::load()
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
     enemy = std::make_unique<ArcherEnemy>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
+
 
     //Village bg requires text to be disabled, its simply too big.
     background = std::make_unique<Background>(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64);
