@@ -29,7 +29,6 @@ std::vector<Sprite *> DemoScene::sprites()
     spriteVector.push_back(player->getSprite());
     spriteVector.push_back(enemy->getSprite());
     spriteVector.push_back(player->playerAttackSprite.get());
-    spriteVector.push_back(enemySword->getSprite());
 
     return spriteVector;
 }
@@ -55,9 +54,6 @@ void DemoScene::tick(u16 keys)
       
         enemy->setPlayerPos(playerSprite->getPos());
         enemy->tick();
-
-        enemySword->setPlayerPos(playerPos);
-        enemySword->tick();
 
         // Player
 
