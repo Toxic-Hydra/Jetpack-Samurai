@@ -40,9 +40,9 @@ public:
     void setPlayerPos(VECTOR destination);
     VECTOR getPlayerPos() {return dest; }
     
-    int getFuel(return fuel;)
-    int getActionDistx(return actionDistx;)
-    int getActionDisty(return actionDisty;)
+    int getFuel() {return fuel;}
+    int getActionDistx() {return actionDistx;}
+    int getActionDisty() {return actionDisty;}
 
     Sprite* getSprite() { return Entity::getSprite(); }
     std::deque<VECTOR>& getDestCoords() { return destCoords; }
