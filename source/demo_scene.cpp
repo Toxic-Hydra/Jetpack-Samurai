@@ -50,7 +50,7 @@ void DemoScene::tick(u16 keys)
         {
             engine->updateSpritesInScene();
         }
-        // Enemy
+        // ArcherEnemy
         enemy->setPlayerPos(playerSprite->getPos());
         enemy->tick();
 
@@ -174,13 +174,13 @@ void DemoScene::tick(u16 keys)
         TextStream::instance().setText("(" + std::to_string(enemy->innerBox->getX()) + ", " + std::to_string(enemy->innerBox->getY()) + ")", 14, 18);
 
         // Collision Checking
-        // Enemy Inner Box vs. Player Attack
+        // ArcherEnemy Inner Box vs. Player Attack
         if (((player->faceDirection == 0 && enemy->faceDirection == 0) || (player->faceDirection == 1 && enemy->faceDirection == 1)) &&
               enemy->innerBox->collidesWith(*player->playerAttackSprite))
         {
             enemy->getSprite()->moveTo(-100, 0);
         }
-        // Enemy vs. Player Attack
+        // ArcherEnemy vs. Player Attack
         else if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
         {
             if (enemy->getSprite()->getCenter().x > playerSprite->getCenter().x)
@@ -204,7 +204,7 @@ void DemoScene::tick(u16 keys)
             }
             //TextStream::instance() << engine->getTimer()->getSecs();
         }
-        // Player vs. Enemy
+        // Player vs. ArcherEnemy
         if (playerSprite->collidesWith(*enemy->getSprite()))
         {
             //Enemy collision
@@ -286,7 +286,7 @@ void DemoScene::load()
     player->setHealth(100);
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
-    enemy = std::make_unique<Enemy>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
+    enemy = std::make_unique<ArcherEnemy>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
 
     //Village bg requires text to be disabled, its simply too big.
     background = std::make_unique<Background>(1, map_tiles, sizeof(map_tiles), test_map, sizeof(test_map), 0, 1, MAPLAYOUT_64X64);
