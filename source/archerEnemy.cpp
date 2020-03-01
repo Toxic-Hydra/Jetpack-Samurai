@@ -29,8 +29,10 @@ void ArcherEnemy::tick()
     archer_nme_ns::ArcherEnemyState* currentState = state->update(*this);
     if (currentState != NULL)
     {
-        delete state;
-        state = currentState;
+        this->state->exit(*this);
+        delete this->state;
+        this->state = currentState;
+        this->state->enter(*this);
     }
 }
 
@@ -130,5 +132,5 @@ archer_nme_ns::ArcherEnemyState* archer_nme_ns::IdleState::update(ArcherEnemy& a
 
 void archer_nme_ns::IdleState::exit(ArcherEnemy& archerEnemy)
 {
-    
+
 }
