@@ -117,3 +117,18 @@ void archer_nme_ns::AttackState::exit(ArcherEnemy& archerEnemy)
 {
     
 }
+
+void archer_nme_ns::IdleState::enter(ArcherEnemy& archerEnemy)
+{
+
+}
+
+archer_nme_ns::ArcherEnemyState* archer_nme_ns::IdleState::update(ArcherEnemy& archerEnemy)
+{
+    return NULL;
+}
+
+void archer_nme_ns::IdleState::exit(ArcherEnemy& archerEnemy)
+{
+    
+}

@@ -15,6 +15,7 @@ namespace archer_nme_ns
     class ArcherEnemyState;
     class ChaseState;
     class AttackState;
+    class IdleState;
 }
 
 class ArcherEnemy : public Entity
@@ -54,6 +55,16 @@ class archer_nme_ns::ChaseState : public ArcherEnemyState
 {
 public:
     ~ChaseState() {}
+    void enter(ArcherEnemy& archerEnemy);
+    archer_nme_ns::ArcherEnemyState* update(ArcherEnemy& archerEnemy);
+    void exit(ArcherEnemy& archerEnemy);
+    
+};
+
+class archer_nme_ns::IdleState : public ArcherEnemyState
+{
+public:
+    ~IdleState() {}
     void enter(ArcherEnemy& archerEnemy);
     archer_nme_ns::ArcherEnemyState* update(ArcherEnemy& archerEnemy);
     void exit(ArcherEnemy& archerEnemy);
