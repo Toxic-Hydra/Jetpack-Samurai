@@ -32,8 +32,8 @@ std::vector<Sprite *> DemoScene::sprites()
 
     spriteVector.push_back(player->getSprite());
     spriteVector.push_back(enemy->getSprite());
-    spriteVector.push_back(enemySword->getSprite());
     spriteVector.push_back(player->playerAttackSprite.get());
+    spriteVector.push_back(enemySword->getSprite());
 
     return spriteVector;
 }
@@ -269,36 +269,36 @@ void DemoScene::tick(u16 keys)
 
 
 
-        // // Sword enemy
-        // // enemySword Inner Box vs. Player Attack
-        // if (enemySword->innerBox->collidesWith(*player->playerAttackSprite))
-        // {
-        //     enemySword->getSprite()->moveTo(300, 200);
-        // }
-        // // enemySword vs. Player Attack
-        // else if (player->playerAttackSprite->collidesWith(*enemySword->getSprite()))
-        // {
-        //     if (enemySword->getSprite()->getCenter().x > playerSprite->getCenter().x)
-        //     {
-        //         enemySword->getSprite()->moveTo(enemySword->getSprite()->getX() + 32, enemySword->getSprite()->getY());
-        //     }
-        //     else if (enemySword->getSprite()->getCenter().x < playerSprite->getCenter().x)
-        //     {
-        //         enemySword->getSprite()->moveTo(enemySword->getSprite()->getX() - 32, enemySword->getSprite()->getY());
-        //     }
-        //     else
-        //     {
-        //         if (enemySword->getSprite()->getCenter().y > playerSprite->getCenter().y)
-        //         {
-        //             enemySword->getSprite()->moveTo(enemySword->getSprite()->getX(), enemySword->getSprite()->getY() + enemySword->getSprite()->getHeight());
-        //         }
-        //         else
-        //         {
-        //             enemySword->getSprite()->moveTo(enemySword->getSprite()->getX(), enemySword->getSprite()->getY() - enemySword->getSprite()->getHeight());
-        //         }
-        //     }
-        //     //TextStream::instance() << engine->getTimer()->getSecs();
-        // }
+        // Sword enemy
+        // enemySword Inner Box vs. Player Attack
+        if (enemySword->innerBox->collidesWith(*player->playerAttackSprite))
+        {
+            enemySword->getSprite()->moveTo(300, 200);
+        }
+        // enemySword vs. Player Attack
+        else if (player->playerAttackSprite->collidesWith(*enemySword->getSprite()))
+        {
+            if (enemySword->getSprite()->getCenter().x > playerSprite->getCenter().x)
+            {
+                enemySword->getSprite()->moveTo(enemySword->getSprite()->getX() + 32, enemySword->getSprite()->getY());
+            }
+            else if (enemySword->getSprite()->getCenter().x < playerSprite->getCenter().x)
+            {
+                enemySword->getSprite()->moveTo(enemySword->getSprite()->getX() - 32, enemySword->getSprite()->getY());
+            }
+            else
+            {
+                if (enemySword->getSprite()->getCenter().y > playerSprite->getCenter().y)
+                {
+                    enemySword->getSprite()->moveTo(enemySword->getSprite()->getX(), enemySword->getSprite()->getY() + enemySword->getSprite()->getHeight());
+                }
+                else
+                {
+                    enemySword->getSprite()->moveTo(enemySword->getSprite()->getX(), enemySword->getSprite()->getY() - enemySword->getSprite()->getHeight());
+                }
+            }
+            //TextStream::instance() << engine->getTimer()->getSecs();
+        }
         // // Player vs. enemySword
         // if (playerSprite->collidesWith(*enemySword->getSprite()))
         // {
