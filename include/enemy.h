@@ -44,6 +44,7 @@ public:
 class EnemyState
 {
 public:
+    int stateId;
     virtual ~EnemyState() {}
     virtual void enter(Enemy& enemy) {}
     virtual EnemyState* update(Enemy& enemy) { return new EnemyState; }

@@ -27,6 +27,7 @@ private :
     u16 key; // the current key
     // enum fDirection {LEFT, RIGHT, UP, DOWN};
     static std::unique_ptr<Timer> dashTimer;
+    int dashSpeed{8};
 
 protected :
     
@@ -53,6 +54,7 @@ public:
     Timer* getDashTimer() { return dashTimer.get(); }
     u16 getKey() { return key; }
     int getFaceDirection() { return faceDirection; }
+    int getDashSpeed() { return dashSpeed; }
 };
 
 class player_ns::PlayerState

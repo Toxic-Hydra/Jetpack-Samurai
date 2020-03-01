@@ -44,19 +44,19 @@ void Player::dash()
     int dy = 0;
     if (this->faceDirection == 0)
     {
-        dx = -8;
+        dx = -dashSpeed;
     }
     else if (this->faceDirection == 1)
     {
-        dx = 8;
+        dx = dashSpeed;
     }
     else if (this->faceDirection == 2)
     {
-        dy = -8;
+        dy = -dashSpeed;
     }
     else
     {
-        dy = 8;
+        dy = dashSpeed;
     }
     // this->getSprite()->moveTo(this->getSprite()->getX() + dx, this->getSprite()->getY() + dy);
     this->getSprite()->setVelocity(dx, dy);

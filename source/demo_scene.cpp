@@ -88,12 +88,16 @@ void DemoScene::tick(u16 keys)
         //High possibility most of this should be in player class, refactor.
         //could be functions that take in player, enemies, current screenx and return a new screenx.
         //Also needs to account for the possibility of multiple enemies
+        //Doesn't account for dashing.
         //X AXIS CAMERA MOVEMENT
         
         if ( !(tile_collide & background->COLLISION_X) && keys & KEY_LEFT && scrollx > 0) {
             if ((int)player->getSprite()->getX() <= border) //left end of screen
             {
-                
+                if(player->state->stateID == 3) { //Player can dash past the camera bounds
+                    //check for can dash
+                    scrollx += player->getDashSpeed();
+                }
                 //lock player, just move screen
                 scrollx -= player->getMovementSpeed();
                 if ((int)player->getSprite()->getX() < border)
@@ -102,6 +106,9 @@ void DemoScene::tick(u16 keys)
                 //Account for all enemies
                 if(!enemy->getSprite()->isOffScreen())
                     enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
+                //if(typeid(enemy->state)==typeid(IdleStateShield))
+                
+                
                 
             }
         }       
