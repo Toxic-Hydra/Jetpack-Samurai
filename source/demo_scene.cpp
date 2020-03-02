@@ -291,7 +291,7 @@ void DemoScene::load()
     player->setHealth(100);
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
-    enemy = std::make_unique<ArcherEnemy>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
+    enemy = std::make_unique<EnemySword>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
 
 
     //Village bg requires text to be disabled, its simply too big.

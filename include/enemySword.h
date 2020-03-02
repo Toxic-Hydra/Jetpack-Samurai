@@ -5,6 +5,7 @@
 #include <libgba-sprite-engine/sprites/sprite.h>
 #include <libgba-sprite-engine/gbavector.h>
 #include <tonc_math.h>
+#include <libgba-sprite-engine/timer.h>
 #include <deque>
 // #include "entity.h"
 #include "player.h"
@@ -17,6 +18,10 @@ class EnemySword : public Entity
 private:
     VECTOR dest;
     std::deque<VECTOR> destCoords;
+    int actionDistx{32};
+    int actionDisty{42};
+    std::unique_ptr<Timer> atkTimer{std::make_unique<Timer>()};
+    int atkWait{400};
     
 protected:
     
@@ -32,9 +37,13 @@ public:
     void tick();
     void setPlayerPos(VECTOR destination);
     VECTOR getPlayerPos() {return dest; }
+    int getActionDistanceX() {return actionDistx; }
+    int getActionDistanceY() { return actionDisty; }
+    int getAtkWait(){return atkWait;}
 
     Sprite* getSprite() { return Entity::getSprite(); }
     std::deque<VECTOR>& getDestCoords() { return destCoords; }
+    Timer* getAtkTimer() { return atkTimer.get(); }
 };
 
 class EnemySwordState
@@ -64,6 +73,25 @@ public:
     EnemySwordState* update(EnemySword& enemy);
     void exit(EnemySword& enemy);
 };
+
+class SwordIdleState : public EnemySwordState
+{
+public:
+    ~SwordIdleState() {}
+    void enter(EnemySword& enemy);
+    EnemySwordState* update(EnemySword& enemy);
+    void exit(EnemySword& enemy);
+};
+
+class SwordRetreatState : public EnemySwordState
+{
+public:
+    ~SwordRetreatState() {}
+    void enter(EnemySword& enemy);
+    EnemySwordState* update(EnemySword& enemy);
+    void exit(EnemySword& enemy);
+};
+
 
 
 
