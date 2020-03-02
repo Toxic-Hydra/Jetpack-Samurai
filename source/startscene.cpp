@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "player.h"
 #include "enemy.h"
-#include "demo_scene.h"
+#include "crawlscene.h"
 
 void StartScene::tick(u16 keys)
 {
@@ -10,7 +10,7 @@ void StartScene::tick(u16 keys)
     {
         // TextStream::instance().clear(); // This does not seem to clear "Press Start"
         // engine->disableText();
-        engine->setScene(new DemoScene(std::move(engine)));
+        engine->setScene(new CrawlScene(std::move(engine)));
     }
 
     if (engine->getTimer()->getSecs() % 3 == 0)
