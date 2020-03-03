@@ -6,10 +6,9 @@
 
 void StartScene::tick(u16 keys)
 {
+    TextStream::instance().setText(pressStart, 10, 9);
     if(keys == KEY_START)
     {
-        // TextStream::instance().clear(); // This does not seem to clear "Press Start"
-        // engine->disableText();
         engine->setScene(new CrawlScene(std::move(engine)));
     }
 
@@ -21,7 +20,7 @@ void StartScene::tick(u16 keys)
     {
         pressStart = "Press Start";
     }
-    TextStream::instance().setText(pressStart, 10, 9);
+    
 }
 
 void StartScene::load()

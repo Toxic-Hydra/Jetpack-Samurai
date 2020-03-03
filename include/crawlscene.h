@@ -14,7 +14,8 @@ class CrawlScene : public Scene
 private:
     std::string pressStart;
     std::unique_ptr<Background> crawlText;
-    int x;
+    int crawlspeed;
+    int finespeed;
 public:
     CrawlScene(std::shared_ptr<GBAEngine> engine) : Scene(std::move(engine)) {}
     void tick(u16 keys) override;
