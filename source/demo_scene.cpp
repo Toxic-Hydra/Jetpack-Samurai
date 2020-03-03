@@ -227,7 +227,7 @@ void DemoScene::tick(u16 keys)
 
             if (enemy->state->stateID == 2 || enemy->swordAttackSprite->collidesWith(*player->getSprite()))
             {
-                player->useFuel(10);
+                player->useFuel(1);
             }
 
             //PLAYER collisions
