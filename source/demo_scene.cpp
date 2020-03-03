@@ -48,7 +48,7 @@ void DemoScene::tick(u16 keys)
         playerSprite = player->getSprite();
 
         //We will eventually need to implement a way to keep track of how many enemies are in the scene for this.
-        if(spriteVector.size() != 3) //If the vector does not contain the proper amount of sprites, rebuild.
+        if(spriteVector.size() != 4) //If the vector does not contain the proper amount of sprites, rebuild.
         {
             engine->updateSpritesInScene();
         }
@@ -181,12 +181,12 @@ void DemoScene::tick(u16 keys)
         // Collision Checking
         // ArcherEnemy Inner Box vs. Player Attack
         if (((player->faceDirection == 0 && enemy->faceDirection == 0) || (player->faceDirection == 1 && enemy->faceDirection == 1)) &&
-              enemy->innerBox->collidesWith(*player->playerAttackSprite))
+              enemy->innerBox->collidesWith(*player->playerAttackSprite) || enemy->innerBox->collidesWith(*player->attackBottom))
         {
             enemy->getSprite()->moveTo(-100, 0);
         }
         // ArcherEnemy vs. Player Attack
-        else if (player->playerAttackSprite->collidesWith(*enemy->getSprite()))
+        else if (player->playerAttackSprite->collidesWith(*enemy->getSprite()) || player->attackBottom->collidesWith(*enemy->getSprite()))
         {
             if (enemy->getSprite()->getCenter().x > playerSprite->getCenter().x)
             {
