@@ -3,6 +3,7 @@
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/gbavector.h>
 #include <tonc_video.h>
+#include <tonc_math.h>
 #include <algorithm>
 #include <sstream>
 #include "map.h"
@@ -10,7 +11,8 @@
 #include "endscene.h"
 #include "BoyScout.h"
 #include "jscomp16.h"
-#include "DemoScene2.h"
+// #include "DemoScene2.h"
+#include "endscene.h"
 
 static int bufferFrames = 0;
 
@@ -43,7 +45,7 @@ void DemoScene::tick(u16 keys)
     {
         // Pause (kinda)
         // spriteManager->hideAll();
-        engine->setScene(new DemoScene2(engine));
+        engine->setScene(new EndScene(engine));
     }
     else
     {
@@ -228,7 +230,7 @@ void DemoScene::tick(u16 keys)
 
             if (enemy->state->stateID == 2 || enemy->swordAttackSprite->collidesWith(*player->getSprite()))
             {
-                player->useFuel(10);
+                player->useFuel(1);
             }
 
             //PLAYER collisions
