@@ -176,7 +176,7 @@ void DemoScene::tick(u16 keys)
         }
         else
         {
-            //TextStream::instance().setFontColor(CLR_WHITE);
+            TextStream::instance().setFontColor(CLR_BLUE);
         }
         TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 11, 0);
         // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
