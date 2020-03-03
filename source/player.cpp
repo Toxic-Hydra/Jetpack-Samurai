@@ -6,7 +6,7 @@ std::unique_ptr<Timer> Player::dashTimer;
 
 u32 Player::keyHit(u16 keys)
 {
-    return (this->keyPrev &~ this->key) & keys;
+    return (this->key &~ this->keyPrev) & keys;
 }
 
 Player::Player(int x, int y) : Entity(x, y)
