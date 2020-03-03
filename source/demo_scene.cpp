@@ -29,6 +29,7 @@ std::vector<Sprite *> DemoScene::sprites()
     spriteVector.push_back(player->getSprite());
     spriteVector.push_back(enemy->getSprite());
     spriteVector.push_back(player->playerAttackSprite.get());
+    spriteVector.push_back(player->attackBottom.get());
 
     return spriteVector;
 }

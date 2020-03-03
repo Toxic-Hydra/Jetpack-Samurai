@@ -4,7 +4,7 @@
 EnemySword::EnemySword(int x, int y) : Entity(x, y)
 {
     this->setSprite((spriteBuilder
-                    .withData(swordTiles, 512)
+                    .withData(jsSwordEnemyImageTiles, 512)
                     .withSize(SIZE_16_32))
                     .withLocation(x,y)
                     .buildPtr());
