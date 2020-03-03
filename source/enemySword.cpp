@@ -141,8 +141,8 @@ EnemySwordState* SwordAttackState::update(EnemySword& enemy)
 
     if(enemy.getAtkTimer()->getMsecs() >= enemy.getAtkWait()) {
         //Do something
-        TextStream::instance().setFontColor(0x001F);
-        TextStream::instance().setText("SwordUpdate: " + std::to_string(enemy.getAtkTimer()->getMsecs()), 15, 0);
+        // TextStream::instance().setFontColor(0x001F);
+        // TextStream::instance().setText("SwordUpdate: " + std::to_string(enemy.getAtkTimer()->getMsecs()), 15, 0);
         
         //assuming it tries to swing
         return new SwordRetreatState;
@@ -166,7 +166,7 @@ EnemySwordState* SwordIdleState::update(EnemySword& enemy)
 {
     //haha wouldn't that poopoo function be really funny haha
     enemy.getSprite()->setVelocity(0,0);
-    TextStream::instance().setText("SwordIdle: ", 15, 0);
+    // TextStream::instance().setText("SwordIdle: ", 15, 0);
     VECTOR enemyCenter = enemy.getSprite()->getCenter();
     int distancex = ABS(enemy.getPlayerPos().x+8 - (int)enemyCenter.x);
     int distancey = ABS(enemy.getPlayerPos().y+16 - (int)enemyCenter.y);
@@ -198,7 +198,7 @@ EnemySwordState* SwordRetreatState::update(EnemySword& enemy)
 {
     //Walk in opposite direction for atkWait;
     //Check player pos. move opposit direction.
-    TextStream::instance().setText("SwordRetreat: " + std::to_string(enemy.getAtkTimer()->getMsecs()), 15, 0);
+    //TextStream::instance().setText("SwordRetreat: " + std::to_string(enemy.getAtkTimer()->getMsecs()), 15, 0);
     enemy.getAtkTimer()->onvblank();
     if(enemy.getAtkTimer()->getMsecs() > enemy.getAtkWait()+100) {
         //Do something
