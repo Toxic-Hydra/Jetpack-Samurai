@@ -174,7 +174,7 @@ void DemoScene::tick(u16 keys)
         {
             //TextStream::instance().setFontColor(CLR_WHITE);
         }
-        TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 0, 0);
+        TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 11, 0);
         // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
 
         //TextStream::instance().setText("(" + std::to_string(enemy->innerBox->getX()) + ", " + std::to_string(enemy->innerBox->getY()) + ")", 14, 18);
