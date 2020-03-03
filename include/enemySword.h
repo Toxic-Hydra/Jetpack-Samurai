@@ -18,10 +18,11 @@ class EnemySword : public Entity
 private:
     VECTOR dest;
     std::deque<VECTOR> destCoords;
-    int actionDistx{32};
+    int actionDistx{42};
     int actionDisty{42};
     std::unique_ptr<Timer> atkTimer{std::make_unique<Timer>()};
     int atkWait{400};
+    //std::unique_ptr<Sprite> atkSprite;
     
 protected:
     
