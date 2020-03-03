@@ -28,6 +28,7 @@ std::vector<Sprite *> DemoScene::sprites()
 
     spriteVector.push_back(player->getSprite());
     spriteVector.push_back(enemy->getSprite());
+    spriteVector.push_back(enemy->swordAttackSprite.get());
     spriteVector.push_back(player->playerAttackSprite.get());
     spriteVector.push_back(player->attackBottom.get());
 
@@ -48,7 +49,7 @@ void DemoScene::tick(u16 keys)
         
 
         //We will eventually need to implement a way to keep track of how many enemies are in the scene for this.
-        if(spriteVector.size() != 4) //If the vector does not contain the proper amount of sprites, rebuild.
+        if(spriteVector.size() != 5) //If the vector does not contain the proper amount of sprites, rebuild.
         {
             engine->updateSpritesInScene();
         }
@@ -180,13 +181,13 @@ void DemoScene::tick(u16 keys)
         //TextStream::instance().setText("(" + std::to_string(enemy->innerBox->getX()) + ", " + std::to_string(enemy->innerBox->getY()) + ")", 14, 18);
 
         // Collision Checking
-        // ArcherEnemy Inner Box vs. Player Attack
+        // SwordEnemy Inner Box vs. Player Attack
         if (((player->faceDirection == 0 && enemy->faceDirection == 0) || (player->faceDirection == 1 && enemy->faceDirection == 1)) &&
               (enemy->innerBox->collidesWith(*player->playerAttackSprite) || enemy->innerBox->collidesWith(*player->attackBottom)))
         {
             enemy->getSprite()->moveTo(-100, 0);
         }
-        // ArcherEnemy vs. Player Attack
+        // SwordEnemy vs. Player Attack
         else if (player->playerAttackSprite->collidesWith(*enemy->getSprite()) || player->attackBottom->collidesWith(*enemy->getSprite()))
         {
             if (enemy->getSprite()->getCenter().x > playerSprite->getCenter().x)
@@ -210,7 +211,7 @@ void DemoScene::tick(u16 keys)
             }
             //TextStream::instance() << engine->getTimer()->getSecs();
         }
-        // Player vs. ArcherEnemy
+        // Player vs. SwordEnemy
         if (playerSprite->collidesWith(*enemy->getSprite()))
         {
             //Enemy collision
@@ -222,6 +223,11 @@ void DemoScene::tick(u16 keys)
             if (enemy->getSprite()->getDy() > 0 || enemy->getSprite()->getDy() < 0)
             {
                 enemy->getSprite()->setVelocity(enemy->getSprite()->getDx(), 0);
+            }
+
+            if (enemy->state->stateID == 2 || enemy->swordAttackSprite->collidesWith(*player->getSprite()))
+            {
+                player->useFuel(10);
             }
 
             //PLAYER collisions
