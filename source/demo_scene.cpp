@@ -1,10 +1,12 @@
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include <libgba-sprite-engine/background/text_stream.h>
+#include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include <tonc_video.h>
 #include <algorithm>
 #include <sstream>
 #include "map.h"
+#include "startscene.h"
 #include "demo_scene.h"
 #include "endscene.h"
 
@@ -37,7 +39,11 @@ void DemoScene::tick(u16 keys)
     if(keys & KEY_SELECT) // Hold the select key for now to keep the game paused
     {
         // Pause (kinda)
-        spriteManager->hideAll();
+        // spriteManager->hideAll();
+        if(!engine->isTransitioning())
+        {
+            engine->transitionIntoScene(new EndScene(std::move(engine)), new FadeOutScene(2));
+        }
     }
     else
     {

@@ -1,16 +1,18 @@
+#include <libgba-sprite-engine/background/text_stream.h>
+#include <libgba-sprite-engine/effects/fade_out_scene.h>
+
 #include "startscene.h"
-#include "entity.h"
-#include "player.h"
-#include "enemy.h"
 #include "demo_scene.h"
 
 void StartScene::tick(u16 keys)
 {
-    if(keys == KEY_START)
+    if (keys & KEY_START)
     {
-        // TextStream::instance().clear(); // This does not seem to clear "Press Start"
-        // engine->disableText();
-        engine->setScene(new DemoScene(std::move(engine)));
+        // engine->setScene(new DemoScene(std::move(engine)));
+        if(!engine->isTransitioning())
+        {
+            engine->transitionIntoScene(new DemoScene(std::move(engine)), new FadeOutScene(2));
+        }
     }
 
     std::string pressStart = "Press Start";
@@ -23,6 +25,7 @@ void StartScene::tick(u16 keys)
 
 void StartScene::load()
 {
+    // foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     engine->enableText();
     TextStream::instance().setText("Jetpack Samurai", 6, 7);
     engine->getTimer()->start();

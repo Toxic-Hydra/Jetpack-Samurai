@@ -1,12 +1,21 @@
+#include <libgba-sprite-engine/background/text_stream.h>
+#include <libgba-sprite-engine/effects/fade_out_scene.h>
+#include <libgba-sprite-engine/gba_engine.h>
+#include <tonc_memdef.h>
+
 #include "endscene.h"
-#include "entity.h"
-#include "player.h"
-#include "enemy.h"
-#include "demo_scene.h"
+#include "startscene.h"
 
 void EndScene::tick(u16 keys)
 {
-
+    if (keys & KEY_START)
+    {
+        // engine->setScene(new DemoScene(std::move(engine)));
+        if(!engine->isTransitioning())
+        {
+            engine->transitionIntoScene(new StartScene(std::move(engine)), new FadeOutScene(2));
+        }
+    }
 }
 
 void EndScene::load()
