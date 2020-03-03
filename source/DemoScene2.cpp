@@ -6,24 +6,24 @@
 #include <algorithm>
 #include <sstream>
 #include "map.h"
-#include "demo_scene.h"
+#include "demoScene2.h"
 #include "endscene.h"
 #include "BoyScout.h"
 #include "jscomp16.h"
-#include "DemoScene2.h"
+#include "demo_scene.h"
 
 static int bufferFrames = 0;
 
-DemoScene::DemoScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine) {}
+DemoScene2::DemoScene2(const std::shared_ptr<GBAEngine> &engine) : Scene(engine) {}
 
-std::vector<Background *> DemoScene::backgrounds()
+std::vector<Background *> DemoScene2::backgrounds()
 {
     return {
         background.get()
     };
 }
 
-std::vector<Sprite *> DemoScene::sprites()
+std::vector<Sprite *> DemoScene2::sprites()
 {
     spriteVector.clear(); //we shove all our sprites into this
 
@@ -35,14 +35,14 @@ std::vector<Sprite *> DemoScene::sprites()
     return spriteVector;
 }
 
-void DemoScene::tick(u16 keys)
+void DemoScene2::tick(u16 keys)
 {
     //BoyScoutUpdateSong(); //Don't forget to free memory upon leaving this state.
     if(keys & KEY_SELECT) // Hold the select key for now to keep the game paused
     {
         // Pause (kinda)
         // spriteManager->hideAll();
-        engine->setScene(new DemoScene2(engine));
+        engine->setScene(new EndScene(engine));
     }
     else
     {
@@ -282,7 +282,7 @@ void DemoScene::tick(u16 keys)
     }
 }
 
-void DemoScene::load()
+void DemoScene2::load()
 {
     
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(map_palette, sizeof(map_palette)));
@@ -294,7 +294,7 @@ void DemoScene::load()
     player->setHealth(100);
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
-    enemy = std::make_unique<EnemySword>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
+    enemy = std::make_unique<Enemy>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
 
 
     //Village bg requires text to be disabled, its simply too big.
