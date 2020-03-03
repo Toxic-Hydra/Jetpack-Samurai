@@ -6,7 +6,7 @@
 
 void StartScene::tick(u16 keys)
 {
-    if (keys & KEY_START)
+    if (keys & KEY_SELECT)
     {
         // engine->setScene(new DemoScene(std::move(engine)));
         if(!engine->isTransitioning())
@@ -15,7 +15,7 @@ void StartScene::tick(u16 keys)
         }
     }
 
-    std::string pressStart = "Press Start";
+    std::string pressStart = "Press Select";
     if (engine->getTimer()->getSecs() % 3 == 0)
     {
         pressStart = "";

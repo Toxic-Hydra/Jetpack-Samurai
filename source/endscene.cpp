@@ -8,7 +8,7 @@
 
 void EndScene::tick(u16 keys)
 {
-    if (keys & KEY_START)
+    if (keys & KEY_SELECT)
     {
         // engine->setScene(new DemoScene(std::move(engine)));
         if(!engine->isTransitioning())

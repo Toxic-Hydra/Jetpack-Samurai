@@ -45,6 +45,13 @@ void DemoScene::tick(u16 keys)
             engine->transitionIntoScene(new EndScene(std::move(engine)), new FadeOutScene(2));
         }
     }
+    else if (keys & KEY_L)
+    {
+        if(!engine->isTransitioning())
+        {
+            engine->transitionIntoScene(new DemoScene(std::move(engine)), new FadeOutScene(2));
+        }
+    }
     else
     {
         playerSprite = player->getSprite();
