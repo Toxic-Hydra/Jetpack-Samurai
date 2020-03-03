@@ -45,7 +45,7 @@ void DemoScene::tick(u16 keys)
     }
     else
     {
-        playerSprite = player->getSprite();
+        
 
         //We will eventually need to implement a way to keep track of how many enemies are in the scene for this.
         if(spriteVector.size() != 4) //If the vector does not contain the proper amount of sprites, rebuild.
@@ -53,7 +53,7 @@ void DemoScene::tick(u16 keys)
             engine->updateSpritesInScene();
         }
       
-        enemy->setPlayerPos(playerSprite->getPos());
+        enemy->setPlayerPos(player->getSprite()->getPos());
         enemy->tick();
 
         // Player
@@ -68,20 +68,21 @@ void DemoScene::tick(u16 keys)
         }
         bufferFrames++;
         player->tick();
+        playerSprite = player->getSprite();
 
         
         //COLLISIONS: TILE
-        tile_collide = background->collision_test(player->getSprite()->getX(), player->getSprite()->getY(),
-                                                player->getSprite()->getX() + 15, player->getSprite()->getY() + 31,
-                                                player->getSprite()->getDx(), player->getSprite()->getDy(), scrollx, scrolly);
+        tile_collide = background->collision_test(playerSprite->getX(), playerSprite->getY(),
+                                                playerSprite->getX() + 15, playerSprite->getY() + 31,
+                                                playerSprite->getDx(), playerSprite->getDy(), scrollx, scrolly);
 
         if((tile_collide & background->COLLISION_X)) {
-            player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+            playerSprite->setVelocity(0, playerSprite->getDy());
             
         }
 
         if((tile_collide & background->COLLISION_Y)) {
-            player->getSprite()->setVelocity(player->getSprite()->getDx(), 0);
+            playerSprite->setVelocity(playerSprite->getDx(), 0);
         }
 
         //CAMERA
@@ -93,7 +94,7 @@ void DemoScene::tick(u16 keys)
         //X AXIS CAMERA MOVEMENT
         
         if ( !(tile_collide & background->COLLISION_X) && keys & KEY_LEFT && scrollx > 0) {
-            if ((int)player->getSprite()->getX() <= border) //left end of screen
+            if ((int)playerSprite->getX() <= border) //left end of screen
             {
                 if(player->state->stateID == 3) { //Player can dash past the camera bounds
                     //check for can dash
@@ -101,9 +102,9 @@ void DemoScene::tick(u16 keys)
                 }
                 //lock player, just move screen
                 scrollx -= player->getMovementSpeed();
-                if ((int)player->getSprite()->getX() < border)
-                    player->getSprite()->moveTo(border, player->getSprite()->getY());
-                player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+                if ((int)playerSprite->getX() < border)
+                    playerSprite->moveTo(border, playerSprite->getY());
+                playerSprite->setVelocity(0, playerSprite->getDy());
                 //Account for all enemies
                 if(!enemy->getSprite()->isOffScreen())
                     enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
@@ -115,14 +116,14 @@ void DemoScene::tick(u16 keys)
         }       
         else if( !(tile_collide & background->COLLISION_X) && keys & KEY_RIGHT && scrollx < 272) { //272 is map_width - screen_width
 
-            if ((int)player->getSprite()->getX() >= (GBA_SCREEN_WIDTH - 16 - border)) // right end of screen.
+            if ((int)playerSprite->getX() >= (GBA_SCREEN_WIDTH - 16 - border)) // right end of screen.
             {
 
-                if ((int)player->getSprite()->getX() > (GBA_SCREEN_WIDTH - 16 - border))
-                    player->getSprite()->moveTo((GBA_SCREEN_WIDTH - 16 - border), player->getSprite()->getY());
+                if ((int)playerSprite->getX() > (GBA_SCREEN_WIDTH - 16 - border))
+                    playerSprite->moveTo((GBA_SCREEN_WIDTH - 16 - border), playerSprite->getY());
                 //lock player right, move screen
                 scrollx += player->getMovementSpeed();
-                player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+                playerSprite->setVelocity(0, playerSprite->getDy());
                 //Account for all enemies
                 if(!enemy->getSprite()->isOffScreen())
                     enemy->getSprite()->setVelocity(0, enemy->getSprite()->getDy());
@@ -131,13 +132,13 @@ void DemoScene::tick(u16 keys)
         }
         //Y AXIS CAMERA MOVEMENT
         if ( !(tile_collide & background->COLLISION_Y) && keys & KEY_UP && scrolly > 0) {
-            if ((int)player->getSprite()->getY() <= border) //left end of screen
+            if ((int)playerSprite->getY() <= border) //left end of screen
             {
-                if ((int)player->getSprite()->getY() < border)
-                    player->getSprite()->moveTo(player->getSprite()->getX(), border);
+                if ((int)playerSprite->getY() < border)
+                    playerSprite->moveTo(playerSprite->getX(), border);
                 //lock player, just move screen
                 scrolly -= player->getMovementSpeed();
-                player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
+                playerSprite->setVelocity(playerSprite->getDx() , 0);
                 //Account for all enemies
                 if(!enemy->getSprite()->isOffScreen())
                     enemy->getSprite()->setVelocity(enemy->getSprite()->getDx() , 0);
@@ -145,13 +146,13 @@ void DemoScene::tick(u16 keys)
         }
         else if( !(tile_collide & background->COLLISION_Y) && keys & KEY_DOWN && scrolly < 352) { //map_height - screen_height = 352
 
-            if ((int)player->getSprite()->getY() >= (GBA_SCREEN_HEIGHT - 32 - border)) // right end of screen. accounting for player vertical size
+            if ((int)playerSprite->getY() >= (GBA_SCREEN_HEIGHT - 32 - border)) // right end of screen. accounting for player vertical size
             {
-                if ((int)player->getSprite()->getY() > (GBA_SCREEN_HEIGHT - 32 - border))
-                    player->getSprite()->moveTo(player->getSprite()->getX(), (GBA_SCREEN_HEIGHT - 32 - border));
+                if ((int)playerSprite->getY() > (GBA_SCREEN_HEIGHT - 32 - border))
+                    playerSprite->moveTo(playerSprite->getX(), (GBA_SCREEN_HEIGHT - 32 - border));
                 //lock player right, move screen
                 scrolly += player->getMovementSpeed();
-                player->getSprite()->setVelocity( player->getSprite()->getDx(), 0);
+                playerSprite->setVelocity( playerSprite->getDx(), 0);
                 //Account for all enemies
                 if(!enemy->getSprite()->isOffScreen())
                     enemy->getSprite()->setVelocity( enemy->getSprite()->getDx() , 0);
@@ -171,17 +172,17 @@ void DemoScene::tick(u16 keys)
         }
         else
         {
-            TextStream::instance().setFontColor(CLR_WHITE);
+            //TextStream::instance().setFontColor(CLR_WHITE);
         }
         TextStream::instance().setText("Fuel: " + std::to_string(player->getHealth()), 0, 0);
         // TextStream::instance().setText(std::to_string(player->getFaceDirection()), 5, 10); // Debug info for player direction
 
-        TextStream::instance().setText("(" + std::to_string(enemy->innerBox->getX()) + ", " + std::to_string(enemy->innerBox->getY()) + ")", 14, 18);
+        //TextStream::instance().setText("(" + std::to_string(enemy->innerBox->getX()) + ", " + std::to_string(enemy->innerBox->getY()) + ")", 14, 18);
 
         // Collision Checking
         // ArcherEnemy Inner Box vs. Player Attack
         if (((player->faceDirection == 0 && enemy->faceDirection == 0) || (player->faceDirection == 1 && enemy->faceDirection == 1)) &&
-              enemy->innerBox->collidesWith(*player->playerAttackSprite) || enemy->innerBox->collidesWith(*player->attackBottom))
+              (enemy->innerBox->collidesWith(*player->playerAttackSprite) || enemy->innerBox->collidesWith(*player->attackBottom)))
         {
             enemy->getSprite()->moveTo(-100, 0);
         }
@@ -224,46 +225,46 @@ void DemoScene::tick(u16 keys)
             }
 
             //PLAYER collisions
-            if ( player->getSprite()->getX() < enemy->getSprite()->getX())
+            if ( playerSprite->getX() < enemy->getSprite()->getX())
             {
 
                 if ( !(tile_collide & background->COLLISION_X) && player->getKey() & KEY_LEFT)
                 {
-                    player->getSprite()->setVelocity(-player->getMovementSpeed(), player->getSprite()->getDy());
+                    playerSprite->setVelocity(-player->getMovementSpeed(), playerSprite->getDy());
                 }
                 else
-                    player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+                    playerSprite->setVelocity(0, playerSprite->getDy());
                 
             }
-            else if (player->getSprite()->getX() > enemy->getSprite()->getX())
+            else if (playerSprite->getX() > enemy->getSprite()->getX())
             {
                 if ( !(tile_collide & background->COLLISION_X) && player->getKey() & KEY_RIGHT)
                 {
-                    player->getSprite()->setVelocity(player->getMovementSpeed(), player->getSprite()->getDy());
+                    playerSprite->setVelocity(player->getMovementSpeed(), playerSprite->getDy());
                 }
                 else
-                    player->getSprite()->setVelocity(0, player->getSprite()->getDy());
+                    playerSprite->setVelocity(0, playerSprite->getDy());
             }
             //Y
-            if ( player->getSprite()->getY() < enemy->getSprite()->getY())
+            if ( playerSprite->getY() < enemy->getSprite()->getY())
             {
 
                 if ( !(tile_collide & background->COLLISION_Y) && player->getKey() & KEY_UP)
                 {
-                    player->getSprite()->setVelocity(player->getSprite()->getDx(),-player->getMovementSpeed());
+                    playerSprite->setVelocity(playerSprite->getDx(),-player->getMovementSpeed());
                 }
                 else
-                    player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
+                    playerSprite->setVelocity(playerSprite->getDx() , 0);
                 
             }
-            else if (player->getSprite()->getY() > enemy->getSprite()->getY())
+            else if (playerSprite->getY() > enemy->getSprite()->getY())
             {
                 if ( !(tile_collide & background->COLLISION_Y) && player->getKey() & KEY_DOWN)
                 {
-                    player->getSprite()->setVelocity(player->getSprite()->getDx(), player->getMovementSpeed());
+                    playerSprite->setVelocity(playerSprite->getDx(), player->getMovementSpeed());
                 }
                 else
-                    player->getSprite()->setVelocity(player->getSprite()->getDx() , 0);
+                    playerSprite->setVelocity(playerSprite->getDx() , 0);
             }
         }
 

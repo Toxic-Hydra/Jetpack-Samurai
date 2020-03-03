@@ -51,23 +51,23 @@ void SwordChaseState::enter(EnemySword& enemy)
 
 EnemySwordState* SwordChaseState::update(EnemySword& enemy)
 {
-    if(enemy.myBoundingBox->left < enemy.playerVicinity->left + enemy.playerVicinity->right &&
-            enemy.myBoundingBox->left + enemy.myBoundingBox->right > enemy.playerVicinity->left &&
-            enemy.myBoundingBox->top < enemy.playerVicinity->top + enemy.playerVicinity->bottom &&
-            enemy.myBoundingBox->bottom + enemy.myBoundingBox->top > enemy.playerVicinity->top)
+    VECTOR enemyCenter = enemy.getSprite()->getCenter();
+    int distancex = ABS(enemy.getPlayerPos().x+8 - (int)enemyCenter.x);
+    int distancey = ABS(enemy.getPlayerPos().y+16 - (int)enemyCenter.y);
+    if(distancex <= 1 || distancey <= 1)
     {
-        return new SwordAttackState; //TODO: CURRENTLY THIS DOESNT ACTIVATE 
+        return new SwordAttackState; 
     }
     //Simple player follow
     if (enemy.getPlayerPos().x < (enemy.getSprite()->getPos().x ))
     {
-        enemy.getSprite()->flipHorizontally(true);
+        enemy.getSprite()->flipHorizontally(false);
         enemy.getSprite()->setVelocity(-enemy.getMovementSpeed(), enemy.getSprite()->getDy());
         // enemy.innerBox->setVelocity(-enemy.getMovementSpeed(), enemy.getSprite()->getDy());
     }
     else if (enemy.getPlayerPos().x > (enemy.getSprite()->getPos().x ))
     {
-        enemy.getSprite()->flipHorizontally(false);
+        enemy.getSprite()->flipHorizontally(true);
         enemy.getSprite()->setVelocity(enemy.getMovementSpeed(), enemy.getSprite()->getDy());
         // enemy.innerBox->setVelocity(enemy.getMovementSpeed(), enemy.getSprite()->getDy());
     }
@@ -114,7 +114,9 @@ EnemySwordState* SwordAttackState::update(EnemySword& enemy)
     enemy.getAtkTimer()->onvblank();
     if(enemy.getAtkTimer()->getMsecs() >= enemy.getAtkWait()) {
         //Do something
-
+        TextStream::instance().setFontColor(0x001F);
+        TextStream::instance().setText("SwordUpdate: " + std::to_string(enemy.getAtkTimer()->getMsecs()), 4, 0);
+        
         //assuming it tries to swing
         return new SwordRetreatState;
     }
@@ -135,6 +137,7 @@ EnemySwordState* SwordIdleState::update(EnemySword& enemy)
 {
     //haha wouldn't that poopoo function be really funny haha
     enemy.getSprite()->setVelocity(0,0);
+    TextStream::instance().setText("SwordIdle: ", 4, 0);
     VECTOR enemyCenter = enemy.getSprite()->getCenter();
     int distancex = ABS(enemy.getPlayerPos().x+8 - (int)enemyCenter.x);
     int distancey = ABS(enemy.getPlayerPos().y+16 - (int)enemyCenter.y);
@@ -164,6 +167,30 @@ void SwordRetreatState::enter(EnemySword& enemy)
 EnemySwordState* SwordRetreatState::update(EnemySword& enemy)
 {
     //Walk in opposite direction for atkWait;
+    //Check player pos. move opposit direction.
+    TextStream::instance().setText("SwordRetreat: " + std::to_string(enemy.getAtkTimer()->getMsecs()), 4, 0);
+    enemy.getAtkTimer()->onvblank();
+    if(enemy.getAtkTimer()->getMsecs() > enemy.getAtkWait()+100) {
+        //Do something
+
+        //assuming it tries to swing
+        return new SwordIdleState;
+    }
+
+    if (enemy.getPlayerPos().x < enemy.getSprite()->getPos().x) {
+        enemy.getSprite()->setVelocity(enemy.getMovementSpeed(), enemy.getSprite()->getDy());
+    }
+    else {
+        enemy.getSprite()->setVelocity(-enemy.getMovementSpeed(), enemy.getSprite()->getDy());
+    }
+
+    if (enemy.getPlayerPos().y < enemy.getSprite()->getPos().y) {
+        enemy.getSprite()->setVelocity( enemy.getSprite()->getDx(), enemy.getMovementSpeed());
+    }
+    else {
+        enemy.getSprite()->setVelocity( enemy.getSprite()->getDx(), -enemy.getMovementSpeed());
+    }
+    
 
     return NULL;
 }

@@ -183,7 +183,7 @@ void Player::tick()
 
 void player_ns::UnrestrictedState::enter(Player& player)
 {
-    TextStream::instance().setText("Inside Unrestricted State: enter\n", 4, 0);
+    //TextStream::instance().setText("Inside Unrestricted State: enter\n", 4, 0);
     // spriteBuilder = std::unique_ptr<SpriteBuilder<Sprite>>(new SpriteBuilder<Sprite>);
     // player.setSprite(spriteBuilder->withData(samuraiTiles, 512)
     //                 .withSize(SIZE_16_32)
@@ -232,7 +232,7 @@ player_ns::PlayerState* player_ns::UnrestrictedState::update(Player& player)
 
 void player_ns::UnrestrictedState::exit(Player& player)
 {
-    TextStream::instance().setText("Inside Unrestricted State: exit()\n", 4, 0);
+    //TextStream::instance().setText("Inside Unrestricted State: exit()\n", 4, 0);
 }
 
 player_ns::DamagedState::DamagedState(int dmg, int dx, int dy)
@@ -244,12 +244,12 @@ player_ns::DamagedState::DamagedState(int dmg, int dx, int dy)
 
 void player_ns::DamagedState::enter(Player& player)
 {
-    TextStream::instance().setText("Inside Damaged State: enter()\n", 4, 0);
+    //TextStream::instance().setText("Inside Damaged State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::DamagedState::update(Player& player)
 {
-    TextStream::instance().setText("Inside Damaged State: update()\n", 4, 0);
+    //TextStream::instance().setText("Inside Damaged State: update()\n", 4, 0);
     player.useFuel(damage);
     player.getSprite()->moveTo(player.getSprite()->getX() + dx_, player.getSprite()->getY() + dy_);
     return new player_ns::UnrestrictedState;
@@ -257,19 +257,19 @@ player_ns::PlayerState* player_ns::DamagedState::update(Player& player)
 
 void player_ns::DamagedState::exit(Player& player)
 {
-    TextStream::instance().setText("Inside Damaged State: exit()\n", 4, 0);
+    //TextStream::instance().setText("Inside Damaged State: exit()\n", 4, 0);
 }
 
 void player_ns::AttackState::enter(Player& player)
 {
-    TextStream::instance().setText("Inside Attack State: enter()\n", 4, 0);
+    //TextStream::instance().setText("Inside Attack State: enter()\n", 4, 0);
     player.getSprite()->makeAnimated(13, 8, 3);
     player.playerAttackSprite->makeAnimated(0, 8, 3);
 }
 
 player_ns::PlayerState* player_ns::AttackState::update(Player& player)
 {
-    TextStream::instance().setText("Inside Attack State: update()\n", 4, 0);
+    //TextStream::instance().setText("Inside Attack State: update()\n", 4, 0);
     if (player.getSprite()->getCurrentFrame() != 13 + 7)// (player.getKey() & KEY_A)
     {
         player.playerAttack();
@@ -281,7 +281,7 @@ player_ns::PlayerState* player_ns::AttackState::update(Player& player)
 
 void player_ns::AttackState::exit(Player& player)
 {
-    TextStream::instance().setText("Inside Attack State: exit()\n", 4, 0);
+    //TextStream::instance().setText("Inside Attack State: exit()\n", 4, 0);
     // player.getSprite()->animateToFrame(0);
     player.playerAttackSprite->animateToFrame(0);
     player.playerAttackSprite->moveTo(-100, -100);
@@ -290,7 +290,7 @@ void player_ns::AttackState::exit(Player& player)
 
 void player_ns::DashState::enter(Player& player)
 {
-    TextStream::instance().setText("Inside Dash State: enter()\n", 4, 0);
+    //TextStream::instance().setText("Inside Dash State: enter()\n", 4, 0);
     player.getDashTimer()->reset();
     player.getDashTimer()->start();
 }
@@ -316,7 +316,7 @@ player_ns::PlayerState* player_ns::DashState::update(Player& player)
 
 void player_ns::DashState::exit(Player& player)
 {
-    TextStream::instance().setText("Inside Dash State: exit()\n", 4, 0);
+    //TextStream::instance().setText("Inside Dash State: exit()\n", 4, 0);
     player.getDashTimer()->stop();
 
     // Use fuel at the end of it all
@@ -328,7 +328,7 @@ void player_ns::DashState::exit(Player& player)
 
 void player_ns::BlockState::enter(Player& player)
 {
-    TextStream::instance().setText("Inside Block State: enter()\n", 4, 0);
+    //TextStream::instance().setText("Inside Block State: enter()\n", 4, 0);
 }
 
 player_ns::PlayerState* player_ns::BlockState::update(Player& player)
@@ -344,5 +344,5 @@ player_ns::PlayerState* player_ns::BlockState::update(Player& player)
 
 void player_ns::BlockState::exit(Player& player)
 {
-    TextStream::instance().setText("Inside Block State: exit()\n", 4, 0);
+    //TextStream::instance().setText("Inside Block State: exit()\n", 4, 0);
 }
