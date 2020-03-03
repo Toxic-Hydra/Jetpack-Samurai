@@ -134,6 +134,10 @@ EnemySwordState* SwordAttackState::update(EnemySword& enemy)
             enemy.swordAttackSprite->moveTo(enemy.getSprite()->getX() - 16, enemy.getSprite()->getY());
         }
     }
+    else
+    {
+        enemy.swordAttackSprite->moveTo(-100, -100);
+    }
 
     if(enemy.getAtkTimer()->getMsecs() >= enemy.getAtkWait()) {
         //Do something
@@ -150,7 +154,6 @@ void SwordAttackState::exit(EnemySword& enemy)
 {
     enemy.getAtkTimer()->stop();
     enemy.swordAttackSprite->animateToFrame(0);
-    enemy.swordAttackSprite->moveTo(-100, -100);
 }
 
 void SwordIdleState::enter(EnemySword& enemy)
