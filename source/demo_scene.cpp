@@ -31,6 +31,7 @@ std::vector<Sprite *> DemoScene::sprites()
     spriteVector.push_back(enemy->getSprite());
     spriteVector.push_back(player->playerAttackSprite.get());
     spriteVector.push_back(player->attackBottom.get());
+    spriteVector.push_back(enemyShield->getSprite());
 
     return spriteVector;
 }
@@ -49,13 +50,16 @@ void DemoScene::tick(u16 keys)
         
 
         //We will eventually need to implement a way to keep track of how many enemies are in the scene for this.
-        if(spriteVector.size() != 4) //If the vector does not contain the proper amount of sprites, rebuild.
+        if(spriteVector.size() != 5) //If the vector does not contain the proper amount of sprites, rebuild.
         {
             engine->updateSpritesInScene();
         }
       
         enemy->setPlayerPos(player->getSprite()->getPos());
         enemy->tick();
+
+        enemyShield->setPlayerPos(player->getSprite()->getPos());
+        enemyShield->tick();
 
         // Player
 
@@ -270,6 +274,106 @@ void DemoScene::tick(u16 keys)
         }
 
 
+
+
+        // Collision Checking Shield
+        // ArcherenemyShield Inner Box vs. Player Attack
+        if (((player->faceDirection == 0 && enemyShield->faceDirection == 0) || (player->faceDirection == 1 && enemyShield->faceDirection == 1)) &&
+              (enemyShield->innerBox->collidesWith(*player->playerAttackSprite) || enemyShield->innerBox->collidesWith(*player->attackBottom)))
+        {
+            enemyShield->getSprite()->moveTo(-100, 0);
+        }
+        // ArcherenemyShield vs. Player Attack
+        else if (player->playerAttackSprite->collidesWith(*enemyShield->getSprite()) || player->attackBottom->collidesWith(*enemyShield->getSprite()))
+        {
+            if (enemyShield->getSprite()->getCenter().x > playerSprite->getCenter().x)
+            {
+                enemyShield->getSprite()->moveTo(enemyShield->getSprite()->getX() + 32, enemyShield->getSprite()->getY());
+            }
+            else if (enemyShield->getSprite()->getCenter().x < playerSprite->getCenter().x)
+            {
+                enemyShield->getSprite()->moveTo(enemyShield->getSprite()->getX() - 32, enemyShield->getSprite()->getY());
+            }
+            else
+            {
+                if (enemyShield->getSprite()->getCenter().y > playerSprite->getCenter().y)
+                {
+                    enemyShield->getSprite()->moveTo(enemyShield->getSprite()->getX(), enemyShield->getSprite()->getY() + enemyShield->getSprite()->getHeight());
+                }
+                else
+                {
+                    enemyShield->getSprite()->moveTo(enemyShield->getSprite()->getX(), enemyShield->getSprite()->getY() - enemyShield->getSprite()->getHeight());
+                }
+            }
+            //TextStream::instance() << engine->getTimer()->getSecs();
+        }
+        // Player vs. ArcherenemyShield
+        if (playerSprite->collidesWith(*enemyShield->getSprite()))
+        {
+            //enemyShield collision
+            if (enemyShield->getSprite()->getDx() > 0 || enemyShield->getSprite()->getDx() < 0)
+            {
+                enemyShield->getSprite()->setVelocity(0, enemyShield->getSprite()->getDy());
+            }
+
+            if (enemyShield->getSprite()->getDy() > 0 || enemyShield->getSprite()->getDy() < 0)
+            {
+                enemyShield->getSprite()->setVelocity(enemyShield->getSprite()->getDx(), 0);
+            }
+
+            //PLAYER collisions
+            if ( playerSprite->getX() < enemyShield->getSprite()->getX())
+            {
+
+                if ( !(tile_collide & background->COLLISION_X) && player->getKey() & KEY_LEFT)
+                {
+                    playerSprite->setVelocity(-player->getMovementSpeed(), playerSprite->getDy());
+                }
+                else
+                    playerSprite->setVelocity(0, playerSprite->getDy());
+                
+            }
+            else if (playerSprite->getX() > enemyShield->getSprite()->getX())
+            {
+                if ( !(tile_collide & background->COLLISION_X) && player->getKey() & KEY_RIGHT)
+                {
+                    playerSprite->setVelocity(player->getMovementSpeed(), playerSprite->getDy());
+                }
+                else
+                    playerSprite->setVelocity(0, playerSprite->getDy());
+            }
+            //Y
+            if ( playerSprite->getY() < enemyShield->getSprite()->getY())
+            {
+
+                if ( !(tile_collide & background->COLLISION_Y) && player->getKey() & KEY_UP)
+                {
+                    playerSprite->setVelocity(playerSprite->getDx(),-player->getMovementSpeed());
+                }
+                else
+                    playerSprite->setVelocity(playerSprite->getDx() , 0);
+                
+            }
+            else if (playerSprite->getY() > enemyShield->getSprite()->getY())
+            {
+                if ( !(tile_collide & background->COLLISION_Y) && player->getKey() & KEY_DOWN)
+                {
+                    playerSprite->setVelocity(playerSprite->getDx(), player->getMovementSpeed());
+                }
+                else
+                    playerSprite->setVelocity(playerSprite->getDx() , 0);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
         // Change Scenes
         if (player->getHealth() <= 0)
         {
@@ -295,6 +399,7 @@ void DemoScene::load()
     //TextStream::instance() << player->getFaceDirection();
     // player->setMovementSpeed(10); // uncomment this for blazing fast speeds
     enemy = std::make_unique<EnemySword>(GBA_SCREEN_WIDTH/2 + 32, GBA_SCREEN_HEIGHT/2 +32);
+    enemyShield = std::make_unique<Enemy>(GBA_SCREEN_WIDTH/2 - 32, GBA_SCREEN_HEIGHT/2 +32);
 
 
     //Village bg requires text to be disabled, its simply too big.
