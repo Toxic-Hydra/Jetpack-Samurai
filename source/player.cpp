@@ -124,10 +124,12 @@ void Player::playerAttack()
                 this->playerAttackSprite->flipHorizontally(false);
                 break;
             case 2:
-                this->playerAttackSprite->moveTo(this->getSprite()->getX(),this->getSprite()->getY()-32);
+                this->attackBottom->moveTo(this->getSprite()->getX()-8,this->getSprite()->getY()-16);
+                this->attackBottom->flipVertically(true);
                 break;
             case 3:
-                this->playerAttackSprite->moveTo(this->getSprite()->getX(),this->getSprite()->getY()+32);
+                this->attackBottom->moveTo(this->getSprite()->getX()-8,this->getSprite()->getY()+32);
+                this->attackBottom->flipVertically(false);
                 break;
         }
         // this->getSprite()->makeAnimated(25, 8, 3);
@@ -283,6 +285,7 @@ void player_ns::AttackState::exit(Player& player)
     // player.getSprite()->animateToFrame(0);
     player.playerAttackSprite->animateToFrame(0);
     player.playerAttackSprite->moveTo(-100, -100);
+    player.attackBottom->moveTo(-100,-100);
 }
 
 void player_ns::DashState::enter(Player& player)

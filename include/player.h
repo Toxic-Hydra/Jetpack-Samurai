@@ -39,7 +39,12 @@ public:
                     .withSize(SIZE_16_32))
                     .withAnimated(8, 3)
                     .withLocation(-100,-100)
-                    .buildPtr();;
+                    .buildPtr();
+    std::unique_ptr<Sprite> attackBottom = (spriteBuilder
+                    .withData(attackBottomTiles, sizeof(attackBottomTiles))
+                    .withSize(SIZE_32_16))
+                    .withLocation(-100,-100)
+                    .buildPtr();
     // int faceDirection = fDirection::RIGHT;
     player_ns::PlayerState* state = NULL;
     void tick();
