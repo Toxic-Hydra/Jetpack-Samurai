@@ -17,7 +17,7 @@ void EndScene::tick(u16 keys)
 void EndScene::load()
 {
     engine->enableText();
-    TextStream::instance().setText("Geemu Obaa", 6, 9);
+    TextStream::instance().setText("Geemu Obaa", 17, 9);
 }
 
 std::vector<Sprite *> EndScene::sprites()

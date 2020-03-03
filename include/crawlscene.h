@@ -24,6 +24,4 @@ public:
     std::vector<Background *> backgrounds() override;
 };
 
-
-
 #endif
