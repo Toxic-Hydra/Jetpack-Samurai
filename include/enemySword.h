@@ -21,7 +21,7 @@ private:
     int actionDistx{42};
     int actionDisty{42};
     std::unique_ptr<Timer> atkTimer{std::make_unique<Timer>()};
-    int atkWait{400};
+    int atkWait{600};
     //std::unique_ptr<Sprite> atkSprite;
     
 protected:
@@ -30,6 +30,12 @@ protected:
 
 public:
     EnemySword(int x, int y);
+    std::unique_ptr<Sprite> swordAttackSprite = (spriteBuilder
+                    .withData(swordAttackTiles, sizeof(swordAttackTiles))
+                    .withSize(SIZE_16_32))
+                    .withAnimated(3, 3)
+                    .withLocation(-100,-100)
+                    .buildPtr();
     
     EnemySwordState* state;
     RECT* playerVicinity;
@@ -50,6 +56,7 @@ public:
 class EnemySwordState
 {
 public:
+    int stateID = 0;
     virtual ~EnemySwordState() {}
     virtual void enter(EnemySword& enemy) {}
     virtual EnemySwordState* update(EnemySword& enemy) { return new EnemySwordState; }
@@ -59,6 +66,7 @@ public:
 class SwordChaseState : public EnemySwordState
 {
 public:
+    SwordChaseState() { stateID = 1; }
     ~SwordChaseState() {}
     void enter(EnemySword& enemy);
     EnemySwordState* update(EnemySword& enemy);
@@ -69,6 +77,7 @@ public:
 class SwordAttackState : public EnemySwordState
 {
 public:
+    SwordAttackState() { stateID = 2; }
     ~SwordAttackState() {}
     void enter(EnemySword& enemy);
     EnemySwordState* update(EnemySword& enemy);
@@ -78,6 +87,7 @@ public:
 class SwordIdleState : public EnemySwordState
 {
 public:
+    SwordIdleState() { stateID = 3; }
     ~SwordIdleState() {}
     void enter(EnemySword& enemy);
     EnemySwordState* update(EnemySword& enemy);
@@ -87,6 +97,7 @@ public:
 class SwordRetreatState : public EnemySwordState
 {
 public:
+    SwordRetreatState() { stateID = 4; }
     ~SwordRetreatState() {}
     void enter(EnemySword& enemy);
     EnemySwordState* update(EnemySword& enemy);
