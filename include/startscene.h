@@ -19,7 +19,7 @@ public:
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
 };
-
+ 
 
 
 
