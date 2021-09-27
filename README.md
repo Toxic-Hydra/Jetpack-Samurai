@@ -25,4 +25,5 @@ for this project we're using a few other open source technologies:
 This project began as our UCSC final capstone project. Due to a lack of manpower and deadlines that did not take into account our unique project we decided to shelf the project for the time being.
 Perhaps we will revisit this project in the future. GBA development was very interesting and incredibly challenging. Hopefully the GBA homebrew scene grows and more learning resources become available.
 In the end we finished a tiny prototype that could fully work on GBA hardware :)
+
 ![Samurai Gameplay](pics/sword.gif)
