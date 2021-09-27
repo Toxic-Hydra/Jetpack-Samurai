@@ -22,5 +22,7 @@ for this project we're using a few other open source technologies:
 [And Jamie D Stewart's fantastic GBA game template](https://github.com/JamieDStewart/GBA_VSCode_Basic)
 
 ## Wait what even is this repo?
-We're a group of Computer Science: Game Design students at UCSC working on our final capstone project.
-For our final project we decided to work on a GBA game, Eventually this repo will evolve as we begin working on it.
+This project began as our UCSC final capstone project. Due to a lack of manpower and deadlines that did not take into account our unique project we decided to shelf the project for the time being.
+Perhaps we will revisit this project in the future. GBA development was very interesting and incredibly challenging. Hopefully the GBA homebrew scene grows and more learning resources become available.
+In the end we finished a tiny prototype that could fully work on GBA hardware :)
+![Samurai Gameplay](pics/sword.gif)
